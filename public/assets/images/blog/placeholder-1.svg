@@ -1,0 +1,10 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f1f5f9"/>
+  <rect x="50" y="50" width="300" height="200" fill="#e2e8f0" rx="8"/>
+  <circle cx="120" cy="120" r="20" fill="#cbd5e1"/>
+  <rect x="160" y="110" width="120" height="8" fill="#cbd5e1" rx="4"/>
+  <rect x="160" y="130" width="80" height="8" fill="#cbd5e1" rx="4"/>
+  <rect x="70" y="180" width="260" height="6" fill="#cbd5e1" rx="3"/>
+  <rect x="70" y="200" width="200" height="6" fill="#cbd5e1" rx="3"/>
+  <text x="200" y="260" text-anchor="middle" fill="#64748b" font-family="Arial" font-size="12">Blog Post Image</text>
+</svg>

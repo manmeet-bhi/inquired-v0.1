@@ -1,0 +1,220 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+    color: #111827;
+}
+
+.brand-font {
+    font-family: 'Unbounded', sans-serif;
+}
+
+/* --- START OF YOUR EXACT NAV BAR CSS --- */
+.chevron {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    margin-bottom: 3px;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.group:hover .chevron {
+    transform: rotate(225deg) translateY(-1px);
+}
+
+.dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.mobile-accordion {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-accordion.active {
+    max-height: 800px;
+    opacity: 1;
+}
+
+/* Animated burger icon */
+#burger-icon span {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+
+#burger-icon.open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+#burger-icon.open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+#burger-icon.open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+    width: 100%;
+}
+
+.search-focus:focus-within {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    border-color: #2563eb;
+}
+
+/* Fix for SVG icons overlapping */
+svg {
+    flex-shrink: 0;
+    display: block;
+}
+
+/* Ensure proper spacing for icon containers */
+.flex.items-center.gap-2 svg,
+.flex.items-center.gap-3 svg {
+    margin-right: 0;
+}
+
+/* Fix button icon positioning */
+button svg {
+    pointer-events: none;
+}
+
+/* Prevent icon overlap in navigation */
+.flex.items-center {
+    align-items: center;
+}
+
+.flex.items-center>* {
+    flex-shrink: 0;
+}
+
+/* --- END OF YOUR NAV BAR CSS --- */
+
+/* Enhanced Content Styling */
+.job-row {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.job-row:hover {
+    background-color: #f9fafb;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.hero-gradient {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.quick-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.city-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Blog section animations */
+.blog-card:hover .arrow-icon {
+    transform: translateX(4px);
+}
+
+.featured-card:hover .featured-arrow {
+    transform: scale(1.1) rotate(-45deg);
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+    .job-row {
+        border-radius: 12px;
+    }
+
+    /* Ensure company logos are always visible */
+    .company-logo {
+        min-width: 40px;
+        min-height: 40px;
+    }
+
+    /* Better touch targets for mobile */
+    .mobile-touch {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Improved text truncation */
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* LinkedIn-style section animations */
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.image-blob {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transition: all 0.5s ease-in-out;
+}
+
+.card-hover:hover .image-blob {
+    border-radius: 40% 60% 70% 30% / 40% 70% 30% 60%;
+    transform: scale(1.02);
+}
