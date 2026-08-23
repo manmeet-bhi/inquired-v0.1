@@ -6,6 +6,8 @@
     $authUser = auth()->user();
     $currentUserId = $authAdmin ? 'admin_' . $authAdmin->id : ($authUser ? 'user_' . $authUser->id : null);
     $currentUserEmail = $authAdmin?->email ?? $authUser?->email ?? null;
+    $workerPath = asset('OneSignalSDKWorker.js');
+    $workerScope = url('/') . '/';
 @endphp
 
 @if($oneSignalAppId)
@@ -19,8 +21,35 @@
                 safari_web_id: "{{ $safariWebId }}",
                 notifyButton: {
                     enable: true,
+                    size: 'medium',
+                    theme: 'default',
+                    position: 'bottom-right',
+                    showCredit: false,
                 },
                 allowLocalhostAsSecureOrigin: true,
+                serviceWorkerPath: "{{ $workerPath }}",
+                serviceWorkerParam: {
+                    scope: "{{ $workerScope }}"
+                },
+                promptOptions: {
+                    slidedown: {
+                        prompts: [
+                            {
+                                type: "push",
+                                autoPrompt: true,
+                                text: {
+                                    actionMessage: "We'd like to send you notifications for latest jobs and updates.",
+                                    acceptButton: "Allow",
+                                    cancelButton: "Later"
+                                },
+                                delay: {
+                                    pageViews: 1,
+                                    timeDelay: 2
+                                }
+                            }
+                        ]
+                    }
+                }
             });
 
             @if($currentUserId)

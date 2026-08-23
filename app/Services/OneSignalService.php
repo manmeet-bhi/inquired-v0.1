@@ -216,6 +216,17 @@ class OneSignalService
             $data = $response->json() ?? [];
 
             if ($response->successful()) {
+                if (empty($data['id']) && !empty($data['errors'])) {
+                    $errorMsg = 'No subscribers found: ' . implode(', ', $data['errors']) . '. (Subscribe a browser on your site first by clicking "Allow" on the notification prompt).';
+                    return [
+                        'success' => false,
+                        'id' => null,
+                        'recipients' => 0,
+                        'data' => $data,
+                        'error' => $errorMsg,
+                    ];
+                }
+
                 return [
                     'success' => true,
                     'id' => $data['id'] ?? null,
