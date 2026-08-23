@@ -1,7 +1,7 @@
 {{-- OneSignal Web Push SDK Integration --}}
 @php
-    $oneSignalAppId = config('onesignal.app_id');
-    $safariWebId = config('onesignal.safari_web_id');
+    $oneSignalAppId = config('onesignal.app_id') ?: 'b19f0006-5f43-4eef-8fb6-5d8242d9904e';
+    $safariWebId = config('onesignal.safari_web_id') ?: 'web.onesignal.auto.38b1a4de-a361-440e-ae28-b71c05790af2';
     $authAdmin = auth('admin')->user();
     $authUser = auth()->user();
     $currentUserId = $authAdmin ? 'admin_' . $authAdmin->id : ($authUser ? 'user_' . $authUser->id : null);
@@ -16,13 +16,11 @@
         OneSignalDeferred.push(async function(OneSignal) {
             await OneSignal.init({
                 appId: "{{ $oneSignalAppId }}",
-                @if($safariWebId)
                 safari_web_id: "{{ $safariWebId }}",
-                @endif
-                allowLocalhostAsSecureOrigin: true,
                 notifyButton: {
-                    enable: false, // Customized prompt trigger available via triggerPushPrompt()
+                    enable: true,
                 },
+                allowLocalhostAsSecureOrigin: true,
             });
 
             @if($currentUserId)

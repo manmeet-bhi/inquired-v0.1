@@ -219,7 +219,7 @@ class OneSignalService
                 return [
                     'success' => true,
                     'id' => $data['id'] ?? null,
-                    'recipients' => $data['recipients'] ?? ($data['external_id'] ? count((array) $data['external_id']) : 0),
+                    'recipients' => $data['recipients'] ?? (isset($data['external_id']) && $data['external_id'] ? count((array) $data['external_id']) : 0),
                     'data' => $data,
                     'error' => null,
                 ];
