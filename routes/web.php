@@ -90,8 +90,6 @@ Route::get('/cms', function () {
     if (app()->environment('local')) {
         Route::get('/cms/debug-email', [App\Http\Controllers\DebugController::class, 'debugEmail']);
         Route::get('/cms/test-resend/{email}', [App\Http\Controllers\DebugController::class, 'testResend']);
-        Route::get('/cms/debug-onesignal/push', [App\Http\Controllers\DebugController::class, 'debugOneSignalPush']);
-        Route::get('/cms/debug-onesignal/email/{email}', [App\Http\Controllers\DebugController::class, 'debugOneSignalEmail']);
     }
 
 Route::middleware(['throttle:6,1'])->group(function () {
