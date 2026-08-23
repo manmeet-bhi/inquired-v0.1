@@ -30,6 +30,7 @@ yarn-error.log
 database.sqlite
 
 # IDE & Editor files
+.gemini/
 .idea/
 .vscode/
 *.swp

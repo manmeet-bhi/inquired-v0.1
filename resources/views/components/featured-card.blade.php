@@ -1,7 +1,7 @@
 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
     @if($featured->image)
     <div class="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden">
-        <img src="{{ \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($featured->image) }}" alt="{{ $featured->title }}" class="w-full h-full object-cover">
+        <img src="{{ media_url($featured->image) }}" alt="{{ $featured->title }}" class="w-full h-full object-cover">
         @if($featured->badge_text)
         <div class="absolute top-3 left-3">
             <span class="px-2 py-1 text-xs font-semibold rounded-full 

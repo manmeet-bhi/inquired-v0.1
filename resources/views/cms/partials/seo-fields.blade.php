@@ -82,7 +82,7 @@
                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 @if(isset($job) && $job->og_image)
                     <div class="mt-2">
-                        <img src="{{ \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($job->og_image) }}" alt="Current OG Image" class="w-32 h-16 object-cover rounded">
+                        <img src="{{ media_url($job->og_image) }}" alt="Current OG Image" class="w-32 h-16 object-cover rounded">
                         <p class="text-xs text-slate-500 mt-1">Current image (upload new to replace)</p>
                     </div>
                 @endif

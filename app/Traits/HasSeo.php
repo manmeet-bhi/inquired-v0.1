@@ -28,10 +28,10 @@ trait HasSeo
             'canonical' => $pageSeo->canonical_url ?? null,
             'og_title' => $pageSeo->og_title ?? $pageSeo->meta_title ?? $globalSettings['site_title'],
             'og_description' => $pageSeo->og_description ?? $pageSeo->meta_description ?? $globalSettings['meta_description'],
-            'og_image' => $pageSeo->og_image ? \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($pageSeo->og_image) : ($globalSettings['og_default_image'] ? \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($globalSettings['og_default_image']) : null),
+            'og_image' => media_url($pageSeo->og_image ?? $globalSettings['og_default_image']),
             'noindex' => $pageSeo->noindex ?? $globalSettings['global_noindex'],
             'nofollow' => $pageSeo->nofollow ?? $globalSettings['global_nofollow'],
-            'favicon' => $globalSettings['favicon'] ? \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($globalSettings['favicon']) : asset('favicon.ico'),
+            'favicon' => !empty($globalSettings['favicon']) ? media_url($globalSettings['favicon']) : asset('favicon.ico'),
         ];
     }
 }

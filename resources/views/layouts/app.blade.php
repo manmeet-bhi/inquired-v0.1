@@ -28,17 +28,17 @@
         $ogDescription = $pageSeo?->og_description
             ?? $pageSeo?->meta_description
             ?? ($yieldedOgDescription ?: (!empty($seoSettings['og_description']) ? $seoSettings['og_description'] : $description));
-        $ogImage = $pageSeo?->og_image
-            ? \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($pageSeo->og_image)
-            : ($yieldedOgImage ?: (!empty($seoSettings['og_default_image']) ? \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($seoSettings['og_default_image']) : null));
+        $ogImage = !empty($pageSeo?->og_image)
+            ? media_url($pageSeo->og_image)
+            : ($yieldedOgImage ?: (!empty($seoSettings['og_default_image']) ? media_url($seoSettings['og_default_image']) : null));
         $twitterTitle = $pageSeo?->twitter_title
             ?? $ogTitle
             ?? (!empty($seoSettings['twitter_title']) ? $seoSettings['twitter_title'] : $title);
         $twitterDescription = $pageSeo?->twitter_description
             ?? $ogDescription
             ?? (!empty($seoSettings['twitter_description']) ? $seoSettings['twitter_description'] : $description);
-        $twitterImage = $pageSeo?->twitter_image
-            ? \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($pageSeo->twitter_image)
+        $twitterImage = !empty($pageSeo?->twitter_image)
+            ? media_url($pageSeo->twitter_image)
             : ($ogImage ?: null);
         $schemaJson = $pageSeo?->schema_json ?? ($seoSettings['schema_json'] ?? null);
         $robotsNoindex = (bool) ($pageSeo?->noindex ?? false) || !empty($seoSettings['global_noindex']);

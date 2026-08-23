@@ -1,6 +1,6 @@
 @php
     $dynamicFavicon = !empty($seoSettings['favicon'])
-        ? \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($seoSettings['favicon'])
+        ? media_url($seoSettings['favicon'])
         : null;
 @endphp
 

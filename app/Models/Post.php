@@ -86,14 +86,6 @@ class Post extends Model
 
     public function getFeaturedImageUrlAttribute()
     {
-        if (!$this->featured_image) {
-            return null;
-        }
-
-        if (str_starts_with($this->featured_image, 'http')) {
-            return $this->featured_image;
-        }
-
-        return \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($this->featured_image);
+        return media_url($this->featured_image);
     }
 }

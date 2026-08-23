@@ -139,7 +139,7 @@
                                 <input type="file" id="og_image" name="og_image" accept=".jpg,.jpeg,.png" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors">
                                 @if($pageSeo->og_image)
                                     <div class="mt-2 text-xs flex flex-col gap-1">
-                                        <img src="{{ \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($pageSeo->og_image) }}" alt="Current OG Image" class="w-24 h-12 object-cover rounded border border-slate-300">
+                                        <img src="{{ media_url($pageSeo->og_image) }}" alt="Current OG Image" class="w-24 h-12 object-cover rounded border border-slate-300">
                                         <span class="text-slate-500">Current image</span>
                                     </div>
                                 @endif
@@ -162,7 +162,7 @@
                                 <input type="file" id="twitter_image" name="twitter_image" accept=".jpg,.jpeg,.png" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors">
                                 @if($pageSeo->twitter_image)
                                     <div class="mt-2 text-xs flex flex-col gap-1">
-                                        <img src="{{ \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($pageSeo->twitter_image) }}" alt="Current Twitter Image" class="w-24 h-12 object-cover rounded border border-slate-300">
+                                        <img src="{{ media_url($pageSeo->twitter_image) }}" alt="Current Twitter Image" class="w-24 h-12 object-cover rounded border border-slate-300">
                                         <span class="text-slate-500">Current image</span>
                                     </div>
                                 @endif

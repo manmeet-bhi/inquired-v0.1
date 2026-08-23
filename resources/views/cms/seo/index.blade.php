@@ -130,7 +130,7 @@
                             <input type="file" name="og_default_image" accept=".jpg,.jpeg,.png" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors">
                             @if(!empty($globalSettings['og_default_image']))
                                 <div class="mt-3 p-3 bg-white border border-slate-100 rounded-xl text-xs flex items-center justify-between">
-                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($globalSettings['og_default_image']) }}" class="h-10 rounded shadow-sm">
+                                    <img src="{{ media_url($globalSettings['og_default_image']) }}" class="h-10 rounded shadow-sm">
                                     <label class="text-red-500 font-bold cursor-pointer hover:text-red-600 flex items-center">
                                         <input type="checkbox" name="remove_og_image" value="1" class="mr-2"> Remove File
                                     </label>

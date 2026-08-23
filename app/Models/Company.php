@@ -54,15 +54,6 @@ class Company extends Model
 
     public function getLogoUrlAttribute()
     {
-        if (!$this->logo) {
-            return null;
-        }
-
-        if (str_starts_with($this->logo, 'http')) {
-            return $this->logo;
-        }
-
-        $disk = env('FILESYSTEM_DISK', config('filesystems.default'));
-        return \Illuminate\Support\Facades\Storage::disk($disk)->url($this->logo);
+        return media_url($this->logo);
     }
 }

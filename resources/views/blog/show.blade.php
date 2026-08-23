@@ -5,7 +5,7 @@
 @section('meta_keywords', $pageSeo ? $pageSeo->meta_keywords : '')
 @section('og_title', $pageSeo && $pageSeo->og_title ? $pageSeo->og_title : ($post->title . ' - Anywhereroles Blog'))
 @section('og_description', $pageSeo && $pageSeo->og_description ? $pageSeo->og_description : ($post->excerpt ?: 'Read ' . $post->title))
-@section('og_image', $pageSeo && $pageSeo->og_image ? \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($pageSeo->og_image) : ($post->featured_image_url ?: ''))
+@section('og_image', $pageSeo && $pageSeo->og_image ? media_url($pageSeo->og_image) : ($post->featured_image_url ?: ''))
 
 @php
 use Illuminate\Support\Facades\Storage;
