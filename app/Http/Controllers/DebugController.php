@@ -80,4 +80,57 @@ class DebugController extends Controller
             ], 500);
         }
     }
+
+    public function debugOneSignalPush(\App\Services\OneSignalService $oneSignal)
+    {
+        $status = $oneSignal->isConfigured();
+        if (!$status) {
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'OneSignal is not configured yet. Add ONESIGNAL_APP_ID and ONESIGNAL_REST_API_KEY in .env.',
+                'config' => [
+                    'app_id' => config('onesignal.app_id') ? 'Set ✅' : 'Not Set ❌',
+                    'rest_api_key' => config('onesignal.rest_api_key') ? 'Set ✅' : 'Not Set ❌',
+                    'safari_web_id' => config('onesignal.safari_web_id') ?: 'Not Set',
+                ]
+            ]);
+        }
+
+        $result = $oneSignal->sendPushToAll(
+            '🔔 AnywhereRoles Test Notification',
+            'This is a live test push notification from AnywhereRoles debug suite!',
+            url('/')
+        );
+
+        return response()->json([
+            'status' => $result['success'] ? 'success' : 'error',
+            'result' => $result,
+            'config' => [
+                'app_id' => config('onesignal.app_id'),
+            ]
+        ], $result['success'] ? 200 : 400);
+    }
+
+    public function debugOneSignalEmail(string $email, \App\Services\OneSignalService $oneSignal)
+    {
+        $status = $oneSignal->isConfigured();
+        if (!$status) {
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'OneSignal is not configured yet. Add ONESIGNAL_APP_ID and ONESIGNAL_REST_API_KEY in .env.',
+            ]);
+        }
+
+        $result = $oneSignal->sendEmailToExternalUsers(
+            $email,
+            '✅ OneSignal Email Test - AnywhereRoles',
+            '<h2>OneSignal Email Test</h2><p>This test email confirms OneSignal email sending is functioning properly.</p>'
+        );
+
+        return response()->json([
+            'status' => $result['success'] ? 'success' : 'error',
+            'result' => $result,
+        ], $result['success'] ? 200 : 400);
+    }
 }
+

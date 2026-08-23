@@ -10,6 +10,7 @@
     <meta http-equiv="Expires" content="0">
     <title>@yield('title', 'CMS - Anywhereroles')</title>
     @include('partials.favicons')
+    @include('partials.onesignal')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="{{ asset('assets/css/tailwind-full.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/fonts/inter.css') }}" rel="stylesheet">
