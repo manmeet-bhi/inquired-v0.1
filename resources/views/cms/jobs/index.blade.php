@@ -102,6 +102,11 @@
                                                 Featured
                                             </span>
                                         @endif
+                                        @if($job->job_id)
+                                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                                {{ $job->job_id }}
+                                            </span>
+                                        @endif
                                     </div>
                                     <div class="text-xs text-slate-500 flex items-center flex-wrap gap-1">
                                         <span class="font-medium text-slate-700">{{ $job->company->name }}</span>

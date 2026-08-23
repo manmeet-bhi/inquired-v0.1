@@ -48,6 +48,7 @@ class AdminController extends Controller
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('title', 'LIKE', "%{$search}%")
+                  ->orWhere('job_id', 'LIKE', "%{$search}%")
                   ->orWhere('location', 'LIKE', "%{$search}%")
                   ->orWhereHas('company', function($companyQuery) use ($search) {
                       $companyQuery->where('name', 'LIKE', "%{$search}%");
@@ -80,6 +81,7 @@ class AdminController extends Controller
         $this->checkPermission('jobs.create');
         $rules = [
             'title' => 'required|string|max:255',
+            'job_id' => 'nullable|string|max:100',
             'company_id' => 'required|exists:companies,id',
             'location' => 'required|string|max:255',
             'type' => 'required|in:full-time,part-time,contract,internship',
@@ -139,6 +141,7 @@ class AdminController extends Controller
         $this->checkPermission('jobs.edit');
         $rules = [
             'title' => 'required|string|max:255',
+            'job_id' => 'nullable|string|max:100',
             'company_id' => 'required|exists:companies,id',
             'location' => 'required|string|max:255',
             'type' => 'required|in:full-time,part-time,contract,internship',
@@ -216,6 +219,7 @@ class AdminController extends Controller
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('title', 'LIKE', "%{$search}%")
+                  ->orWhere('job_id', 'LIKE', "%{$search}%")
                   ->orWhere('location', 'LIKE', "%{$search}%")
                   ->orWhereHas('company', function($companyQuery) use ($search) {
                       $companyQuery->where('name', 'LIKE', "%{$search}%");
@@ -248,6 +252,7 @@ class AdminController extends Controller
         $this->checkPermission('jobs.create');
         $request->validate([
             'title' => 'required|string|max:255',
+            'job_id' => 'nullable|string|max:100',
             'company_id' => 'required|exists:companies,id',
             'location' => 'required|string|max:255',
             'work_type' => 'required|in:onsite,remote,hybrid',
@@ -304,6 +309,7 @@ class AdminController extends Controller
         
         $request->validate([
             'title' => 'required|string|max:255',
+            'job_id' => 'nullable|string|max:100',
             'company_id' => 'required|exists:companies,id',
             'location' => 'required|string|max:255',
             'work_type' => 'required|in:onsite,remote,hybrid',

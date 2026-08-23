@@ -23,10 +23,19 @@
             @method('PUT')
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="md:col-span-2 cms-form-group">
+                <div class="cms-form-group">
                     <label for="title" class="cms-label">Internship Title <span class="text-rose-500">*</span></label>
                     <input type="text" id="title" name="title" value="{{ old('title', $job->title) }}" required class="cms-input @error('title') border-red-500 @enderror">
                     @error('title')
+                        <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Job ID -->
+                <div class="cms-form-group">
+                    <label for="job_id" class="cms-label">Job ID <span class="text-slate-400 font-normal text-xs">(Optional)</span></label>
+                    <input type="text" id="job_id" name="job_id" value="{{ old('job_id', $job->job_id) }}" placeholder="e.g. INT-1042, REQ-9821" class="cms-input @error('job_id') border-red-500 @enderror">
+                    @error('job_id')
                         <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p>
                     @enderror
                 </div>

@@ -143,6 +143,12 @@
                                 {{ $job->experience_level }}
                             </span>
                         @endif
+                        @if($job->job_id)
+                            <span class="px-3 md:px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs md:sm font-bold flex items-center gap-1.5 border border-slate-200">
+                                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                                Job ID: {{ $job->job_id }}
+                            </span>
+                        @endif
                         @if($job->experience)
                             <span class="px-3 md:px-4 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-xs md:sm font-bold flex items-center gap-1">
                                 <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
