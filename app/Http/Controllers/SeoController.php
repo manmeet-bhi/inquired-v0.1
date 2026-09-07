@@ -61,7 +61,9 @@ class SeoController extends Controller
     {
         $this->checkPermission('seo.manage');
         $request->validate([
-            'verification_file' => 'required|file|mimes:html|max:1024',
+            'verification_file' => 'required|file|extensions:html,htm|max:1024',
+        ], [
+            'verification_file.extensions' => 'The verification file must be an HTML file (.html or .htm).',
         ]);
 
         if ($request->hasFile('verification_file')) {
@@ -210,7 +212,7 @@ class SeoController extends Controller
             if ($oldOgImage) {
                 Storage::disk(config('filesystems.default'))->delete($oldOgImage);
             }
-            $ogImagePath = $request->file('og_default_image')->store('seo/og-images', config('filesystems.default'));
+            $ogImagePath = $request->file('og_default_image')->store('og-images', config('filesystems.default'));
             SeoSetting::set('og_default_image', $ogImagePath);
         }
 
@@ -260,11 +262,11 @@ class SeoController extends Controller
         $data['nofollow'] = $request->has('nofollow') ? 1 : 0;
 
         if ($request->hasFile('og_image')) {
-            $data['og_image'] = $request->file('og_image')->store('seo/og-images', config('filesystems.default'));
+            $data['og_image'] = $request->file('og_image')->store('og-images', config('filesystems.default'));
         }
 
         if ($request->hasFile('twitter_image')) {
-            $data['twitter_image'] = $request->file('twitter_image')->store('seo/twitter-images', config('filesystems.default'));
+            $data['twitter_image'] = $request->file('twitter_image')->store('og-images', config('filesystems.default'));
         }
 
         PageSeo::create($data);
@@ -293,18 +295,28 @@ class SeoController extends Controller
         $data['noindex'] = $request->has('noindex') ? 1 : 0;
         $data['nofollow'] = $request->has('nofollow') ? 1 : 0;
 
-        if ($request->hasFile('og_image')) {
+        if ($request->has('remove_og_image')) {
             if ($pageSeo->og_image) {
                 Storage::disk(config('filesystems.default'))->delete($pageSeo->og_image);
             }
-            $data['og_image'] = $request->file('og_image')->store('seo/og-images', config('filesystems.default'));
+            $data['og_image'] = null;
+        } elseif ($request->hasFile('og_image')) {
+            if ($pageSeo->og_image) {
+                Storage::disk(config('filesystems.default'))->delete($pageSeo->og_image);
+            }
+            $data['og_image'] = $request->file('og_image')->store('og-images', config('filesystems.default'));
         }
 
-        if ($request->hasFile('twitter_image')) {
+        if ($request->has('remove_twitter_image')) {
             if ($pageSeo->twitter_image) {
                 Storage::disk(config('filesystems.default'))->delete($pageSeo->twitter_image);
             }
-            $data['twitter_image'] = $request->file('twitter_image')->store('seo/twitter-images', config('filesystems.default'));
+            $data['twitter_image'] = null;
+        } elseif ($request->hasFile('twitter_image')) {
+            if ($pageSeo->twitter_image) {
+                Storage::disk(config('filesystems.default'))->delete($pageSeo->twitter_image);
+            }
+            $data['twitter_image'] = $request->file('twitter_image')->store('og-images', config('filesystems.default'));
         }
 
         $pageSeo->update($data);

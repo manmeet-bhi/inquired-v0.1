@@ -31,7 +31,7 @@ trait HasSeo
             'og_image' => media_url($pageSeo->og_image ?? $globalSettings['og_default_image']),
             'noindex' => $pageSeo->noindex ?? $globalSettings['global_noindex'],
             'nofollow' => $pageSeo->nofollow ?? $globalSettings['global_nofollow'],
-            'favicon' => !empty($globalSettings['favicon']) ? media_url($globalSettings['favicon']) : asset('favicon.ico'),
+            'favicon' => !empty($globalSettings['favicon']) ? media_url($globalSettings['favicon']) : asset('assets/favicon/favicon.ico'),
         ];
     }
 }

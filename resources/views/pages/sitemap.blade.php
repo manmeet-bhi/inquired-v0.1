@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Sitemap - Anywhereroles')
+@section('title', 'Sitemap - Inaquired')
 
 @section('content')
 <div class="bg-white min-h-screen">
@@ -12,7 +12,7 @@
             </div>
             <h1 class="text-4xl font-bold text-gray-900 brand-font mb-6 tracking-tight">Sitemap</h1>
             <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                Explore all sections and resources of Anywhereroles. Find your way to your next career opportunity effortlessly.
+                Explore all sections and resources of Inaquired. Find your way to your next career opportunity effortlessly.
             </p>
         </div>
 
@@ -51,6 +51,10 @@
                         </a></li>
                         <li><a href="{{ route('blog') }}" class="flex items-center gap-3 p-4 rounded-xl bg-gray-50 hover:bg-white text-gray-800 hover:text-blue-600 border border-transparent hover:border-blue-100 transition-all card-hover group/item">
                             <span class="font-bold">Blog / Articles</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all ml-auto"></i>
+                        </a></li>
+                        <li><a href="{{ route('for-employers') }}" class="flex items-center gap-3 p-4 rounded-xl bg-gray-50 hover:bg-white text-gray-800 hover:text-blue-600 border border-transparent hover:border-blue-100 transition-all card-hover group/item">
+                            <span class="font-bold">For Employers</span>
                             <i data-lucide="arrow-right" class="w-4 h-4 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all ml-auto"></i>
                         </a></li>
                         <li><a href="{{ route('search') }}" class="flex items-center gap-3 p-4 rounded-xl bg-gray-50 hover:bg-white text-gray-800 hover:text-blue-600 border border-transparent hover:border-blue-100 transition-all card-hover group/item">
@@ -200,11 +204,15 @@
                             <span class="font-bold">Cookie Policy</span>
                             <i data-lucide="arrow-right" class="w-4 h-4 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all ml-auto"></i>
                         </a></li>
+                        <li><a href="{{ route('employer-policy') }}" class="flex items-center gap-3 p-4 rounded-xl bg-gray-50 hover:bg-white text-gray-800 hover:text-indigo-600 border border-transparent hover:border-indigo-100 transition-all card-hover group/item">
+                            <span class="font-bold">Employer Listing Policy</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all ml-auto"></i>
+                        </a></li>
                         <li><a href="{{ route('testimonials') }}" class="flex items-center gap-3 p-4 rounded-xl bg-gray-50 hover:bg-white text-gray-800 hover:text-indigo-600 border border-transparent hover:border-indigo-100 transition-all card-hover group/item">
                             <span class="font-bold">Testimonials</span>
                             <i data-lucide="arrow-right" class="w-4 h-4 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all ml-auto"></i>
                         </a></li>
-                        <li><a href="https://t.me/anywhereroles" target="_blank" class="flex items-center gap-3 p-4 rounded-xl bg-[#0088cc]/10 hover:bg-[#0088cc]/20 text-[#0088cc] border border-[#0088cc]/20 transition-all card-hover group/item font-bold">
+                        <li><a href="https://t.me/inaquiredtelegram" target="_blank" class="flex items-center gap-3 p-4 rounded-xl bg-[#0088cc]/10 hover:bg-[#0088cc]/20 text-[#0088cc] border border-[#0088cc]/20 transition-all card-hover group/item font-bold">
                             <span>Join Telegram</span>
                             <i data-lucide="send" class="w-4 h-4 ml-auto"></i>
                         </a></li>

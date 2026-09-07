@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes - AnywhereRoles
+| API Routes - Inaquired
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These

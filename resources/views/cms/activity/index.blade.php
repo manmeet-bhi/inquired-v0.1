@@ -1,6 +1,6 @@
 @extends('layouts.cms')
 
-@section('title', 'Activity Logs - Anywhereroles')
+@section('title', 'Activity Logs - Inaquired')
 
 @section('content')
 <div class="max-w-7xl mx-auto">

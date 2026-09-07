@@ -64,7 +64,7 @@
                         </div>
                         @if($category->icon_file)
                             <div class="w-16 h-16 bg-slate-100 rounded-lg flex items-center justify-center">
-                                <img src="{{ asset('assets/icons/categories/' . $category->icon_file) }}" alt="Current icon" class="w-10 h-10">
+                                <img src="{{ $category->icon_url ?? asset('assets/icons/categories/' . $category->icon_file) }}" alt="Current icon" class="w-10 h-10 object-contain">
                             </div>
                         @endif
                     </div>

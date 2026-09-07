@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Find Your Dream Job - Anywhereroles')
+@section('title', 'Find Your Dream Job - Inaquired')
 
 @section('content')
 <div class="bg-white">

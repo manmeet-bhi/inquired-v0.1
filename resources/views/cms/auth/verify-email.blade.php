@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Your Email - Anywhereroles CMS</title>
+    <title>Verify Your Email - Inaquired CMS</title>
     @include('partials.favicons')
     <link href="{{ asset('assets/fonts/inter.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/tailwind-full.css') }}" rel="stylesheet">
@@ -373,13 +373,13 @@
             
             <div class="brand-content-wrapper">
                 <a href="{{ url('/') }}" style="display: inline-block;">
-                    <img src="{{ asset('images/logos/logo.png') }}" alt="Anywhereroles Logo" class="brand-logo-img">
+                    <img src="{{ asset('assets/logos/logo.png') }}" alt="Inaquired Logo" class="brand-logo-img">
                 </a>
                 <h1 class="brand-hero-title">
                     Secure Your Account
                 </h1>
                 <p class="brand-hero-desc">
-                    You're just one step away from managing your content seamlessly. Please verify your email to continue exploring the Anywhereroles dashboard.
+                    You're just one step away from managing your content seamlessly. Please verify your email to continue exploring the Inaquired dashboard.
                 </p>
                 
                 <div class="feature-pills-row">

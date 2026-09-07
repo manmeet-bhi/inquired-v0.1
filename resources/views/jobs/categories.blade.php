@@ -69,7 +69,7 @@
                                 @if($category->icon_file)
                                     <div class="flex-shrink-0">
                                         <div class="w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl flex items-center justify-center p-2.5 border border-gray-100 group-hover:border-blue-100 transition-colors">
-                                            <img src="{{ asset('assets/icons/categories/' . $category->icon_file) }}" alt="{{ $category->name }}" class="w-full h-full object-contain">
+                                            <img src="{{ $category->icon_url ?? asset('assets/icons/categories/' . $category->icon_file) }}" alt="{{ $category->name }}" class="w-full h-full object-contain">
                                         </div>
                                     </div>
                                 @elseif($category->icon)

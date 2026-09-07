@@ -85,7 +85,7 @@
                     <div class="flex items-center space-x-4">
                         <div class="flex-1">
                             <input type="file" id="logo" name="logo" accept="image/*" class="cms-input @error('logo') border-red-500 @enderror">
-                            <p class="mt-1 text-sm text-slate-500">Supported formats: JPEG, PNG, JPG, GIF. Max size: 2MB</p>
+                            <p class="mt-1 text-sm text-slate-500">Supported formats: JPEG, PNG, JPG, GIF, WebP, SVG. Max size: 2MB</p>
                         </div>
                         <div id="logo-preview" class="w-16 h-16 bg-slate-100 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300">
                             <i data-lucide="image" class="w-6 h-6 text-slate-400"></i>

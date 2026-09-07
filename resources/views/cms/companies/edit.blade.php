@@ -86,7 +86,13 @@
                     <div class="flex items-center space-x-4">
                         <div class="flex-1">
                             <input type="file" id="logo" name="logo" accept="image/*" class="cms-input @error('logo') border-red-500 @enderror">
-                            <p class="mt-1 text-sm text-slate-500">Supported formats: JPEG, PNG, JPG, GIF. Max size: 2MB</p>
+                            <p class="mt-1 text-sm text-slate-500">Supported formats: JPEG, PNG, JPG, GIF, WebP, SVG. Max size: 2MB</p>
+                            @if($company->logo)
+                                <label class="inline-flex items-center gap-2 mt-2.5 text-xs font-semibold text-rose-600 hover:text-rose-700 cursor-pointer">
+                                    <input type="checkbox" name="remove_logo" value="1" class="rounded border-slate-300 text-rose-600 focus:ring-rose-500">
+                                    <span>Remove current logo from R2 bucket</span>
+                                </label>
+                            @endif
                         </div>
                         <div id="logo-preview" class="w-16 h-16 bg-slate-100 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300 overflow-hidden font-bold text-slate-700 text-2xl uppercase">
                             @if($company->logo_url)
@@ -99,11 +105,8 @@
                             @endif
                         </div>
                     </div>
-                    @if($company->logo)
-                        <p class="mt-1 text-sm text-slate-500">Current logo will be replaced if you upload a new one</p>
-                    @endif
                     @error('logo')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p>
                     @enderror
                 </div>
 

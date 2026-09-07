@@ -1,9 +1,9 @@
 @extends('layouts.cms')
 
-@section('title', 'Create Job - Anywhereroles')
+@section('title', 'Create Job - Inaquired')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/searchable-dropdown.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/searchable-dropdown.css') }}">
 @endpush
 
 @section('content')
@@ -274,7 +274,7 @@
     });
 </script>
 
-<script src="{{ asset('js/searchable-dropdown.js') }}"></script>
+<script src="{{ asset('assets/js/searchable-dropdown.js') }}"></script>
 @include('cms.categories.partials.category-modal')
 @include('cms.companies.partials.company-modal')
 @endsection

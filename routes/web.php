@@ -52,6 +52,7 @@ Route::get('/company/{slug}', [App\Http\Controllers\JobController::class, 'compa
 
 // Blog Routes
 Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog');
+Route::get('/blog/tag/{tag}', [App\Http\Controllers\BlogController::class, 'tag'])->name('blog.tag');
 Route::get('/blog/{post}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 
 // Static Pages
@@ -59,10 +60,124 @@ Route::get('/about', function () {
     $pageSeo = \App\Models\PageSeo::getSeoForSlug('about');
     return view('pages.about', compact('pageSeo')); 
 })->name('about');
+Route::get('/for-employers', function () { 
+    $pageSeo = \App\Models\PageSeo::getSeoForSlug('for-employers');
+    return view('pages.for-employers', compact('pageSeo')); 
+})->name('for-employers');
+Route::post('/for-employers', function (\Illuminate\Http\Request $request) {
+    $data = $request->validate([
+        'company_name' => 'required|string|max:255',
+        'work_email' => 'required|email|max:255',
+        'job_title' => 'required|string|max:255',
+        'post_url' => 'required|url|max:500',
+        'description' => 'nullable|string|max:10000',
+    ], [
+        'company_name.required' => 'Please enter your company name.',
+        'work_email.required' => 'Please enter your work email address.',
+        'work_email.email' => 'Please enter a valid email address.',
+        'job_title.required' => 'Please enter the job title.',
+        'post_url.required' => 'Please provide the post URL or application link.',
+        'post_url.url' => 'Please provide a valid URL (e.g. https://example.com/jobs/123).',
+    ]);
+
+    // Forward submission seamlessly to Google Form
+    try {
+        \Illuminate\Support\Facades\Http::asForm()
+            ->timeout(6)
+            ->post('https://docs.google.com/forms/d/e/1FAIpQLScSxGQ_oycyJ8gMguHlPmrbFSTZPQxVwvNk5-Pb7vQ0KWCowg/formResponse', [
+                'entry.1150005109' => $data['company_name'],
+                'entry.1977925638' => $data['work_email'],
+                'entry.540841493'  => $data['job_title'],
+                'entry.586345545'  => $data['post_url'],
+                'entry.1660808911' => $data['description'] ?? '',
+            ]);
+    } catch (\Throwable $e) {
+        \Illuminate\Support\Facades\Log::warning('Google Form sync warning: ' . $e->getMessage());
+    }
+
+    \Illuminate\Support\Facades\Log::info('Employer Job Submission:', $data);
+
+    return redirect()->route('for-employers')->with('success', 'Thank you! Your job opening has been submitted successfully. Our team will review and publish it shortly.');
+})->name('for-employers.submit');
+Route::get('/employer-policy', function () { 
+    $pageSeo = \App\Models\PageSeo::getSeoForSlug('employer-policy');
+    return view('pages.employer-policy', compact('pageSeo')); 
+})->name('employer-policy');
 Route::get('/contact', function () { 
     $pageSeo = \App\Models\PageSeo::getSeoForSlug('contact');
     return view('pages.contact', compact('pageSeo')); 
 })->name('contact');
+Route::post('/contact', function (\Illuminate\Http\Request $request) {
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'message' => 'required|string|max:5000',
+    ], [
+        'name.required' => 'Please enter your name.',
+        'email.required' => 'Please enter your email address.',
+        'email.email' => 'Please provide a valid email address.',
+        'message.required' => 'Please enter your message.',
+    ]);
+
+    // Forward message seamlessly to Google Form
+    try {
+        \Illuminate\Support\Facades\Http::asForm()
+            ->timeout(6)
+            ->post('https://docs.google.com/forms/d/e/1FAIpQLSeE4cMHnj6M5WYurIX2mJ4avsPhhDiI5m1n5uG37ItUtbHKUQ/formResponse', [
+                'entry.1111861586' => $data['name'],
+                'entry.1762541306' => $data['email'],
+                'entry.1462769164' => $data['message'],
+            ]);
+    } catch (\Throwable $e) {
+        \Illuminate\Support\Facades\Log::warning('Contact Google Form sync warning: ' . $e->getMessage());
+    }
+
+    \Illuminate\Support\Facades\Log::info('Contact Form Message:', [
+        'name' => $data['name'],
+        'email' => $data['email'],
+    ]);
+
+    return redirect()->route('contact')->with('success', 'Thank you! Your message has been sent successfully. We will get back to you shortly.');
+})->name('contact.submit');
+Route::get('/feedback', function () { 
+    $pageSeo = \App\Models\PageSeo::getSeoForSlug('feedback');
+    return view('pages.feedback', compact('pageSeo')); 
+})->name('feedback');
+Route::post('/feedback', function (\Illuminate\Http\Request $request) {
+    $data = $request->validate([
+        'category' => 'required|string|max:100',
+        'rating' => 'required|string|max:50',
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'feedback' => 'required|string|max:5000',
+    ], [
+        'category.required' => 'Please select a feedback category.',
+        'rating.required' => 'Please select your overall experience rating.',
+        'name.required' => 'Please enter your name.',
+        'email.required' => 'Please enter your email address.',
+        'email.email' => 'Please provide a valid email address.',
+        'feedback.required' => 'Please enter your feedback or suggestions.',
+    ]);
+
+    // Forward submission seamlessly to Google Form
+    try {
+        \Illuminate\Support\Facades\Http::asForm()
+            ->timeout(6)
+            ->post('https://docs.google.com/forms/d/e/1FAIpQLScPF-ByCv0GURyBG1YFmYKqvdwZpiV_ciFv4b9DCv5AEPA7Bw/formResponse', [
+                'entry.1893968062' => $data['category'],
+                'entry.631378487'  => $data['rating'],
+                'entry.384078751'  => $data['name'],
+                'entry.449612881'  => $data['email'],
+                'entry.1604087922' => $data['feedback'],
+            ]);
+    } catch (\Throwable $e) {
+        \Illuminate\Support\Facades\Log::warning('Feedback Google Form sync warning: ' . $e->getMessage());
+    }
+
+    \Illuminate\Support\Facades\Log::info('Feedback Form Submission:', $data);
+
+    return redirect()->route('feedback')->with('success', 'Thank you for your valuable feedback! We review every submission to make Inaquired better.');
+})->name('feedback.submit');
 Route::get('/support', function () { 
     $pageSeo = \App\Models\PageSeo::getSeoForSlug('contact');
     return view('pages.contact', compact('pageSeo')); 
@@ -70,10 +185,18 @@ Route::get('/support', function () {
 Route::get('/privacy', function () { return view('pages.privacy'); })->name('privacy');
 Route::get('/terms', function () { return view('pages.terms'); })->name('terms');
 Route::get('/cookies', function () { return view('pages.cookies'); })->name('cookies');
-Route::get('/testimonials', function () {
-    $topTestimonials = \App\Models\Testimonial::where('is_approved', true)->latest()->take(5)->get();
-    $testimonials = \App\Models\Testimonial::where('is_approved', true)->latest()->paginate(9);
-    return view('pages.testimonials', compact('topTestimonials', 'testimonials'));
+Route::get('/testimonials', function (\Illuminate\Http\Request $request) {
+    $pageSeo = \Illuminate\Support\Facades\Cache::remember('testimonials_index_seo', 3600, function() {
+        return \App\Models\PageSeo::getSeoForSlug('testimonials');
+    });
+    $page = $request->get('page', 1);
+    $topTestimonials = \Illuminate\Support\Facades\Cache::remember('testimonials_top_5', 3600, function() {
+        return \App\Models\Testimonial::latest()->take(5)->get();
+    });
+    $testimonials = \Illuminate\Support\Facades\Cache::remember("testimonials_page_{$page}", 3600, function() {
+        return \App\Models\Testimonial::latest()->paginate(9);
+    });
+    return view('pages.testimonials', compact('topTestimonials', 'testimonials', 'pageSeo'));
 })->name('testimonials');
 Route::get('/sitemap', function () { return view('pages.sitemap'); })->name('sitemap');
 

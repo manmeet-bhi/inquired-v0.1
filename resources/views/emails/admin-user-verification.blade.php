@@ -12,7 +12,7 @@
 <body>
     <div class="container">
         <h2>Hello {{ $user->name }},</h2>
-        <p>You have been invited to join the Anywhereroles Desk CMS as an admin.</p>
+        <p>You have been invited to join the Inaquired Desk CMS as an admin.</p>
         <p>Please click the button below to verify your email address and activate your account. This link is valid for 7 days.</p>
         
         <a href="{{ $verificationUrl }}" class="button" style="color: #ffffff; background-color: #4F46E5;">Verify Email Address</a>

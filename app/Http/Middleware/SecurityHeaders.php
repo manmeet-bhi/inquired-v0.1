@@ -57,7 +57,7 @@ class SecurityHeaders
 
         // Prevent information leakage via the Server header
         $response->headers->remove('X-Powered-By');
-        $response->headers->set('Server', 'Anywhereroles');
+        $response->headers->set('Server', 'inaquired');
 
         return $response;
     }

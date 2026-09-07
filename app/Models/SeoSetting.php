@@ -26,7 +26,7 @@ class SeoSetting extends Model
             
             return [
                 // Basic SEO
-                'site_title' => $settings->get('site_title', 'Anywhereroles - Find Your Dream Job'),
+                'site_title' => $settings->get('site_title', 'Inaquired - Find Your Dream Job'),
                 'meta_description' => $settings->get('meta_description', 'Find your dream job with top companies. Explore remote, onsite, and internship opportunities.'),
                 'meta_keywords' => $settings->get('meta_keywords', 'jobs, careers, employment, job search'),
                 'meta_canonical' => $settings->get('meta_canonical', ''),
@@ -36,7 +36,7 @@ class SeoSetting extends Model
                 'og_description' => $settings->get('og_description', ''),
                 'og_type' => $settings->get('og_type', 'website'),
                 'og_url' => $settings->get('og_url', ''),
-                'og_site_name' => $settings->get('og_site_name', 'Anywhereroles'),
+                'og_site_name' => $settings->get('og_site_name', 'Inaquired'),
                 'og_locale' => $settings->get('og_locale', 'en_US'),
                 'twitter_card' => $settings->get('twitter_card', 'summary_large_image'),
                 'twitter_site' => $settings->get('twitter_site', ''),

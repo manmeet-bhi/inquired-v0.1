@@ -62,6 +62,23 @@ class Post extends Model
             }
         });
 
+        static::deleting(function ($post) {
+            if (!empty($post->featured_image)) {
+                try {
+                    \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->delete($post->featured_image);
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning("Post deletion error for featured_image [{$post->featured_image}]: " . $e->getMessage());
+                }
+            }
+
+            // Also delete associated Page SEO record if any
+            try {
+                \App\Models\PageSeo::where('page_type', 'post')->where('page_id', $post->id)->each(function ($pageSeo) {
+                    $pageSeo->delete();
+                });
+            } catch (\Throwable) {}
+        });
+
         static::saved(function ($post) {
             \Illuminate\Support\Facades\Cache::forget('dynamic_sitemap_xml');
         });

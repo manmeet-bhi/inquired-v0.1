@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../../app/**/*.php";
+
 @import './stylesheet.css';
 
 @theme {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @php
-        $siteTitle = $seoSettings['site_title'] ?? 'Anywhereroles | The Remote Career Hub';
+        $siteTitle = $seoSettings['site_title'] ?? 'Inaquired | The Remote Career Hub';
         $yieldedTitle = trim($__env->yieldContent('title'));
         $yieldedDescription = trim($__env->yieldContent('meta_description'));
         $yieldedKeywords = trim($__env->yieldContent('meta_keywords'));
@@ -127,46 +127,9 @@
                 }
             });
 
-            // Search Toggle Functionality
-            window.toggleSearch = function() {
-                const searchBar = document.getElementById('globalSearch');
-                const searchInput = document.getElementById('global-search-keyword');
-                const mobileMenu = document.getElementById('mobileMenu');
-
-                if (!searchBar) return;
-
-                const isHidden = searchBar.classList.contains('hidden');
-
-                // Close mobile menu if open
-                if (mobileMenu) {
-                    mobileMenu.classList.add('hidden');
-                }
-
-                // Toggle search
-                if (isHidden) {
-                    searchBar.classList.remove('hidden');
-                    // Focus on the keyword input
-                    setTimeout(() => searchInput && searchInput.focus(), 100);
-                } else {
-                    searchBar.classList.add('hidden');
-                }
-            }
-
-            // Close search when clicking outside
-            document.addEventListener('click', function (event) {
-                const searchBar = document.getElementById('globalSearch');
-                const searchTrigger = event.target.closest('.search-trigger');
-                const searchContent = event.target.closest('#globalSearch');
-
-                if (!searchTrigger && !searchContent && searchBar && !searchBar.classList.contains('hidden')) {
-                    searchBar.classList.add('hidden');
-                }
-            });
-
             // Mobile Menu Toggle
             window.toggleMenu = function() {
                 const menu = document.getElementById('mobileMenu');
-                const searchBar = document.getElementById('globalSearch');
                 const burgerIcon = document.getElementById('burger-icon');
 
                 if (menu) {
@@ -175,10 +138,6 @@
 
                 if (burgerIcon) {
                     burgerIcon.classList.toggle('open');
-                }
-
-                if (searchBar) {
-                    searchBar.classList.add('hidden');
                 }
             };
 

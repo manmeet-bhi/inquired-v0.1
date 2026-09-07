@@ -138,9 +138,14 @@
                                 <label for="og_image" class="block text-xs font-semibold text-slate-600 mb-2 tracking-wide uppercase">OG Image</label>
                                 <input type="file" id="og_image" name="og_image" accept=".jpg,.jpeg,.png" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors">
                                 @if($pageSeo->og_image)
-                                    <div class="mt-2 text-xs flex flex-col gap-1">
-                                        <img src="{{ media_url($pageSeo->og_image) }}" alt="Current OG Image" class="w-24 h-12 object-cover rounded border border-slate-300">
-                                        <span class="text-slate-500">Current image</span>
+                                    <div class="mt-2 p-3 bg-white border border-slate-200 rounded-xl text-xs flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <img src="{{ media_url($pageSeo->og_image) }}" alt="Current OG Image" class="w-20 h-10 object-cover rounded border border-slate-300">
+                                            <span class="text-slate-500">Current image</span>
+                                        </div>
+                                        <label class="text-red-500 font-semibold cursor-pointer hover:text-red-600 flex items-center">
+                                            <input type="checkbox" name="remove_og_image" value="1" class="mr-1.5 rounded text-red-500"> Remove File
+                                        </label>
                                     </div>
                                 @endif
                             </div>
@@ -161,9 +166,14 @@
                                 <label for="twitter_image" class="block text-xs font-semibold text-slate-600 mb-2 tracking-wide uppercase">Twitter Image</label>
                                 <input type="file" id="twitter_image" name="twitter_image" accept=".jpg,.jpeg,.png" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors">
                                 @if($pageSeo->twitter_image)
-                                    <div class="mt-2 text-xs flex flex-col gap-1">
-                                        <img src="{{ media_url($pageSeo->twitter_image) }}" alt="Current Twitter Image" class="w-24 h-12 object-cover rounded border border-slate-300">
-                                        <span class="text-slate-500">Current image</span>
+                                    <div class="mt-2 p-3 bg-white border border-slate-200 rounded-xl text-xs flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <img src="{{ media_url($pageSeo->twitter_image) }}" alt="Current Twitter Image" class="w-20 h-10 object-cover rounded border border-slate-300">
+                                            <span class="text-slate-500">Current image</span>
+                                        </div>
+                                        <label class="text-red-500 font-semibold cursor-pointer hover:text-red-600 flex items-center">
+                                            <input type="checkbox" name="remove_twitter_image" value="1" class="mr-1.5 rounded text-red-500"> Remove File
+                                        </label>
                                     </div>
                                 @endif
                             </div>

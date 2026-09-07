@@ -3,7 +3,7 @@
 @section('title', 'Edit Internship - CMS')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/searchable-dropdown.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/searchable-dropdown.css') }}">
 @endpush
 
 @section('content')
@@ -209,7 +209,7 @@
 lucide.createIcons();
 </script>
 
-<script src="{{ asset('js/searchable-dropdown.js') }}"></script>
+<script src="{{ asset('assets/js/searchable-dropdown.js') }}"></script>
 @include('cms.categories.partials.category-modal')
 @include('cms.companies.partials.company-modal')
 @endsection

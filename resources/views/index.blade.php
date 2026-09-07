@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Anywhereroles | Discover your ambition')
+@section('title', 'Inaquired | Discover your ambition')
 
 @section('content')
 <!-- Hero Section -->

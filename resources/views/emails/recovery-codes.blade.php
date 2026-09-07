@@ -31,7 +31,7 @@
         <p style="margin-top: 20px;">If you did not request these codes, please secure your account immediately.</p>
         
         <div class="footer">
-            &copy; {{ date('Y') }} Anywhereroles Desk. All rights reserved.
+            &copy; {{ date('Y') }} Inaquired Desk. All rights reserved.
         </div>
     </div>
 </body>

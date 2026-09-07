@@ -54,7 +54,7 @@ class DebugController extends Controller
         try {
             Mail::raw('🎉 Resend is working perfectly! This test email confirms your Resend configuration is correct.', function ($message) use ($email) {
                 $message->to($email)
-                        ->subject('✅ Resend Test - AnywhereRoles');
+                        ->subject('✅ Resend Test - Inaquired');
             });
 
             return response()->json([

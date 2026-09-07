@@ -576,3 +576,39 @@ button:active {
     opacity: 1;
     margin-left: 0.75rem;
 }
+
+/* =========================================================
+   CMS Global Preloader: Style 3 (Fluid Arc & Radar Glow)
+   ========================================================= */
+.cms-radar-ripple {
+    animation: cmsRadarRipple 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.cms-fluid-arc {
+    stroke-dasharray: 175;
+    stroke-dashoffset: 60;
+    animation: cmsFluidDash 1.6s ease-in-out infinite;
+}
+
+@keyframes cmsFluidDash {
+    0% {
+        stroke-dashoffset: 170;
+    }
+    50% {
+        stroke-dashoffset: 40;
+    }
+    100% {
+        stroke-dashoffset: 170;
+    }
+}
+
+@keyframes cmsRadarRipple {
+    0% {
+        transform: scale(0.85);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}

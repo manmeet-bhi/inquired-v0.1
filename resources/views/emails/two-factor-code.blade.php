@@ -21,7 +21,7 @@
         <p>This code will expire in 10 minutes.</p>
         <p>If you did not request this code, please secure your account immediately.</p>
         <div class="footer">
-            &copy; {{ date('Y') }} Anywhereroles. All rights reserved.
+            &copy; {{ date('Y') }} Inaquired. All rights reserved.
         </div>
     </div>
 </body>

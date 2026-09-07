@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cookie Policy - Anywhereroles')
+@section('title', 'Cookie Policy - Inaquired')
 
 @section('content')
 <div class="bg-white">
@@ -21,7 +21,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">How We Use Cookies</h2>
                 <p class="text-gray-600 leading-relaxed mb-4">
-                    Anywhereroles uses cookies to enhance your browsing experience and provide personalized services. 
+                    Inaquired uses cookies to enhance your browsing experience and provide personalized services. 
                     We use cookies for the following purposes:
                 </p>
                 <ul class="list-disc list-inside text-gray-600 space-y-2">
@@ -75,7 +75,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Third-Party Cookies</h2>
                 <p class="text-gray-600 leading-relaxed mb-4">
-                    Anywhereroles may use third-party services that place cookies on your device when you visit our website. These cookies help us understand how users interact with our platform and improve our services.
+                    Inaquired may use third-party services that place cookies on your device when you visit our website. These cookies help us understand how users interact with our platform and improve our services.
                 </p>
                 <p class="text-gray-600 mb-3">These services may include:</p>
                 <ul class="list-disc list-inside text-gray-600 space-y-2 mb-3">
@@ -90,7 +90,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">External Websites</h2>
                 <p class="text-gray-600 leading-relaxed">
-                    Some links on Anywhereroles redirect users to external websites such as company career pages or job application portals. These external websites may use their own cookies and tracking technologies, which are not controlled by Anywhereroles.
+                    Some links on Inaquired redirect users to external websites such as company career pages or job application portals. These external websites may use their own cookies and tracking technologies, which are not controlled by Inaquired.
                 </p>
                 <p class="text-gray-600">We recommend reviewing the cookie and privacy policies of those websites.</p>
             </section>
@@ -187,7 +187,7 @@
                     If you have any questions about our use of cookies or this Cookie Policy, please contact us at:
                 </p>
                 <div class="mt-4 text-gray-600">
-                    <p>Email: anywhereroles@gmail.com</p>
+                    <p>Email: inaquired@gmail.com</p>
                 </div>
             </section>
         </div>

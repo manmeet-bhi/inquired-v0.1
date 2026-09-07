@@ -204,7 +204,10 @@ class AdminController extends Controller
             'job_ids.*' => 'exists:jobs,id'
         ]);
 
-        Job::whereIn('id', $request->job_ids)->delete();
+        $jobs = Job::whereIn('id', $request->job_ids)->get();
+        foreach ($jobs as $job) {
+            $job->delete();
+        }
         
         $count = count($request->job_ids);
         return redirect()->route('cms.jobs')->with('success', "{$count} jobs deleted successfully");
@@ -365,7 +368,10 @@ class AdminController extends Controller
             'internship_ids.*' => 'exists:jobs,id'
         ]);
 
-        Job::whereIn('id', $request->internship_ids)->where('type', 'internship')->delete();
+        $internships = Job::whereIn('id', $request->internship_ids)->where('type', 'internship')->get();
+        foreach ($internships as $job) {
+            $job->delete();
+        }
         
         $count = count($request->internship_ids);
         return redirect()->route('cms.internships')->with('success', "{$count} internships deleted successfully");
@@ -401,7 +407,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
             'website' => 'nullable|url',
             'linkedin_url' => 'nullable|url',
             'industry' => 'nullable|string|max:255',
@@ -441,7 +447,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
             'website' => 'nullable|url',
             'linkedin_url' => 'nullable|url',
             'industry' => 'nullable|string|max:255',
@@ -452,7 +458,12 @@ class AdminController extends Controller
         $data['description'] = sanitize_html($request->description);
         $data['slug'] = Str::slug($request->name);
         
-        if ($request->hasFile('logo')) {
+        if ($request->has('remove_logo') && $request->remove_logo == '1') {
+            if ($company->logo) {
+                Storage::disk(config('filesystems.default'))->delete($company->logo);
+            }
+            $data['logo'] = null;
+        } elseif ($request->hasFile('logo')) {
             if ($company->logo) {
                 Storage::disk(config('filesystems.default'))->delete($company->logo);
             }
@@ -534,9 +545,8 @@ class AdminController extends Controller
                 return back()->with('error', 'The SVG file contains potentially malicious scripts.');
             }
 
-            $filename = time() . '_' . Str::slug($request->name) . '.svg';
-            $file->move(public_path('assets/icons/categories'), $filename);
-            $data['icon_file'] = $filename;
+            $storedPath = $file->store('icons', config('filesystems.default'));
+            $data['icon_file'] = $storedPath;
         }
 
         $category = JobCategory::create($data);
@@ -585,14 +595,15 @@ class AdminController extends Controller
             }
 
             // Delete old file if exists
-            if ($category->icon_file && file_exists(public_path('assets/icons/categories/' . $category->icon_file))) {
-                unlink(public_path('assets/icons/categories/' . $category->icon_file));
+            if ($category->icon_file) {
+                Storage::disk(config('filesystems.default'))->delete($category->icon_file);
+                if (file_exists(public_path('assets/icons/categories/' . $category->icon_file))) {
+                    @unlink(public_path('assets/icons/categories/' . $category->icon_file));
+                }
             }
             
-            $file = $request->file('icon_file');
-            $filename = time() . '_' . Str::slug($request->name) . '.svg';
-            $file->move(public_path('assets/icons/categories'), $filename);
-            $data['icon_file'] = $filename;
+            $storedPath = $file->store('icons', config('filesystems.default'));
+            $data['icon_file'] = $storedPath;
         }
 
         $category->update($data);
@@ -604,6 +615,13 @@ class AdminController extends Controller
         $this->checkPermission('categories.delete');
         if ($category->jobs()->count() > 0) {
             return redirect()->route('cms.categories')->with('error', 'Cannot delete category with associated jobs');
+        }
+
+        if ($category->icon_file) {
+            Storage::disk(config('filesystems.default'))->delete($category->icon_file);
+            if (file_exists(public_path('assets/icons/categories/' . $category->icon_file))) {
+                @unlink(public_path('assets/icons/categories/' . $category->icon_file));
+            }
         }
         
         $category->delete();
@@ -627,6 +645,14 @@ class AdminController extends Controller
                 $skippedCount++;
                 continue;
             }
+
+            if ($category->icon_file) {
+                Storage::disk(config('filesystems.default'))->delete($category->icon_file);
+                if (file_exists(public_path('assets/icons/categories/' . $category->icon_file))) {
+                    @unlink(public_path('assets/icons/categories/' . $category->icon_file));
+                }
+            }
+
             $category->delete();
             $deletedCount++;
         }
@@ -758,7 +784,7 @@ class AdminController extends Controller
         $data['is_published'] = $request->status === 'published';
         
         if ($request->hasFile('featured_image')) {
-            $data['featured_image'] = $request->file('featured_image')->store('post-images', config('filesystems.default'));
+            $data['featured_image'] = $request->file('featured_image')->store('blog', config('filesystems.default'));
         }
 
         if ($request->tags) {
@@ -811,11 +837,16 @@ class AdminController extends Controller
         
         $data['is_published'] = $request->status === 'published';
         
-        if ($request->hasFile('featured_image')) {
+        if ($request->has('remove_featured_image') && $request->remove_featured_image == '1') {
             if ($post->featured_image) {
                 Storage::disk(config('filesystems.default'))->delete($post->featured_image);
             }
-            $data['featured_image'] = $request->file('featured_image')->store('post-images', config('filesystems.default'));
+            $data['featured_image'] = null;
+        } elseif ($request->hasFile('featured_image')) {
+            if ($post->featured_image) {
+                Storage::disk(config('filesystems.default'))->delete($post->featured_image);
+            }
+            $data['featured_image'] = $request->file('featured_image')->store('blog', config('filesystems.default'));
         }
 
         if ($request->tags) {
@@ -974,7 +1005,7 @@ class AdminController extends Controller
     private function generateQrCode(string $email, string $secret): string
     {
         $google2fa = new \PragmaRX\Google2FA\Google2FA();
-        $qrCodeUrl = $google2fa->getQRCodeUrl('Anywhereroles CMS', $email, $secret);
+        $qrCodeUrl = $google2fa->getQRCodeUrl('Inaquired CMS', $email, $secret);
 
         $renderer = new \BaconQrCode\Renderer\Image\SvgImageBackEnd();
         $writer = new \BaconQrCode\Writer(new \BaconQrCode\Renderer\ImageRenderer(
@@ -1036,7 +1067,7 @@ class AdminController extends Controller
             'two_factor_recovery_codes' => $hashedCodes
         ]);
 
-        $content = "Anywhereroles CMS - Two-Factor Recovery Codes\n";
+        $content = "Inaquired CMS - Two-Factor Recovery Codes\n";
         $content .= "Generated on: " . now()->toDateTimeString() . "\n\n";
         $content .= "Keep these codes in a safe place. Each code can only be used once.\n\n";
         foreach ($codes as $code) {
@@ -1046,7 +1077,7 @@ class AdminController extends Controller
         return response($content)
             ->withHeaders([
                 'Content-Type' => 'text/plain',
-                'Content-Disposition' => 'attachment; filename="anywhereroles-2fa-recovery-codes.txt"',
+                'Content-Disposition' => 'attachment; filename="inaquired-2fa-recovery-codes.txt"',
             ]);
     }
 
@@ -1251,19 +1282,20 @@ class AdminController extends Controller
         return redirect()->route('cms.profile')->with('success', 'Two-factor authentication settings updated.');
     }
 
-    public function testimonials()
+    public function testimonials(Request $request)
     {
         $this->checkPermission('testimonials.manage');
-        $testimonials = Testimonial::where('is_approved', false)->latest()->paginate(15);
+        $query = Testimonial::latest();
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('role_company', 'LIKE', "%{$search}%")
+                  ->orWhere('message', 'LIKE', "%{$search}%");
+            });
+        }
+        $testimonials = $query->paginate(20)->withQueryString();
         return view('cms.testimonials.index', compact('testimonials'));
-    }
-
-    public function approveTestimonial(Testimonial $testimonial)
-    {
-        $this->checkPermission('testimonials.manage');
-        $testimonial->update(['is_approved' => !$testimonial->is_approved]);
-        $status = $testimonial->is_approved ? 'approved' : 'unapproved';
-        return back()->with('success', "Testimonial {$status} successfully");
     }
 
     public function destroyTestimonial(Testimonial $testimonial)
@@ -1271,19 +1303,6 @@ class AdminController extends Controller
         $this->checkPermission('testimonials.manage');
         $testimonial->delete();
         return back()->with('success', 'Testimonial deleted successfully');
-    }
-
-    public function bulkApproveTestimonials(Request $request)
-    {
-        $this->checkPermission('testimonials.manage');
-        $request->validate([
-            'testimonial_ids' => 'required|array',
-            'testimonial_ids.*' => 'exists:testimonials,id'
-        ]);
-
-        Testimonial::whereIn('id', $request->testimonial_ids)->update(['is_approved' => true]);
-
-        return back()->with('success', 'Selected testimonials approved successfully');
     }
 
     public function bulkDeleteTestimonials(Request $request)

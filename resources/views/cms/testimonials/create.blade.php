@@ -1,13 +1,13 @@
 @extends('layouts.cms')
 
-@section('title', 'Add Testimonial - Anywhereroles')
+@section('title', 'Add Testimonial - Inaquired')
 
 @section('content')
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="mb-8 flex items-center justify-between">
         <div>
             <h1 class="text-3xl font-bold text-slate-900">Add Testimonial</h1>
-            <p class="mt-2 text-sm text-slate-500">Create a new testimonial from a user manually.</p>
+            <p class="mt-2 text-sm text-slate-500">Create a new testimonial manually.</p>
         </div>
         <a href="{{ route('cms.testimonials.index') }}" class="text-slate-500 hover:text-slate-700 font-medium flex items-center transition-colors">
             <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i>
@@ -20,23 +20,16 @@
             @csrf
 
             <div class="space-y-6">
+                <!-- Full Name -->
                 <div class="cms-form-group">
-                    <label for="name" class="cms-label">Full Name</label>
+                    <label for="name" class="cms-label">Full Name <span class="text-red-500">*</span></label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}" required
                         class="cms-input" placeholder="e.g. John Doe">
                     @error('name') <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p> @enderror
                 </div>
 
-                <!-- Email -->
-                <div>
-                    <label for="email" class="cms-label">Email Address (Optional)</label>
-                    <input type="email" name="email" id="email" value="{{ old('email') }}"
-                        class="cms-input" placeholder="e.g. john@example.com">
-                    @error('email') <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p> @enderror
-                </div>
-
                 <!-- Role / Company -->
-                <div>
+                <div class="cms-form-group">
                     <label for="role_company" class="cms-label">Role & Company</label>
                     <input type="text" name="role_company" id="role_company" value="{{ old('role_company') }}" placeholder="e.g. Software Engineer at Google"
                         class="cms-input">
@@ -44,20 +37,11 @@
                 </div>
 
                 <!-- Message -->
-                <div>
-                    <label for="message" class="cms-label">Testimonial Message</label>
-                    <textarea name="message" id="message" rows="4" required
-                        class="cms-textarea placeholder="Your testimonial message...">{{ old('message') }}</textarea>
+                <div class="cms-form-group">
+                    <label for="message" class="cms-label">Testimonial Message <span class="text-red-500">*</span></label>
+                    <textarea name="message" id="message" rows="5" required
+                        class="cms-textarea" placeholder="Write the testimonial message here...">{{ old('message') }}</textarea>
                     @error('message') <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p> @enderror
-                </div>
-
-                <!-- Is Approved -->
-                <div class="flex items-center mt-6">
-                    <input type="checkbox" name="is_approved" id="is_approved" value="1" {{ old('is_approved', true) ? 'checked' : '' }}
-                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                    <label for="is_approved" class="ml-2 block text-sm text-slate-900">
-                        Approve and show publicly
-                    </label>
                 </div>
             </div>
 

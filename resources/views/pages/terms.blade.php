@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Terms of Service - Anywhereroles')
+@section('title', 'Terms of Service - Inaquired')
 
 @section('content')
 <div class="bg-white">
@@ -12,7 +12,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Agreement to Terms</h2>
                 <p class="text-gray-600 leading-relaxed">
-                    By accessing and using Anywhereroles, you accept and agree to be bound by the terms and provision of this agreement. 
+                    By accessing and using Inaquired, you accept and agree to be bound by the terms and provision of this agreement. 
                     If you do not agree to abide by the above, please do not use this service.
                 </p>
             </section>
@@ -21,7 +21,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Use License</h2>
                 <p class="text-gray-600 leading-relaxed mb-4">
-                    Permission is granted to temporarily use Anywhereroles for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+                    Permission is granted to temporarily use Inaquired for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
                 </p>
                 <ul class="list-disc list-inside text-gray-600 space-y-2">
                     <li>Modify or copy the materials</li>
@@ -38,7 +38,7 @@
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Anonymous Access</h3>
                         <p class="text-gray-600 leading-relaxed">
-                            You can access most features of Anywhereroles without creating an account. We do not require or collect personal information like your name, email, or phone number to browse the site.
+                            You can access most features of Inaquired without creating an account. We do not require or collect personal information like your name, email, or phone number to browse the site.
                         </p>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">User Content</h2>
                 <p class="text-gray-600 leading-relaxed mb-4">
-                    By posting content on Anywhereroles, you grant us a non-exclusive, royalty-free license to use, 
+                    By posting content on Inaquired, you grant us a non-exclusive, royalty-free license to use, 
                     modify, and display such content. You represent that:
                 </p>
                 <ul class="list-disc list-inside text-gray-600 space-y-2">
@@ -87,7 +87,7 @@
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Third-Party Job Listings</h3>
                         <p class="text-gray-600 leading-relaxed mb-2">
-                            Anywhereroles is a job aggregation platform that collects and shares job postings from publicly available sources such as company career pages, recruitment portals, and other job platforms.
+                            Inaquired is a job aggregation platform that collects and shares job postings from publicly available sources such as company career pages, recruitment portals, and other job platforms.
                         </p>
                         <p class="text-gray-600 leading-relaxed mb-2 font-semibold">We do not guarantee:</p>
                         <ul class="list-disc list-inside text-gray-600 space-y-2 mb-2">
@@ -96,7 +96,7 @@
                             <li>The authenticity of external employers</li>
                         </ul>
                         <p class="text-gray-600 leading-relaxed mb-2">Users are advised to verify job details directly on the official company website before applying.</p>
-                        <p class="text-gray-600 leading-relaxed">Anywhereroles is not responsible for recruitment processes, interview scheduling, job offers, or employment decisions made by companies.</p>
+                        <p class="text-gray-600 leading-relaxed">Inaquired is not responsible for recruitment processes, interview scheduling, job offers, or employment decisions made by companies.</p>
                     </div>
                 </div>
             </section>
@@ -105,7 +105,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">External Links</h2>
                 <p class="text-gray-600 leading-relaxed">
-                    Our website may contain links to third-party websites or services that are not owned or controlled by Anywhereroles. We are not responsible for the content, policies, or practices of any third-party websites. Users access external websites at their own risk.
+                    Our website may contain links to third-party websites or services that are not owned or controlled by Inaquired. We are not responsible for the content, policies, or practices of any third-party websites. Users access external websites at their own risk.
                 </p>
             </section>
 
@@ -121,7 +121,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Fraud Warning</h2>
                 <p class="text-gray-600 leading-relaxed mb-2">
-                    Anywhereroles does not charge job seekers for applying to jobs. If any person or company asks for payment in the name of recruitment, please verify carefully and report suspicious activity.
+                    Inaquired does not charge job seekers for applying to jobs. If any person or company asks for payment in the name of recruitment, please verify carefully and report suspicious activity.
                 </p>
             </section>
 
@@ -129,7 +129,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Disclaimer</h2>
                 <p class="text-gray-600 leading-relaxed">
-                    The materials on Anywhereroles are provided on an 'as is' basis. Anywhereroles makes no warranties, 
+                    The materials on Inaquired are provided on an 'as is' basis. Inaquired makes no warranties, 
                     expressed or implied, and hereby disclaims and negates all other warranties including without limitation, 
                     implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement 
                     of intellectual property or other violation of rights.
@@ -140,9 +140,9 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Limitations</h2>
                 <p class="text-gray-600 leading-relaxed">
-                    In no event shall Anywhereroles or its suppliers be liable for any damages (including, without limitation, 
+                    In no event shall Inaquired or its suppliers be liable for any damages (including, without limitation, 
                     damages for loss of data or profit, or due to business interruption) arising out of the use or inability 
-                    to use the materials on Anywhereroles, even if Anywhereroles or its authorized representative has been 
+                    to use the materials on Inaquired, even if Inaquired or its authorized representative has been 
                     notified orally or in writing of the possibility of such damage.
                 </p>
             </section>
@@ -173,7 +173,7 @@
                     If you have any questions about these Terms of Service, please contact us at:
                 </p>
                 <div class="mt-4 text-gray-600">
-                    <p>Email: anywhereroles@gmail.com</p>
+                    <p>Email: inaquired@gmail.com</p>
                 </div>
             </section>
         </div>

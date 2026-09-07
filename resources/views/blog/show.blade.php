@@ -1,9 +1,9 @@
 @extends('layouts.blog')
 
-@section('title', $pageSeo ? $pageSeo->meta_title : ($post->title . ' - Anywhereroles Blog'))
+@section('title', $pageSeo ? $pageSeo->meta_title : ($post->title . ' - Inaquired Blog'))
 @section('meta_description', $pageSeo ? $pageSeo->meta_description : ($post->excerpt ?: 'Read ' . $post->title))
 @section('meta_keywords', $pageSeo ? $pageSeo->meta_keywords : '')
-@section('og_title', $pageSeo && $pageSeo->og_title ? $pageSeo->og_title : ($post->title . ' - Anywhereroles Blog'))
+@section('og_title', $pageSeo && $pageSeo->og_title ? $pageSeo->og_title : ($post->title . ' - Inaquired Blog'))
 @section('og_description', $pageSeo && $pageSeo->og_description ? $pageSeo->og_description : ($post->excerpt ?: 'Read ' . $post->title))
 @section('og_image', $pageSeo && $pageSeo->og_image ? media_url($pageSeo->og_image) : ($post->featured_image_url ?: ''))
 
@@ -67,16 +67,21 @@ use Illuminate\Support\Facades\Storage;
                         <!-- Tags -->
                         @if($post->tags)
                             <div class="mt-12 pt-8 border-t border-slate-200">
-                                <h3 class="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider">Related Topics</h3>
+                                <h3 class="text-xs font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                                    Related Topics
+                                </h3>
                                 <div class="flex flex-wrap gap-2">
                                     @php
                                         $tags = is_array($post->tags) ? $post->tags : explode(',', $post->tags ?? '');
                                     @endphp
                                     @foreach($tags as $tag)
                                         @if(trim($tag))
-                                            <span class="bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700 text-sm font-semibold px-4 py-2 rounded-full border border-indigo-100 hover:border-indigo-200 transition-colors">
-                                                {{ trim($tag) }}
-                                            </span>
+                                            <a href="{{ route('blog.tag', ['tag' => trim($tag)]) }}" 
+                                               class="group inline-flex items-center gap-1.5 bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-600 hover:to-purple-600 text-indigo-700 hover:text-white text-sm font-semibold px-4 py-2 rounded-full border border-indigo-100 hover:border-transparent hover:shadow-md transition-all">
+                                                <span class="text-indigo-400 group-hover:text-indigo-200 font-bold">#</span>
+                                                <span>{{ trim($tag) }}</span>
+                                            </a>
                                         @endif
                                     @endforeach
                                 </div>
@@ -107,8 +112,8 @@ use Illuminate\Support\Facades\Storage;
                     <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl shadow-sm border border-indigo-100 p-6">
                         <div class="flex items-center gap-3 mb-3">
                             <div>
-                                <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Auther</p>
-                                <p class="text-base font-bold text-slate-900">anywhereroles</p>
+                                <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Author</p>
+                                <p class="text-base font-bold text-slate-900">Inaquired</p>
                             </div>
                         </div>
                     </div>

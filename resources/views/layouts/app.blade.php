@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#2563eb">
 
     @php
-        $siteTitle = $seoSettings['site_title'] ?? 'Anywhereroles - Find Your Dream Job';
+        $siteTitle = $seoSettings['site_title'] ?? 'Inaquired - Find Your Dream Job';
         $yieldedTitle = trim($__env->yieldContent('title'));
         $yieldedDescription = trim($__env->yieldContent('meta_description'));
         $yieldedKeywords = trim($__env->yieldContent('meta_keywords'));

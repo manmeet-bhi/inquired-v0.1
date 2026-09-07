@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'About - Anywhereroles')
+@section('title', 'About - Inaquired')
 
 @section('content')
 <div class="bg-white">
@@ -21,7 +21,7 @@
                         <h2 class="text-2xl font-bold text-gray-900">Our Mission</h2>
                     </div>
                     <p class="text-gray-600 leading-relaxed text-lg mb-4">
-                        At Anywhereroles, our goal is to make job discovery simple, transparent, and accessible for everyone. We collect and share job opportunities from various trusted sources so that job seekers can easily explore openings in one place.
+                        At Inaquired, our goal is to make job discovery simple, transparent, and accessible for everyone. We collect and share job opportunities from various trusted sources so that job seekers can easily explore openings in one place.
                     </p>
                     <p class="text-gray-600 leading-relaxed text-lg">
                         Our mission is to help bridge the gap between job seekers and opportunities by providing a clean, easy-to-use platform where users can find the latest job listings quickly and efficiently.
@@ -75,7 +75,7 @@
                     <div class="max-w-4xl mx-auto">
                         <h2 class="text-2xl font-bold text-gray-900 mb-4">How Our Platform Works</h2>
                         <p class="text-gray-600 mb-4">
-                            Anywhereroles is a third-party job listing platform. We gather job information from publicly available sources, company career pages, and other job portals, and share them on our website to help users stay updated with new opportunities.
+                            Inaquired is a third-party job listing platform. We gather job information from publicly available sources, company career pages, and other job portals, and share them on our website to help users stay updated with new opportunities.
                         </p>
                         <div class="bg-white border border-gray-100 rounded-xl p-6">
                             <ul class="list-disc pl-5 text-gray-600 space-y-2">
@@ -198,7 +198,7 @@
                             </span>
                         </summary>
                         <div class="px-6 py-4 text-gray-600 leading-relaxed border-t border-gray-100">
-                            Anywhereroles is a dedicated platform committed to bridging the gap between talented professionals and global opportunities. We are a team of passionate individuals working to make job searching simple, transparent, and accessible for everyone.
+                            Inaquired is a dedicated platform committed to bridging the gap between talented professionals and global opportunities. We are a team of passionate individuals working to make job searching simple, transparent, and accessible for everyone.
                         </div>
                     </details>
                 </div>
@@ -210,7 +210,7 @@
             <div class="bg-blue-50 rounded-3xl p-10 md:p-16">
                 <h2 class="text-3xl font-bold text-gray-900 mb-6">Ready to Get Started?</h2>
                 <p class="text-lg text-gray-600 leading-relaxed mb-10 max-w-2xl mx-auto">
-                    Join thousands of professionals who have found their dream jobs through Anywhereroles. Your next opportunity awaits.
+                    Join thousands of professionals who have found their dream jobs through Inaquired. Your next opportunity awaits.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="{{ route('jobs.index') }}" class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg shadow-blue-600/20">
@@ -219,7 +219,7 @@
                     <a href="{{ route('companies') }}" class="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-50 transition-all transform hover:scale-105 border border-blue-200 shadow-sm">
                         View Companies
                     </a>
-                    <a href="https://t.me/anywhereroles" target="_blank" class="bg-[#0088cc] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#0077b3] transition-all transform hover:scale-105 shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2">
+                    <a href="https://t.me/inaquiredtelegram" target="_blank" class="bg-[#0088cc] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#0077b3] transition-all transform hover:scale-105 shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2">
                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                         Join Telegram
                     </a>

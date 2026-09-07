@@ -8,7 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>@yield('title', 'CMS - Anywhereroles')</title>
+    <title>@yield('title', 'CMS - Inaquired')</title>
     @include('partials.favicons')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="{{ asset('assets/css/tailwind-full.css') }}" rel="stylesheet">
@@ -75,15 +75,40 @@
 </head>
 <body class="bg-slate-50 text-slate-900 overflow-hidden h-screen">
 
-    <!-- Global Preloader (Bouncing Dots) -->
+    <!-- Global Preloader (Style 3: Fluid Arc & Radar Glow) -->
     <div id="cms-preloader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-50 transition-opacity duration-300">
         <div class="flex flex-col items-center">
-            <div class="flex items-center justify-center space-x-2 mb-4">
-                <div class="w-4 h-4 rounded-full bg-indigo-600 animate-bounce" style="animation-delay: -0.3s"></div>
-                <div class="w-4 h-4 rounded-full bg-indigo-500 animate-bounce" style="animation-delay: -0.15s"></div>
-                <div class="w-4 h-4 rounded-full bg-indigo-400 animate-bounce"></div>
+            <!-- Animated Circular Ring with Centered Logo -->
+            <div class="relative w-24 h-24 flex items-center justify-center mb-3">
+                <!-- Radar Glow Echo Wave -->
+                <div class="cms-radar-ripple absolute inset-1.5 rounded-full bg-indigo-500/15"></div>
+                
+                <!-- SVG Fluid Spinner Arc Ring -->
+                <svg class="w-full h-full animate-spin" viewBox="0 0 64 64" fill="none" style="animation-duration: 1.5s;">
+                    <circle cx="32" cy="32" r="28" stroke="#e2e8f0" stroke-width="3" />
+                    <circle cx="32" cy="32" r="28" stroke="url(#cmsPreloaderGradient)" stroke-width="3.5" stroke-linecap="round" class="cms-fluid-arc" />
+                    <defs>
+                        <linearGradient id="cmsPreloaderGradient" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#4f46e5" />
+                            <stop offset="1" stop-color="#ec4899" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                <!-- Small Inaquired Logo -->
+                <img src="{{ asset('assets/logos/logo-q.png') }}" alt="Inaquired" class="w-10 h-10 object-contain absolute z-10 drop-shadow-sm select-none">
             </div>
-            <p class="text-sm font-medium text-slate-500 tracking-widest uppercase">Loading</p>
+
+            <!-- Loading Text Indicator -->
+            <p class="text-xs font-semibold text-slate-700 tracking-wider uppercase flex items-center justify-center gap-1">
+                Loading
+                <span class="inline-flex">
+                    <span class="animate-bounce" style="animation-delay: -0.3s">.</span>
+                    <span class="animate-bounce" style="animation-delay: -0.15s">.</span>
+                    <span class="animate-bounce">.</span>
+                </span>
+            </p>
+            <p class="text-[10px] text-slate-400 font-medium tracking-widest uppercase mt-0.5">INAQUIRED CMS</p>
         </div>
     </div>
 
@@ -98,8 +123,8 @@
             </button>
 
             <div class="h-20 flex items-center px-6 mb-4 overflow-hidden transition-all duration-300" id="logoArea">
-                <img src="{{ asset('images/logos/logo.png') }}" alt="Anywhereroles" class="logo-full h-10 object-contain transition-opacity duration-300">
-                <img src="{{ asset('images/logos/favicon-32x32.png') }}" alt="AR" class="logo-icon w-8 h-8 hidden transition-opacity duration-300">
+                <img src="{{ asset('assets/logos/logo.png') }}" alt="Inaquired" class="logo-full h-10 object-contain transition-opacity duration-300">
+                <img src="{{ asset('assets/logos/logo-q.png') }}" alt="Inaquired" class="logo-icon w-8 h-8 object-contain hidden transition-opacity duration-300">
             </div>
 
             <!-- Navigation -->
@@ -306,7 +331,7 @@
                 <!-- Footer -->
                 <footer class="bg-white border-t border-gray-200 px-8 py-4 mt-auto">
                     <div class="flex items-center justify-between text-sm text-slate-500">
-                        <p>&copy; {{ date('Y') }} Anywhereroles CMS. All rights reserved.</p>
+                        <p>&copy; {{ date('Y') }} Inaquired CMS. All rights reserved.</p>
                         <p>Version 1.0</p>
                     </div>
                 </footer>

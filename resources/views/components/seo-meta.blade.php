@@ -24,7 +24,7 @@
     }
 @endphp
 
-<title>{{ $title ?: 'Anywhereroles - Find Your Dream Job' }}</title>
+<title>{{ $title ?: 'Inaquired - Find Your Dream Job' }}</title>
 <meta name="description" content="{{ $description ?: 'Find your dream job with top companies. Explore remote, onsite, and internship opportunities.' }}">
 @if($keywords)
 <meta name="keywords" content="{{ $keywords }}">
@@ -44,7 +44,7 @@
 @if($ogImage)
 <meta property="og:image" content="{{ $ogImage }}">
 @endif
-<meta property="og:site_name" content="Anywhereroles">
+<meta property="og:site_name" content="Inaquired">
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">
@@ -56,6 +56,4 @@
 @endif
 
 <!-- Favicon -->
-@if($favicon)
-<link rel="icon" type="image/x-icon" href="{{ $favicon }}">
-@endif
+@include('partials.favicons')

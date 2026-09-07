@@ -18,14 +18,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ asset('images/logos/logo.png') }}" alt="Anywhereroles Logo">
-            <h1>Reset Your Anywhereroles Desk Password</h1>
+            <img src="{{ asset('assets/logos/logo.png') }}" alt="Inaquired Logo">
+            <h1>Reset Your Inaquired Desk Password</h1>
         </div>
         
         <div class="content">
             <p>Hello,</p>
             
-            <p>You are receiving this email because we received a password reset request for your Anywhereroles Desk account.</p>
+            <p>You are receiving this email because we received a password reset request for your Inaquired Desk account.</p>
             
             <p>Click the button below to reset your password:</p>
             
@@ -38,11 +38,11 @@
             
             <p>If you did not request a password reset, no further action is required.</p>
             
-            <p>Best regards,<br>Anywhereroles</p>
+            <p>Best regards,<br>Inaquired</p>
         </div>
         
         <div class="footer">
-            <p>© {{ date('Y') }} Anywhereroles. All rights reserved.</p>
+            <p>© {{ date('Y') }} Inaquired. All rights reserved.</p>
         </div>
     </div>
 </body>

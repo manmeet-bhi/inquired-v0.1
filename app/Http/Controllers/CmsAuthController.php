@@ -117,7 +117,7 @@ class CmsAuthController extends Controller
         try {
             \Mail::send('emails.cms-password-reset', ['token' => $token, 'email' => $request->email], function($message) use($request) {
                 $message->to($request->email);
-                $message->subject('Reset Your CMS Password - Anywhereroles');
+                $message->subject('Reset Your CMS Password - Inaquired');
             });
 
             return back()->with('status', 'We have emailed your password reset link!');

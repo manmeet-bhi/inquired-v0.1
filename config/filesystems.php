@@ -61,11 +61,13 @@ return [
         ],
 
         'r2' => [
-            'driver' => 's3',
+            'driver' => 'r2',
+            'account_id' => env('CLOUDFLARE_R2_ACCOUNT_ID'),
+            'token' => env('CLOUDFLARE_R2_TOKEN'),
             'key' => env('CLOUDFLARE_R2_ACCESS_KEY_ID'),
             'secret' => env('CLOUDFLARE_R2_SECRET_ACCESS_KEY'),
             'region' => env('CLOUDFLARE_R2_REGION', 'auto'),
-            'bucket' => env('CLOUDFLARE_R2_BUCKET'),
+            'bucket' => env('CLOUDFLARE_R2_BUCKET', 'inaquired-r2'),
             'url' => env('CLOUDFLARE_R2_URL') ?: (rtrim(env('APP_URL', 'http://localhost'), '/') . '/media'),
             'endpoint' => env('CLOUDFLARE_R2_ENDPOINT'),
             'use_path_style_endpoint' => env('CLOUDFLARE_R2_USE_PATH_STYLE_ENDPOINT', false),

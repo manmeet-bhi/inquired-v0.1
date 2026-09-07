@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password - Anywhereroles Desk</title>
+    <title>Forgot Password - Inaquired Desk</title>
     @include('partials.favicons')
     <link href="{{ asset('assets/fonts/inter.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/tailwind-full.css') }}" rel="stylesheet">
@@ -79,7 +79,7 @@
 <body>
     <div class="auth-container">
         <div class="auth-card">
-            <img src="{{ asset('images/logos/logo.png') }}" alt="Anywhereroles Logo" class="auth-logo">
+            <img src="{{ asset('assets/logos/logo.png') }}" alt="Inaquired Logo" class="auth-logo">
             
             <div class="auth-header">
                 <h1 class="auth-title">Find Your Account</h1>

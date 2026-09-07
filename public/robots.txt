@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /cms/
+Disallow: /api/
+Sitemap: https://inaquired.com/sitemap.xml

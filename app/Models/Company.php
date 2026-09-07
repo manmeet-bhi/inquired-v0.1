@@ -33,6 +33,23 @@ class Company extends Model
 
     protected static function booted()
     {
+        static::deleting(function ($company) {
+            if (!empty($company->logo)) {
+                try {
+                    \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->delete($company->logo);
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning("Company deletion error for logo [{$company->logo}]: " . $e->getMessage());
+                }
+            }
+
+            // Also delete associated Page SEO record if any
+            try {
+                \App\Models\PageSeo::where('page_type', 'company')->where('page_id', $company->id)->each(function ($pageSeo) {
+                    $pageSeo->delete();
+                });
+            } catch (\Throwable) {}
+        });
+
         static::saved(function ($company) {
             \Illuminate\Support\Facades\Cache::forget('dynamic_sitemap_xml');
         });

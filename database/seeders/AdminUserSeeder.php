@@ -14,7 +14,7 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminEmail = env('INITIAL_ADMIN_EMAIL', 'admin@anywhereroles.com');
+        $adminEmail = env('INITIAL_ADMIN_EMAIL', 'admin@inaquired.com');
         $adminPassword = env('INITIAL_ADMIN_PASSWORD', 'Admin@123456');
         $adminName = env('INITIAL_ADMIN_NAME', 'Super Admin');
 

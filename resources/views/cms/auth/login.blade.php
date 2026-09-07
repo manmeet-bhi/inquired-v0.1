@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anywhereroles Desk Login</title>
+    <title>Inaquired Desk Login</title>
     @include('partials.favicons')
     <link href="{{ asset('assets/fonts/inter.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/tailwind-full.css') }}" rel="stylesheet">
@@ -105,7 +105,7 @@
 <body>
     <div class="auth-container">
         <div class="auth-card">
-            <img src="{{ asset('images/logos/logo.png') }}" alt="Anywhereroles Logo" class="auth-logo">
+            <img src="{{ asset('assets/logos/logo.png') }}" alt="Inaquired Logo" class="auth-logo">
             
             <form action="{{ route('cms.login') }}" method="POST" id="auth-form" class="overflow-hidden">
                 @csrf

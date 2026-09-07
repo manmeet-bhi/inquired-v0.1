@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'User Success Stories | Anywhereroles')
-@section('meta_description', 'Read success stories from professionals who found their dream jobs through Anywhereroles. Real testimonials from our community.')
+@section('title', 'User Success Stories | Inaquired')
+@section('meta_description', 'Read success stories from professionals who found their dream jobs through Inaquired. Real testimonials from our community.')
 
 @push('styles')
 <style>
@@ -148,7 +148,7 @@
                     <div class="relative z-10">
                         <h3 class="text-2xl font-bold text-slate-900 mb-4">Share Your Story</h3>
                         <p class="text-slate-600 mb-8 leading-relaxed">
-                            How has Anywhereroles helped your career? We'd love to hear from you! Sharing your journey helps inspire others in the community to find their dream roles.
+                            How has Inaquired helped your career? We'd love to hear from you! Sharing your journey helps inspire others in the community to find their dream roles.
                         </p>
 
                         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
@@ -173,7 +173,7 @@
         <div class="mt-16">
             <div class="text-center mb-10">
                 <h3 class="text-3xl font-bold text-slate-900 mb-3">More Community Stories</h3>
-                <p class="text-slate-500 max-w-2xl mx-auto">Explore what other professionals have experienced with Anywhereroles.</p>
+                <p class="text-slate-500 max-w-2xl mx-auto">Explore what other professionals have experienced with Inaquired.</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

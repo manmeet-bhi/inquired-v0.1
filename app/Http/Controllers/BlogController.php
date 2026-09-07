@@ -8,18 +8,33 @@ use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(Request $request, ?string $tag = null)
     {
-        $posts = Post::where('is_published', true)
-            ->latest()
-            ->paginate(12);
+        $currentTag = $tag ?? $request->query('tag');
+        $query = Post::where('is_published', true);
+
+        if ($currentTag) {
+            $currentTag = trim($currentTag);
+            $query->where(function ($q) use ($currentTag) {
+                $q->whereJsonContains('tags', $currentTag)
+                  ->orWhere('tags', 'LIKE', '%"' . $currentTag . '"%')
+                  ->orWhere('tags', 'LIKE', '%' . $currentTag . '%');
+            });
+        }
+
+        $posts = $query->latest()->paginate(12)->withQueryString();
         
         // Get SEO for blog listing page
         $pageSeo = PageSeo::where('page_type', 'static')
             ->where('slug', 'blog')
             ->first();
             
-        return view('blog.index', compact('posts', 'pageSeo'));
+        return view('blog.index', compact('posts', 'pageSeo', 'currentTag'));
+    }
+
+    public function tag(Request $request, string $tag)
+    {
+        return $this->index($request, $tag);
     }
 
     public function show(Post $post)

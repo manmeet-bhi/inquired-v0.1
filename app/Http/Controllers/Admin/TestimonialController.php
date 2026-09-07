@@ -5,12 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class TestimonialController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $testimonials = Testimonial::latest()->paginate(20);
+        $query = Testimonial::latest();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('role_company', 'LIKE', "%{$search}%")
+                  ->orWhere('message', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $testimonials = $query->paginate(20)->withQueryString();
         return view('cms.testimonials.index', compact('testimonials'));
     }
 
@@ -23,15 +35,12 @@ class TestimonialController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255',
             'role_company' => 'nullable|string|max:255',
             'message' => 'required|string',
-            'is_approved' => 'boolean'
         ]);
 
-        $validated['is_approved'] = $request->has('is_approved');
-
         Testimonial::create($validated);
+        $this->clearTestimonialCache();
 
         return redirect()->route('cms.testimonials.index')->with('success', 'Testimonial created successfully.');
     }
@@ -45,15 +54,12 @@ class TestimonialController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255',
             'role_company' => 'nullable|string|max:255',
             'message' => 'required|string',
-            'is_approved' => 'boolean'
         ]);
 
-        $validated['is_approved'] = $request->has('is_approved');
-
         $testimonial->update($validated);
+        $this->clearTestimonialCache();
 
         return redirect()->route('cms.testimonials.index')->with('success', 'Testimonial updated successfully.');
     }
@@ -61,6 +67,17 @@ class TestimonialController extends Controller
     public function destroy(Testimonial $testimonial)
     {
         $testimonial->delete();
+        $this->clearTestimonialCache();
+
         return redirect()->route('cms.testimonials.index')->with('success', 'Testimonial deleted successfully.');
+    }
+
+    protected function clearTestimonialCache(): void
+    {
+        Cache::forget('testimonials_top_5');
+        // Clear paginated caches
+        for ($i = 1; $i <= 50; $i++) {
+            Cache::forget("testimonials_page_{$i}");
+        }
     }
 }

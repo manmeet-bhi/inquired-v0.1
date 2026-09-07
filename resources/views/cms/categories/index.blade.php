@@ -52,7 +52,7 @@
                             <div class="flex items-start">
                                 @if($category->icon_file)
                                 <div class="w-10 h-10 mr-3 flex items-center justify-center shrink-0">
-                                    <img src="{{ asset('assets/icons/categories/' . $category->icon_file) }}" alt="{{ $category->name }}" class="w-8 h-8">
+                                    <img src="{{ $category->icon_url ?? asset('assets/icons/categories/' . $category->icon_file) }}" alt="{{ $category->name }}" class="w-8 h-8 object-contain">
                                 </div>
                                 @elseif($category->icon)
                                 <div class="w-10 h-10 mr-3 flex items-center justify-center text-xl shrink-0">

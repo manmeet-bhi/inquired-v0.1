@@ -1,6 +1,6 @@
-# Anywhereroles - CMS Based Job Portal
+# inaquired - CMS Based Job Portal
 
-Anywhereroles is a comprehensive, CMS-driven job portal built with Laravel. It serves as a platform connecting job seekers with employers, offering features like job listings, company profiles, user dashboards, and a robust admin management system.
+inaquired is a comprehensive, CMS-driven job portal built with Laravel. It serves as a platform connecting job seekers with employers, offering features like job listings, company profiles, user dashboards, and a robust admin management system.
 
 ## Features
 
@@ -24,40 +24,26 @@ Anywhereroles is a comprehensive, CMS-driven job portal built with Laravel. It s
 
 ## Tech Stack
 
-- **Framework**: Laravel 11
+- **Framework**: Laravel 12
 - **Frontend**: Blade Templates, Tailwind CSS, Alpine.js
 - **Database**: MySQL
-- **Authentication**: Laravel Breeze
-- **Other**: Laravel Sanctum, Laravel Scout (Algolia)
+- **Authentication**: Laravel Session & 2FA
+- **Storage**: Cloudflare R2 / Local
 
 ## Installation
 
 ### Prerequisites
 - PHP >= 8.2
 - Composer
-- MySQL
+- MySQL (XAMPP / Standalone)
 - Node.js & NPM (for frontend assets)
 
 ### Steps
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd anywhereroles
-   ```
-
-2. **Install dependencies**
-   ```bash
-   composer install
-   ```
-
-3. **Configure environment**
-   Copy the `.env.example` file to `.env` and configure your database credentials:
-   ```bash
-   cp .env.example .env
-   ```
-   Update `.env` with your database details:
+1. **Configure environment**
+   Ensure `.env` is configured with your database credentials:
    ```env
+   APP_NAME=inaquired
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
@@ -66,25 +52,19 @@ Anywhereroles is a comprehensive, CMS-driven job portal built with Laravel. It s
    DB_PASSWORD=
    ```
 
-4. **Generate application key**
+2. **Install dependencies**
    ```bash
-   php artisan key:generate
+   php composer.phar install
+   npm install
+   npm run build
    ```
 
-5. **Run migrations**
-   This will create all the necessary database tables:
+3. **Run migrations (if needed)**
    ```bash
    php artisan migrate
    ```
 
-6. **Seed the database (Optional)**
-   To populate the database with sample data:
+4. **Start Development Server**
    ```bash
-   php artisan db:seed
+   php artisan serve
    ```
-
-7. **Install frontend dependencies**
-   ```bash
-   npm install
-   npm run dev
-```

@@ -8,9 +8,9 @@ class SeoHelper
 {
     public static function generateJobSchema($job)
     {
-        $companyName = $job->company ? $job->company->name : 'Anywhereroles';
+        $companyName = $job->company ? $job->company->name : 'Inaquired';
         $companyWebsite = $job->company?->website ?: url('/');
-        $companyLogo = $job->company?->logo_url ?: asset('images/logo.png');
+        $companyLogo = $job->company?->logo_url ?: asset('assets/logos/logo.png');
 
         $isRemote = strtolower($job->work_type) === 'remote';
 
@@ -74,15 +74,15 @@ class SeoHelper
         return [
             '@context' => 'https://schema.org',
             '@type' => 'Organization',
-            'name' => 'Anywhereroles',
-            'alternateName' => 'Unbound Work',
+            'name' => 'Inaquired',
+            'alternateName' => 'inaquired',
             'url' => url('/'),
-            'logo' => asset('images/logo.png'),
+            'logo' => asset('assets/logos/logo.png'),
             'description' => 'Leading job portal connecting talented professionals with opportunities worldwide',
             'foundingDate' => '2024',
             'sameAs' => [
-                'https://linkedin.com/company/anywhereroles',
-                'https://twitter.com/anywhereroles'
+                'https://linkedin.com/company/inaquired',
+                'https://twitter.com/inaquired'
             ],
             'contactPoint' => [
                 '@type' => 'ContactPoint',

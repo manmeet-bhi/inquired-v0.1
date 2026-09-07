@@ -22,6 +22,24 @@ class PageSeo extends Model
 
     protected static function booted()
     {
+        static::deleting(function ($seo) {
+            if (!empty($seo->og_image)) {
+                try {
+                    \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->delete($seo->og_image);
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning("PageSeo deletion error for og_image [{$seo->og_image}]: " . $e->getMessage());
+                }
+            }
+
+            if (!empty($seo->twitter_image)) {
+                try {
+                    \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->delete($seo->twitter_image);
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning("PageSeo deletion error for twitter_image [{$seo->twitter_image}]: " . $e->getMessage());
+                }
+            }
+        });
+
         static::saved(function ($seo) {
             \Illuminate\Support\Facades\Cache::forget('dynamic_sitemap_xml');
         });
@@ -122,11 +140,13 @@ class PageSeo extends Model
             'mnc-companies' => 'MNC Companies',
             'unicorn-companies' => 'Unicorn Companies',
             'about' => 'About Us',
+            'for-employers' => 'For Employers',
             'blog' => 'Blog',
             'contact' => 'Contact',
             'privacy' => 'Privacy Policy',
             'terms' => 'Terms of Service',
             'cookies' => 'Cookie Policy',
+            'employer-policy' => 'Employer Listing Policy',
             'testimonials' => 'Testimonials',
             'support' => 'Support',
             'sitemap' => 'Sitemap',

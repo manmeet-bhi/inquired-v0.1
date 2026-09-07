@@ -26,6 +26,39 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register custom Cloudflare R2 driver
+        \Illuminate\Support\Facades\Storage::extend('r2', function ($app, $config) {
+            $key = $config['key'] ?? null;
+            $secret = $config['secret'] ?? null;
+
+            // If 32-character S3 Access Key ID is provided, use standard S3 client
+            if (!empty($key) && strlen($key) === 32 && !empty($secret) && class_exists(\Aws\S3\S3Client::class)) {
+                $s3Config = [
+                    'version' => 'latest',
+                    'region' => $config['region'] ?? 'auto',
+                    'endpoint' => $config['endpoint'] ?? null,
+                    'use_path_style_endpoint' => $config['use_path_style_endpoint'] ?? false,
+                    'credentials' => [
+                        'key' => $key,
+                        'secret' => $secret,
+                    ],
+                ];
+                $client = new \Aws\S3\S3Client($s3Config);
+                $adapter = new \League\Flysystem\AwsS3V3\AwsS3V3Adapter($client, $config['bucket'], $config['root'] ?? '', null, null, $config['options'] ?? []);
+                return new \Illuminate\Filesystem\FilesystemAdapter(new \League\Flysystem\Filesystem($adapter, $config), $adapter, $config);
+            }
+
+            // High-speed native Cloudflare R2 REST Adapter using API Token
+            $accountId = $config['account_id'] ?? env('CLOUDFLARE_R2_ACCOUNT_ID', '9c88e6b05ab607d28ec4fba866c126c0');
+            $token = $config['token'] ?? env('CLOUDFLARE_R2_TOKEN', '');
+            $bucket = $config['bucket'] ?? env('CLOUDFLARE_R2_BUCKET', 'inaquired-r2');
+
+            $adapter = new \App\Services\CloudflareR2Adapter($accountId, $token, $bucket);
+            $filesystem = new \League\Flysystem\Filesystem($adapter, $config);
+
+            return new \Illuminate\Filesystem\FilesystemAdapter($filesystem, $adapter, $config);
+        });
+
         // Force HTTPS in production or on Railway
         if (config('app.env') === 'production' || str_contains(request()->getHost(), 'railway.app')) {
             \Illuminate\Support\Facades\URL::forceScheme('https');

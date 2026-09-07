@@ -43,6 +43,14 @@ class Job extends Model
 
     protected static function booted()
     {
+        static::deleting(function ($job) {
+            try {
+                \App\Models\PageSeo::where('page_type', 'job')->where('page_id', $job->id)->each(function ($pageSeo) {
+                    $pageSeo->delete();
+                });
+            } catch (\Throwable) {}
+        });
+
         static::saved(function ($job) {
             \Illuminate\Support\Facades\Cache::flush();
         });

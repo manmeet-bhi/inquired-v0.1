@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Privacy Policy - Anywhereroles')
+@section('title', 'Privacy Policy - Inaquired')
 
 @section('content')
 <div class="bg-white">
@@ -13,7 +13,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Introduction</h2>
                 <p class="text-gray-600 leading-relaxed">
-                    At Anywhereroles, we value your privacy and are committed to protecting your information. This Privacy Policy explains how information is handled when you visit our website and use our services.
+                    At Inaquired, we value your privacy and are committed to protecting your information. This Privacy Policy explains how information is handled when you visit our website and use our services.
                 </p>
             </section>
 
@@ -24,7 +24,7 @@
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">No Mandatory Personal Information</h3>
                         <p class="text-gray-600 leading-relaxed">
-                            Anywhereroles allows users to browse job listings without creating an account or submitting personal information such as name, email address, or phone number.
+                            Inaquired allows users to browse job listings without creating an account or submitting personal information such as name, email address, or phone number.
                         </p>
                     </div>
 
@@ -61,14 +61,14 @@
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Third-Party Services</h2>
                 <p class="text-gray-600 leading-relaxed">
-                    Anywhereroles may use trusted third-party services to operate and improve the website, such as analytics services, hosting providers, and content delivery networks (CDN). These providers may process limited technical data necessary for website functionality.
+                    Inaquired may use trusted third-party services to operate and improve the website, such as analytics services, hosting providers, and content delivery networks (CDN). These providers may process limited technical data necessary for website functionality.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">External Job Listings</h2>
                 <p class="text-gray-600 leading-relaxed">
-                    Anywhereroles is a job aggregation platform that shares job opportunities collected from publicly available sources such as company career pages and recruitment portals.
+                    Inaquired is a job aggregation platform that shares job opportunities collected from publicly available sources such as company career pages and recruitment portals.
                 </p>
                 <p class="text-gray-600 leading-relaxed">
                     When you click on a job listing, you may be redirected to an external website to complete your application. These external websites operate independently and have their own privacy policies. We encourage users to review those policies before providing personal information.
@@ -145,7 +145,7 @@
                     If you have any questions about this Privacy Policy, please contact us at:
                 </p>
                 <div class="mt-4 text-gray-600">
-                    <p>Email: anywhereroles@gmail.com</p>
+                    <p>Email: inaquired@gmail.com</p>
                 </div>
             </section>
         </div>
