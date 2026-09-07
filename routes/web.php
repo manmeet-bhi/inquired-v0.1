@@ -150,6 +150,7 @@ Route::post('/feedback', function (\Illuminate\Http\Request $request) {
         'name' => 'required|string|max:255',
         'email' => 'required|email|max:255',
         'feedback' => 'required|string|max:5000',
+        'agree_testimonial' => 'nullable|string|in:Yes,No',
     ], [
         'category.required' => 'Please select a feedback category.',
         'rating.required' => 'Please select your overall experience rating.',
@@ -158,6 +159,9 @@ Route::post('/feedback', function (\Illuminate\Http\Request $request) {
         'email.email' => 'Please provide a valid email address.',
         'feedback.required' => 'Please enter your feedback or suggestions.',
     ]);
+
+    $agreeTestimonial = ($request->has('agree_testimonial') && $request->input('agree_testimonial') === 'Yes') ? 'Yes' : 'No';
+    $data['agree_testimonial'] = $agreeTestimonial;
 
     // Forward submission seamlessly to Google Form
     try {
@@ -169,6 +173,7 @@ Route::post('/feedback', function (\Illuminate\Http\Request $request) {
                 'entry.384078751'  => $data['name'],
                 'entry.449612881'  => $data['email'],
                 'entry.1604087922' => $data['feedback'],
+                'entry.952404610'  => $agreeTestimonial,
             ]);
     } catch (\Throwable $e) {
         \Illuminate\Support\Facades\Log::warning('Feedback Google Form sync warning: ' . $e->getMessage());
@@ -191,10 +196,17 @@ Route::get('/testimonials', function (\Illuminate\Http\Request $request) {
     });
     $page = $request->get('page', 1);
     $topTestimonials = \Illuminate\Support\Facades\Cache::remember('testimonials_top_5', 3600, function() {
-        return \App\Models\Testimonial::latest()->take(5)->get();
+        $featured = \App\Models\Testimonial::where('is_featured', true)->latest()->take(5)->get();
+        if ($featured->isEmpty()) {
+            $featured = \App\Models\Testimonial::latest()->take(3)->get();
+        }
+        return $featured;
     });
-    $testimonials = \Illuminate\Support\Facades\Cache::remember("testimonials_page_{$page}", 3600, function() {
-        return \App\Models\Testimonial::latest()->paginate(9);
+    $featuredIds = $topTestimonials->pluck('id')->toArray();
+    $testimonials = \Illuminate\Support\Facades\Cache::remember("testimonials_page_{$page}", 3600, function() use ($featuredIds) {
+        return \App\Models\Testimonial::whereNotIn('id', $featuredIds)
+            ->latest()
+            ->paginate(9);
     });
     return view('pages.testimonials', compact('topTestimonials', 'testimonials', 'pageSeo'));
 })->name('testimonials');
@@ -306,6 +318,7 @@ Route::prefix('cms')->name('cms.')->middleware(['cms.admin'])->group(function ()
     Route::delete('/companies/{company}', [App\Http\Controllers\AdminController::class, 'destroyCompany'])->name('companies.destroy');
     
     // Testimonials Management
+    Route::post('testimonials/{testimonial}/toggle-featured', [App\Http\Controllers\Admin\TestimonialController::class, 'toggleFeatured'])->name('testimonials.toggle-featured');
     Route::resource('testimonials', App\Http\Controllers\Admin\TestimonialController::class)->except(['show']);
     
     // Categories Management

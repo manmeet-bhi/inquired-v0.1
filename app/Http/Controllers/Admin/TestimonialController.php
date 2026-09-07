@@ -22,6 +22,14 @@ class TestimonialController extends Controller
             });
         }
 
+        if ($request->filled('filter')) {
+            if ($request->input('filter') === 'featured') {
+                $query->where('is_featured', true);
+            } elseif ($request->input('filter') === 'standard') {
+                $query->where('is_featured', false);
+            }
+        }
+
         $testimonials = $query->paginate(20)->withQueryString();
         return view('cms.testimonials.index', compact('testimonials'));
     }
@@ -37,7 +45,10 @@ class TestimonialController extends Controller
             'name' => 'required|string|max:255',
             'role_company' => 'nullable|string|max:255',
             'message' => 'required|string',
+            'is_featured' => 'nullable|boolean',
         ]);
+
+        $validated['is_featured'] = $request->boolean('is_featured');
 
         Testimonial::create($validated);
         $this->clearTestimonialCache();
@@ -56,12 +67,37 @@ class TestimonialController extends Controller
             'name' => 'required|string|max:255',
             'role_company' => 'nullable|string|max:255',
             'message' => 'required|string',
+            'is_featured' => 'nullable|boolean',
         ]);
+
+        $validated['is_featured'] = $request->boolean('is_featured');
 
         $testimonial->update($validated);
         $this->clearTestimonialCache();
 
         return redirect()->route('cms.testimonials.index')->with('success', 'Testimonial updated successfully.');
+    }
+
+    public function toggleFeatured(Request $request, Testimonial $testimonial)
+    {
+        $testimonial->is_featured = !$testimonial->is_featured;
+        $testimonial->save();
+
+        $this->clearTestimonialCache();
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'is_featured' => (bool) $testimonial->is_featured,
+                'message' => $testimonial->is_featured 
+                    ? 'Testimonial set as Featured on top.' 
+                    : 'Testimonial removed from Featured.',
+            ]);
+        }
+
+        return redirect()->back()->with('success', $testimonial->is_featured 
+            ? 'Testimonial set as Featured on top.' 
+            : 'Testimonial removed from Featured.');
     }
 
     public function destroy(Testimonial $testimonial)
@@ -75,7 +111,7 @@ class TestimonialController extends Controller
     protected function clearTestimonialCache(): void
     {
         Cache::forget('testimonials_top_5');
-        // Clear paginated caches
+        Cache::forget('testimonials_index_seo');
         for ($i = 1; $i <= 50; $i++) {
             Cache::forget("testimonials_page_{$i}");
         }

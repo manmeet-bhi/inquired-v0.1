@@ -37,6 +37,21 @@
                     @error('role_company') <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p> @enderror
                 </div>
 
+                <!-- Featured Toggle -->
+                <div class="cms-form-group bg-slate-50 border border-slate-200/80 rounded-xl p-4">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $testimonial->is_featured) ? 'checked' : '' }}
+                            class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 mt-1">
+                        <div>
+                            <span class="text-sm font-semibold text-slate-900 flex items-center gap-1.5">
+                                <i data-lucide="star" class="w-4 h-4 text-amber-500 fill-amber-400"></i>
+                                Feature on top spotlight carousel
+                            </span>
+                            <p class="text-xs text-slate-500 mt-0.5">When enabled, this story will be highlighted in the top carousel on the testimonials page and excluded from the bottom community grid.</p>
+                        </div>
+                    </label>
+                </div>
+
                 <!-- Message -->
                 <div class="cms-form-group">
                     <label for="message" class="cms-label">Testimonial Message <span class="text-red-500">*</span></label>

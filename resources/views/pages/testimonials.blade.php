@@ -4,13 +4,8 @@
 @section('meta_description', 'Read success stories from professionals who found their dream jobs through Inaquired. Real testimonials from our community.')
 
 @push('styles')
+<link href="{{ asset('assets/fonts/inter.css') }}" rel="stylesheet">
 <style>
-    <link href="{{ asset('assets/fonts/inter.css') }}" rel="stylesheet">
-    
-    .font-jakarta {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
     .testimonial-card {
         transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
@@ -57,7 +52,7 @@
 @endpush
 
 @section('content')
-<div class="bg-white">
+<div class="bg-white min-h-[60vh]">
     @if(session('success'))
     <div class="max-w-7xl mx-auto px-6 mt-6">
         <div class="bg-emerald-50 border border-emerald-100 text-emerald-700 px-6 py-4 rounded-2xl flex items-center shadow-sm">
@@ -67,12 +62,14 @@
     </div>
     @endif
 
-
     <main class="max-w-7xl mx-auto px-6 py-12">
-        <div class="bg-white rounded-2xl border border-gray-100 p-8 overflow-hidden">
+        
+        {{-- ONLY SHOW FEATURED SPOTLIGHT & SHARE YOUR STORY ON PAGE 1 --}}
+        @if($testimonials->currentPage() === 1)
+        <div class="bg-white rounded-2xl border border-gray-100 p-8 overflow-hidden mb-16">
             
             <!-- User Provided Design Inside Standard Container -->
-            <div class="flex flex-col lg:flex-row font-jakarta text-slate-900">
+            <div class="flex flex-col lg:flex-row text-slate-900">
         
                 <!-- LEFT SIDE: Testimonial Slider (60% width on desktop) -->
                 <div class="w-full lg:w-3/5 lg:pr-12 flex flex-col justify-center relative mb-16 lg:mb-0">
@@ -124,16 +121,15 @@
                             </div>
                             @endforelse
 
-        
                             <!-- Navigation Controls -->
                             <div class="flex items-center space-x-4 lg:space-x-6 mt-8 lg:mt-12">
-                                <button onclick="prevSlide()" class="p-3 lg:p-4 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 transition-all shadow-sm active:scale-95">
+                                <button onclick="prevSlide()" class="p-3 lg:p-4 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 transition-all shadow-sm active:scale-95" aria-label="Previous slide">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 lg:h-6 lg:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
                                     </svg>
                                 </button>
                                 <div class="flex space-x-2 lg:space-x-3" id="dots-container"></div>
-                                <button onclick="nextSlide()" class="p-3 lg:p-4 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 transition-all shadow-sm active:scale-95">
+                                <button onclick="nextSlide()" class="p-3 lg:p-4 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 transition-all shadow-sm active:scale-95" aria-label="Next slide">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 lg:h-6 lg:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
                                     </svg>
@@ -167,14 +163,22 @@
             </div>
             
         </div>
+        @else
+        <div class="text-center mb-10 pt-4">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3">Community Stories</h1>
+            <p class="text-slate-500 max-w-2xl mx-auto">Page {{ $testimonials->currentPage() }} &bull; Explore genuine feedback and success stories from Inaquired members.</p>
+        </div>
+        @endif
 
         <!-- All Testimonials Grid -->
         @if($testimonials->count() > 0)
-        <div class="mt-16">
+        <div class="{{ $testimonials->currentPage() === 1 ? 'mt-0' : 'mt-4' }}">
+            @if($testimonials->currentPage() === 1)
             <div class="text-center mb-10">
                 <h3 class="text-3xl font-bold text-slate-900 mb-3">More Community Stories</h3>
                 <p class="text-slate-500 max-w-2xl mx-auto">Explore what other professionals have experienced with Inaquired.</p>
             </div>
+            @endif
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($testimonials as $index => $item)
@@ -184,7 +188,7 @@
                     $isTruncated = count($words) > 50;
                 @endphp
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md hover:border-blue-100 transition-all cursor-pointer group"
-                     onclick="openStoryModal({{ $testimonials->firstItem() + $index - 1 }})">
+                     onclick="openStoryModal({{ $index }})">
                     <div class="text-blue-500/10 group-hover:text-blue-500/20 transition-colors mb-3">
                         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"></path></svg>
                     </div>
@@ -215,7 +219,7 @@
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
                 <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
                     <span id="modalCounter" class="text-xs font-semibold text-slate-400 uppercase tracking-widest"></span>
-                    <button onclick="closeStoryModal()" class="p-2 rounded-xl hover:bg-slate-100 transition-colors">
+                    <button onclick="closeStoryModal()" class="p-2 rounded-xl hover:bg-slate-100 transition-colors" aria-label="Close modal">
                         <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
@@ -263,10 +267,14 @@
 
         function showSlide(index) {
             slides[currentSlide].classList.remove('active');
-            document.getElementById(`dot-${currentSlide}`).className = 'h-2 w-2 rounded-full bg-slate-200 transition-all duration-300';
+            const currentDot = document.getElementById(`dot-${currentSlide}`);
+            if (currentDot) currentDot.className = 'h-2 w-2 rounded-full bg-slate-200 transition-all duration-300';
+            
             currentSlide = (index + slides.length) % slides.length;
             slides[currentSlide].classList.add('active');
-            document.getElementById(`dot-${currentSlide}`).className = 'h-2 w-10 rounded-full bg-blue-600 transition-all duration-300';
+            
+            const nextDot = document.getElementById(`dot-${currentSlide}`);
+            if (nextDot) nextDot.className = 'h-2 w-10 rounded-full bg-blue-600 transition-all duration-300';
         }
 
         window.nextSlide = () => showSlide(currentSlide + 1);
@@ -314,11 +322,13 @@
     }
 
     function modalNext() {
+        if (!totalStories) return;
         modalIndex = (modalIndex + 1) % totalStories;
         renderModal();
     }
 
     function modalPrev() {
+        if (!totalStories) return;
         modalIndex = (modalIndex - 1 + totalStories) % totalStories;
         renderModal();
     }
