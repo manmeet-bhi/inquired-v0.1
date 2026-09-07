@@ -4,7 +4,6 @@
 
 @push('styles')
 <style>
-    <link href="{{ asset('assets/fonts/inter.css') }}" rel="stylesheet">
     body {
         font-family: 'Inter', sans-serif;
     }
@@ -57,8 +56,8 @@
     <main class="max-w-7xl mx-auto px-4 py-8">
         @if($posts->count() > 0)
             
-            @if(empty($currentTag))
-                {{-- Standard View: Featured Hero Post + Grid --}}
+            @if(empty($currentTag) && $posts->currentPage() === 1)
+                {{-- Standard View: Featured Hero Post + Grid (Page 1) --}}
                 @php $featuredPost = $posts->first(); @endphp
                 <div class="flex flex-col lg:flex-row gap-12 items-start mb-20">
                     <!-- Featured Image -->
@@ -185,7 +184,7 @@
                 @endif
 
             @else
-                {{-- Filtered View: Full Grid of Filtered Posts --}}
+                {{-- Grid View for Page 2+ or Filtered Tag Results --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 auto-rows-fr">
                     @foreach($posts as $post)
                         <article class="flex">
@@ -226,7 +225,7 @@
                                          <div class="flex flex-wrap gap-1.5 mb-4">
                                              @foreach(array_slice($pTags, 0, 3) as $ptag)
                                                  @if(trim($ptag))
-                                                     <a href="{{ route('blog.tag', ['tag' => trim($ptag)]) }}" class="text-[11px] font-semibold {{ strtolower(trim($ptag)) === strtolower($currentTag) ? 'bg-indigo-600 text-white' : 'text-slate-600 bg-slate-100 hover:bg-indigo-600 hover:text-white' }} px-2.5 py-1 rounded-md transition-colors">
+                                                     <a href="{{ route('blog.tag', ['tag' => trim($ptag)]) }}" class="text-[11px] font-semibold {{ !empty($currentTag) && strtolower(trim($ptag)) === strtolower($currentTag) ? 'bg-indigo-600 text-white' : 'text-slate-600 bg-slate-100 hover:bg-indigo-600 hover:text-white' }} px-2.5 py-1 rounded-md transition-colors">
                                                          #{{ trim($ptag) }}
                                                      </a>
                                                  @endif
@@ -244,9 +243,16 @@
                 </div>
             @endif
 
-            <div class="flex justify-center mt-8">
-                {{ $posts->links() }}
-            </div>
+            @if($posts->hasPages())
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-10 border-t border-slate-100">
+                    <p class="text-sm text-slate-500 font-medium">
+                        Showing page <span class="font-bold text-slate-800">{{ $posts->currentPage() }}</span> of <span class="font-bold text-slate-800">{{ $posts->lastPage() }}</span> (<span class="font-bold text-slate-800">{{ $posts->total() }}</span> total articles)
+                    </p>
+                    <div>
+                        {{ $posts->links() }}
+                    </div>
+                </div>
+            @endif
 
         @else
             <div class="text-center py-20 bg-white rounded-2xl border border-slate-100 max-w-xl mx-auto p-8 shadow-xs">

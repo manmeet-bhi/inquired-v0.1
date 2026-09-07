@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             JobSeeder::class,
             SeoStaticPagesSeeder::class,
+            BlogPostSeeder::class,
         ]);
 
         User::factory()->create([

@@ -22,7 +22,8 @@ class BlogController extends Controller
             });
         }
 
-        $posts = $query->latest()->paginate(12)->withQueryString();
+        $perPage = min(max((int) $request->query('per_page', 6), 1), 50);
+        $posts = $query->latest()->paginate($perPage)->withQueryString();
         
         // Get SEO for blog listing page
         $pageSeo = PageSeo::where('page_type', 'static')

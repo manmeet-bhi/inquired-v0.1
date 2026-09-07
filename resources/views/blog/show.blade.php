@@ -60,8 +60,8 @@ use Illuminate\Support\Facades\Storage;
                         @endif
 
                         <!-- Content -->
-                        <div class="prose prose-lg max-w-none" id="article-content">
-                             {!! nl2br($post->content) !!}
+                        <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed" id="article-content">
+                             {!! Str::contains($post->content, '<') ? $post->content : nl2br(e($post->content)) !!}
                         </div>
 
                         <!-- Tags -->
@@ -111,9 +111,12 @@ use Illuminate\Support\Facades\Storage;
                     <!-- Author Card -->
                     <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl shadow-sm border border-indigo-100 p-6">
                         <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
+                                {{ strtoupper(substr($post->author, 0, 1)) }}
+                            </div>
                             <div>
                                 <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Author</p>
-                                <p class="text-base font-bold text-slate-900">Inaquired</p>
+                                <p class="text-base font-bold text-slate-900">{{ $post->author }}</p>
                             </div>
                         </div>
                     </div>

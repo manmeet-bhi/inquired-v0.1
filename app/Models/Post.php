@@ -105,4 +105,18 @@ class Post extends Model
     {
         return media_url($this->featured_image);
     }
+
+    public function getReadTimeAttribute(): int
+    {
+        $words = str_word_count(strip_tags($this->content ?? ''));
+        return max(1, (int) ceil($words / 200));
+    }
+
+    public function getCategoryAttribute(): string
+    {
+        if (!empty($this->tags) && is_array($this->tags) && count($this->tags) > 0) {
+            return $this->tags[0];
+        }
+        return 'Career Guide';
+    }
 }
