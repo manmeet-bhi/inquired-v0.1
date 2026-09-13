@@ -64,31 +64,16 @@
                 <!-- Job Header -->
                 <div class="mb-8 md:mb-10">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
-                        <div class="flex items-start gap-4 flex-1 min-w-0">
-                            {{-- Company Logo --}}
-                            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border border-slate-200 flex items-center justify-center overflow-hidden bg-white shadow-sm flex-shrink-0">
-                                @if($job->company && $job->company->logo_url)
-                                    <img src="{{ $job->company->logo_url }}" alt="{{ $job->company->name }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" loading="lazy">
-                                    <div class="w-full h-full bg-slate-100 flex items-center justify-center font-bold text-slate-700 text-xl sm:text-2xl uppercase" style="display:none;">
-                                        {{ strtoupper(substr($job->company->name ?? 'C', 0, 1)) }}
-                                    </div>
-                                @else
-                                    <div class="w-full h-full bg-slate-100 flex items-center justify-center font-bold text-slate-700 text-xl sm:text-2xl uppercase">
-                                        {{ strtoupper(substr($job->company->name ?? 'C', 0, 1)) }}
-                                    </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2.5 flex-wrap">
+                                <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight break-words">{{ $job->title }}</h1>
+                                @if($job->is_featured)
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-xs font-semibold">
+                                        Featured
+                                    </span>
                                 @endif
                             </div>
-                            <div class="min-w-0 flex-1">
-                                <div class="flex items-center gap-2.5 flex-wrap">
-                                    <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight break-words">{{ $job->title }}</h1>
-                                    @if($job->is_featured)
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-xs font-semibold">
-                                            Featured
-                                        </span>
-                                    @endif
-                                </div>
-                                <a href="{{ $job->company ? route('company.show', $job->company->slug ?? $job->company->id) : '#' }}" class="text-sm sm:text-base md:text-lg text-blue-600 hover:text-blue-700 font-semibold inline-block mt-0.5">{{ $job->company->name ?? 'Company' }}</a>
-                            </div>
+                            <a href="{{ $job->company ? route('company.show', $job->company->slug ?? $job->company->id) : '#' }}" class="text-sm sm:text-base md:text-lg text-blue-600 hover:text-blue-700 font-semibold inline-block mt-0.5">{{ $job->company->name ?? 'Company' }}</a>
                         </div>
                         <!-- Primary Apply Button (Desktop Sidebar Only) -->
                         @if($job->application_url)

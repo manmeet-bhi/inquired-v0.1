@@ -53,31 +53,38 @@
                     </div>
                 </div>
 
-                {{-- Action / Links --}}
+                {{-- Action / Links: 1. About (icon + text), 2. Website (icon only), 3. LinkedIn (icon only) --}}
                 <div class="flex items-center flex-wrap sm:flex-nowrap gap-2.5 flex-shrink-0">
-                    @if($company->website)
-                        <a href="{{ $company->website }}" target="_blank" rel="noopener noreferrer" 
-                           class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50/50 shadow-xs transition-all">
-                            <svg class="w-4 h-4 text-slate-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m-9 9a9 9 0 019-9"></path></svg>
-                            <span>Website</span>
-                        </a>
-                    @endif
-
-                    {{-- Info (i) Icon Button beside Website --}}
+                    {{-- 1. About Button: i icon + text --}}
                     <button type="button" onclick="openAboutModal()" 
-                            class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50 shadow-xs transition-all cursor-pointer flex-shrink-0"
+                            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50/50 shadow-xs transition-all cursor-pointer"
                             title="About {{ $company->name }}">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="9" stroke-width="2"></circle>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"></path>
                         </svg>
+                        <span>About</span>
                     </button>
 
+                    {{-- 2. Website Button: Icon only --}}
+                    @if($company->website)
+                        <a href="{{ $company->website }}" target="_blank" rel="noopener noreferrer" 
+                           class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50/50 shadow-xs transition-all flex-shrink-0 group"
+                           title="Official Website">
+                            <svg class="w-4 h-4 text-slate-500 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m-9 9a9 9 0 019-9"></path>
+                            </svg>
+                        </a>
+                    @endif
+
+                    {{-- 3. LinkedIn Button: Icon only --}}
                     @if($company->linkedin_url)
                         <a href="{{ $company->linkedin_url }}" target="_blank" rel="noopener noreferrer" 
-                           class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm hover:border-[#0077b5]/30 hover:text-[#0077b5] hover:bg-blue-50/50 shadow-xs transition-all">
-                            <svg class="w-4 h-4 text-[#0077b5]" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                            <span>LinkedIn</span>
+                           class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:border-[#0077b5]/30 hover:text-[#0077b5] hover:bg-blue-50/50 shadow-xs transition-all flex-shrink-0 group"
+                           title="LinkedIn Profile">
+                            <svg class="w-4 h-4 text-[#0077b5]" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
                         </a>
                     @endif
                 </div>
