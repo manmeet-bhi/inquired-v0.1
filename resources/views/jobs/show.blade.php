@@ -4,7 +4,7 @@
 @section('meta_description', 'Apply for ' . $job->title . ' position at ' . ($job->company->name ?? 'Company') . '. ' . Str::limit(strip_tags($job->content ?? ''), 150))
 @section('meta_keywords', $job->title . ', ' . ($job->company->name ?? 'Company') . ', jobs, careers, ' . ($job->category->name ?? 'employment'))
 
-@section('content')
+@push('styles')
 <style>
     body { font-family: 'Inter', sans-serif; color: #1e293b; line-height: 1.6; }
     .premium-shadow { box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05); }
@@ -50,8 +50,10 @@
         background-position: center;
     }
 </style>
+@endpush
 
-<body class="bg-[#fcfcfd] antialiased">
+@section('content')
+<div class="bg-[#fcfcfd] antialiased min-h-screen">
 
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
@@ -476,5 +478,5 @@
     <script type="application/ld+json">
         {!! app('App\Http\Controllers\SeoController')->generateJobPostingSchema($job->id) !!}
     </script>
-</body>
+</div>
 @endsection

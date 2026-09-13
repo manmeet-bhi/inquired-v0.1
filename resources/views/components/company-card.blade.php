@@ -42,21 +42,33 @@
 
         {{-- Company Info --}}
         <div>
-            <h3 class="font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 text-lg mb-2 truncate">{{ $company->name }}</h3>
-            <div class="flex flex-wrap gap-2 items-center mb-4">
-                <span class="text-[10px] font-black tracking-widest text-blue-600 bg-blue-50/50 px-2.5 py-1 rounded-lg">{{ $company->type }}</span>
+            <h3 class="font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 text-base sm:text-lg mb-2 line-clamp-2 break-words leading-snug">{{ $company->name }}</h3>
+            <div class="flex flex-wrap gap-2 items-center mb-3.5">
+                @if($company->type)
+                    <span class="inline-flex items-center text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-md">{{ ucfirst($company->type) }}</span>
+                @endif
 
-                <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">{{ $company->industry }}</span>
+                @if($company->industry)
+                    <span class="inline-flex items-center text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100/80 px-2.5 py-1 rounded-md max-w-full truncate" title="{{ $company->industry }}">{{ $company->industry }}</span>
+                @endif
+
+                @if(isset($company->jobs_count))
+                    <span class="inline-flex items-center text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md ml-auto">{{ $company->jobs_count }} {{ $company->jobs_count === 1 ? 'Job' : 'Jobs' }}</span>
+                @endif
             </div>
-            <p class="text-gray-500 text-sm leading-relaxed line-clamp-3">
+            <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 break-words">
                 {{ $company->description ?? "Shaping the future of its industry through innovative solutions and excellence." }}
             </p>
         </div>
     </div>
     
     {{-- Card Footer decoration --}}
-    <div class="mt-auto p-6 pt-0 flex flex-row-reverse items-center justify-between">
-        <div class="w-8 h-8 rounded-full border border-gray-100 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:translate-x-0 translate-x-2 transition-all duration-300">
+    <div class="mt-auto p-6 pt-0 flex items-center justify-between">
+        <span class="text-xs font-semibold text-blue-600 group-hover:text-blue-700 flex items-center gap-1 transition-colors">
+            Explore Careers
+            <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </span>
+        <div class="w-8 h-8 rounded-full bg-blue-50/60 border border-blue-100 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:translate-x-0 translate-x-2 transition-all duration-300">
              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
         </div>
     </div>

@@ -215,6 +215,8 @@ use Illuminate\Support\Facades\Storage;
                                         <span class="font-semibold text-sm" style="color: #475569;">Email</span>
                                     </a>
                                 </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

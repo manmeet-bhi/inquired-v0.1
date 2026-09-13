@@ -25,7 +25,7 @@
                 {{-- Mobile: Title + Timestamp Row --}}
                 <div class="flex justify-between items-start gap-2 mb-1">
                     <div class="flex items-center gap-2 flex-wrap min-w-0">
-                        <h3 class="font-bold text-gray-900 text-base sm:text-lg group-hover:text-blue-600 transition-colors duration-200">
+                        <h3 class="font-bold text-gray-900 text-base sm:text-lg group-hover:text-blue-600 transition-colors duration-200 break-words">
                             {{ $job->title }}
                         </h3>
                         @if($job->is_featured ?? false)
@@ -134,7 +134,7 @@
                         @endif
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="font-bold text-slate-900 text-base sm:text-lg mb-1 group-hover:text-blue-600 transition-colors">{{ $job->title }}</h3>
+                        <h3 class="font-bold text-slate-900 text-base sm:text-lg mb-1 group-hover:text-blue-600 transition-colors break-words">{{ $job->title }}</h3>
                         <div class="flex items-center gap-1 mb-1">
                             <i data-lucide="building-2" class="w-3 h-3 text-slate-400"></i>
                             <p class="text-slate-600 text-sm truncate">{{ $job->company->name ?? 'Company' }}</p>

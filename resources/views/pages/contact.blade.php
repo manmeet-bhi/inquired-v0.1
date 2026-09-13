@@ -110,7 +110,7 @@
                             </div>
                             <div class="min-w-0">
                                 <h3 class="text-sm font-semibold text-gray-900 mb-0.5 group-hover:text-purple-600 transition-colors">Email Support</h3>
-                                <p class="text-xs sm:text-sm text-blue-600 group-hover:text-purple-700 font-medium transition-colors">inaquired@gmail.com</p>
+                                <p class="text-xs sm:text-sm text-blue-600 group-hover:text-purple-700 font-medium transition-colors break-all">inaquired@gmail.com</p>
                             </div>
                         </a>
 

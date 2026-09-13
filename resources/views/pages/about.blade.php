@@ -226,5 +226,6 @@
                 </div>
             </div>
         </section>
+    </main>
 </div>
 @endsection

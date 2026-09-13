@@ -205,7 +205,7 @@
                                 <label class="block text-sm font-semibold text-gray-900 mb-2">
                                     Overall Experience <span class="text-red-500">*</span>
                                 </label>
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4 gap-3">
                                     
                                     <!-- Rating 1: Excellent -->
                                     <label 
