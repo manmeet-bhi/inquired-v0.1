@@ -48,6 +48,104 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
+
+    /* Mascot Animations */
+    @keyframes mascotFloat {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-8px) rotate(1.5deg); }
+    }
+    @keyframes mascotShadow {
+        0%, 100% { transform: scale(1); opacity: 0.35; }
+        50% { transform: scale(0.85); opacity: 0.2; }
+    }
+    @keyframes handWave {
+        0%, 100% { transform: rotate(0deg); transform-origin: 112px 95px; }
+        25% { transform: rotate(18deg); transform-origin: 112px 95px; }
+        50% { transform: rotate(-8deg); transform-origin: 112px 95px; }
+        75% { transform: rotate(14deg); transform-origin: 112px 95px; }
+    }
+    @keyframes speechBounce {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-4px) scale(1.03); }
+    }
+    @keyframes sparkleSpin {
+        0% { transform: rotate(0deg) scale(0.9); opacity: 0.7; }
+        50% { transform: rotate(180deg) scale(1.2); opacity: 1; }
+        100% { transform: rotate(360deg) scale(0.9); opacity: 0.7; }
+    }
+    @keyframes floatOrbit {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-7px) rotate(-8deg); }
+    }
+    @keyframes pulseGlow {
+        0%, 100% { transform: scale(1); opacity: 0.3; }
+        50% { transform: scale(1.15); opacity: 0.6; }
+    }
+
+    .animate-mascot-float {
+        animation: mascotFloat 3.8s ease-in-out infinite;
+    }
+    .animate-mascot-shadow {
+        animation: mascotShadow 3.8s ease-in-out infinite;
+    }
+    .animate-hand-wave {
+        animation: handWave 2.5s ease-in-out infinite;
+    }
+    .animate-speech-bounce {
+        animation: speechBounce 3s ease-in-out infinite;
+    }
+    .animate-sparkle-spin {
+        animation: sparkleSpin 4s linear infinite;
+    }
+    .animate-float-orbit {
+        animation: floatOrbit 3.2s ease-in-out infinite;
+    }
+    .animate-pulse-glow {
+        animation: pulseGlow 3.5s ease-in-out infinite;
+    }
+
+    /* Button Animations */
+    .btn-animated-gradient {
+        background: linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed, #2563eb, #06b6d4, #3b82f6);
+        background-size: 300% 300%;
+    }
+    @keyframes gradientFlow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    @keyframes btnAura {
+        0%, 100% { transform: scale(0.98); opacity: 0.5; filter: blur(12px); }
+        50% { transform: scale(1.03); opacity: 0.85; filter: blur(18px); }
+    }
+    @keyframes lightBeam {
+        0% { transform: translateX(-140%) skewX(-20deg); }
+        35%, 100% { transform: translateX(280%) skewX(-20deg); }
+    }
+    @keyframes arrowNudge {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(4px); }
+    }
+    @keyframes sparkleTwinkle {
+        0%, 100% { transform: scale(0.7) rotate(0deg); opacity: 0.4; }
+        50% { transform: scale(1.2) rotate(45deg); opacity: 1; }
+    }
+
+    .animate-gradient-flow {
+        animation: gradientFlow 4s ease infinite;
+    }
+    .animate-btn-aura {
+        animation: btnAura 3s ease-in-out infinite;
+    }
+    .animate-light-beam {
+        animation: lightBeam 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    .animate-arrow-nudge {
+        animation: arrowNudge 1.8s ease-in-out infinite;
+    }
+    .animate-sparkle-twinkle {
+        animation: sparkleTwinkle 2.5s ease-in-out infinite;
+    }
 </style>
 @endpush
 
@@ -147,15 +245,145 @@
                             How has Inaquired helped your career? We'd love to hear from you! Sharing your journey helps inspire others in the community to find their dream roles.
                         </p>
 
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
-                            <i data-lucide="message-square-heart" class="w-12 h-12 text-blue-500 mx-auto mb-4"></i>
-                            <h4 class="text-lg font-bold text-slate-900 mb-2">Tell us about your experience</h4>
-                            <p class="text-sm text-slate-500 mb-6">Click the button below to easily submit your success story via our secure Google Form.</p>
+                        <!-- Character-Infused Submission Box -->
+                        <div class="relative bg-gradient-to-b from-white via-white to-blue-50/50 p-6 sm:p-7 rounded-[2.5rem] border border-slate-200/90 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden text-center group">
                             
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScnO6c0UuhC9dadeDGaB00ZDi9VLCxGrfQ-YEEB_hh5-6Dybg/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full py-4 px-6 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-500/20 active:scale-95 group">
-                                Share My Story
-                                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </a>
+                            <!-- Decorative Glowing Aura Backgrounds -->
+                            <div class="absolute -top-12 -right-12 w-36 h-36 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-2xl pointer-events-none animate-pulse-glow"></div>
+                            <div class="absolute -bottom-12 -left-12 w-36 h-36 bg-gradient-to-tr from-indigo-400/20 to-pink-400/20 rounded-full blur-2xl pointer-events-none"></div>
+
+                            <!-- BIG ANIMATED MASCOT / CHARACTER SCENE -->
+                            <div class="relative w-full max-w-[260px] h-48 mx-auto flex flex-col items-center justify-center mb-3">
+                                
+                                <!-- Floating Speech Balloon -->
+                                <div class="absolute -top-1 left-2 sm:-left-2 z-20 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-blue-100 shadow-md text-[11px] font-extrabold text-slate-800 flex items-center gap-1.5 animate-speech-bounce">
+                                    <span class="text-sm">🎉</span>
+                                    <span>Got hired? Share it!</span>
+                                    <span class="absolute -bottom-1.5 left-6 w-3 h-3 bg-white border-r border-b border-blue-100 transform rotate-45"></span>
+                                </div>
+
+                                <!-- Floating Orbit Elements -->
+                                <div class="absolute top-2 right-2 z-20 text-base animate-sparkle-spin select-none pointer-events-none">⭐</div>
+                                <div class="absolute bottom-6 -right-2 z-20 text-lg animate-float-orbit select-none pointer-events-none">🚀</div>
+                                <div class="absolute bottom-8 -left-2 z-20 text-sm animate-pulse select-none pointer-events-none">💖</div>
+
+                                <!-- Big Floating Mascot SVG -->
+                                <div class="relative z-10 w-36 h-36 sm:w-40 sm:h-40 animate-mascot-float flex items-center justify-center">
+                                    <svg viewBox="0 0 160 160" class="w-full h-full drop-shadow-xl overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#3B82F6"/>
+                                                <stop offset="50%" stop-color="#4F46E5"/>
+                                                <stop offset="100%" stop-color="#7C3AED"/>
+                                            </linearGradient>
+                                            <linearGradient id="visorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#0F172A"/>
+                                                <stop offset="100%" stop-color="#1E293B"/>
+                                            </linearGradient>
+                                            <linearGradient id="headGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#FFFFFF"/>
+                                                <stop offset="100%" stop-color="#E2E8F0"/>
+                                            </linearGradient>
+                                            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#FDE047"/>
+                                                <stop offset="100%" stop-color="#F59E0B"/>
+                                            </linearGradient>
+                                        </defs>
+
+                                        <!-- Antenna -->
+                                        <path d="M80 44V26" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+                                        <circle cx="80" cy="22" r="7" fill="url(#goldGrad)" stroke="#F59E0B" stroke-width="2" class="animate-pulse"/>
+                                        <circle cx="80" cy="22" r="3" fill="#FFFFFF"/>
+
+                                        <!-- Left Arm / Thumbs Up -->
+                                        <g>
+                                            <path d="M48 95C40 98 32 105 32 114C32 120 38 122 45 116L52 108" stroke="url(#bodyGrad)" stroke-width="10" stroke-linecap="round"/>
+                                            <circle cx="30" cy="115" r="7" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+                                            <path d="M28 112L31 115L36 109" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </g>
+
+                                        <!-- Right Waving Arm -->
+                                        <g class="animate-hand-wave">
+                                            <path d="M112 95C122 92 130 82 134 72C136 67 132 63 126 67L116 78" stroke="url(#bodyGrad)" stroke-width="10" stroke-linecap="round"/>
+                                            <circle cx="135" cy="68" r="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+                                            <path d="M132 63C132 60 137 60 137 64" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round"/>
+                                        </g>
+
+                                        <!-- Body / Suit -->
+                                        <rect x="48" y="85" width="64" height="52" rx="26" fill="url(#bodyGrad)"/>
+                                        <!-- Suit Collar -->
+                                        <path d="M58 86C65 92 95 92 102 86" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+                                        <!-- Heart / Power Badge -->
+                                        <circle cx="80" cy="108" r="11" fill="#FFFFFF" opacity="0.95"/>
+                                        <path d="M80 114C80 114 73 109.5 73 106C73 104 74.5 102.5 76.5 102.5C77.8 102.5 79.2 103.4 80 104.3C80.8 103.4 82.2 102.5 83.5 102.5C85.5 102.5 87 104 87 106C87 109.5 80 114 80 114Z" fill="#EC4899"/>
+
+                                        <!-- Cute Mascot Head Helmet -->
+                                        <rect x="36" y="38" width="88" height="60" rx="28" fill="url(#headGrad)" stroke="#CBD5E1" stroke-width="2.5"/>
+                                        <!-- Shiny Head Highlight -->
+                                        <path d="M48 48C55 43 72 42 80 42" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+
+                                        <!-- Screen Visor Face -->
+                                        <rect x="44" y="46" width="72" height="44" rx="20" fill="url(#visorGrad)"/>
+                                        
+                                        <!-- Visor Reflection Flare -->
+                                        <path d="M52 52L64 52" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                                        <circle cx="106" cy="52" r="2" fill="#38BDF8" opacity="0.8"/>
+
+                                        <!-- Happy Smiling Eyes ( ^   ^ ) -->
+                                        <path d="M58 66C58 61 64 61 64 66" stroke="#38BDF8" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+                                        <path d="M96 66C96 61 102 61 102 66" stroke="#38BDF8" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+
+                                        <!-- Rosy Blushing Cheeks -->
+                                        <circle cx="54" cy="74" r="4" fill="#F43F5E" opacity="0.75"/>
+                                        <circle cx="106" cy="74" r="4" fill="#F43F5E" opacity="0.75"/>
+
+                                        <!-- Cute Joyful Smile -->
+                                        <path d="M75 72C75 75.5 85 75.5 85 72" stroke="#FDE047" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                                    </svg>
+                                </div>
+
+                                <!-- Mascot Floor Shadow (Contracts/Expands with float) -->
+                                <div class="w-24 h-3 bg-slate-400/40 rounded-full blur-[2px] animate-mascot-shadow -mt-2"></div>
+                            </div>
+
+                            <!-- Title & Description -->
+                            <h4 class="text-xl font-extrabold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                                Tell us about your experience
+                            </h4>
+                            <p class="text-sm text-slate-500 mb-5 leading-relaxed max-w-sm mx-auto">
+                                Click the button below to easily submit your success story via our feedback page.
+                            </p>
+
+                            <!-- Character Badges -->
+                            <div class="flex items-center justify-center gap-2 mb-6 text-[11px] font-bold text-slate-600">
+                                <span class="inline-flex items-center gap-1 bg-slate-100/90 px-2.5 py-1 rounded-full border border-slate-200/70">
+                                    ⚡ 1-Min Quick
+                                </span>
+                                <span class="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full border border-blue-200/60">
+                                    🌟 Inspires Community
+                                </span>
+                            </div>
+
+                            <!-- Animated Button with Dynamic Glow & Shimmer -->
+                            <div class="relative group/btn mt-2">
+                                <!-- Ambient Pulsing Aura Glow Behind Button -->
+                                <div class="absolute -inset-1 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 opacity-60 blur-lg transition-all duration-500 group-hover/btn:opacity-100 group-hover/btn:blur-xl animate-btn-aura pointer-events-none"></div>
+
+                                <a href="{{ route('feedback') }}" class="relative overflow-hidden inline-flex items-center justify-center w-full py-4 px-6 text-white font-extrabold text-sm sm:text-base rounded-2xl shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] animate-gradient-flow btn-animated-gradient">
+                                    <!-- Light Beam Passing Across -->
+                                    <span class="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none animate-light-beam"></span>
+
+                                    <!-- Corner Sparkle Accent -->
+                                    <span class="absolute top-2.5 right-3 text-xs animate-sparkle-twinkle select-none pointer-events-none">✨</span>
+                                    
+                                    <span class="relative z-10 flex items-center justify-center gap-2 tracking-wide drop-shadow-sm">
+                                        <span>Share Your Story</span>
+                                        <svg class="w-5 h-5 animate-arrow-nudge group-hover/btn:translate-x-1.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                        </svg>
+                                    </span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
