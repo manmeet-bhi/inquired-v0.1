@@ -6,16 +6,16 @@
 <div class="bg-white min-h-screen">
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         
-        <!-- Company Profile Header Card -->
-        <div class="bg-gradient-to-br from-slate-50 via-white to-blue-50/40 rounded-3xl border border-slate-100 p-6 sm:p-8 lg:p-10 mb-8 shadow-sm">
-            <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
+        <!-- Company Profile Header -->
+        <div class="mb-8 pb-8 border-b border-slate-100">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 
-                <div class="flex flex-col sm:flex-row items-start gap-5 flex-1 min-w-0">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 flex-1 min-w-0">
                     {{-- Logo --}}
                     @php
                         $firstAlphabet = strtoupper(substr($company->name ?? 'C', 0, 1));
                     @endphp
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border border-slate-200 bg-white flex items-center justify-center overflow-hidden shadow-sm flex-shrink-0">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border border-slate-200 bg-white flex items-center justify-center overflow-hidden shadow-xs flex-shrink-0">
                         @if($company->logo_url)
                             <img src="{{ $company->logo_url }}" alt="{{ $company->name }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" loading="eager">
                             <div class="w-full h-full bg-slate-100 flex items-center justify-center font-bold text-slate-700 text-2xl uppercase" style="display:none;">
@@ -30,38 +30,31 @@
 
                     {{-- Company Information --}}
                     <div class="flex-1 min-w-0">
-                        <div class="flex flex-wrap items-center gap-2.5 mb-2">
+                        <div class="flex flex-wrap items-center gap-2.5 mb-2.5">
                             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight break-words">{{ $company->name }}</h1>
-                            @if($company->type)
-                                <span class="inline-flex items-center text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 border border-blue-200/80 px-2.5 py-1 rounded-full">
-                                    {{ ucfirst($company->type) }}
-                                </span>
-                            @endif
                         </div>
 
-                        <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-slate-600 mb-4">
+                        {{-- Separate Industry Tags (1 Open Position badge removed) --}}
+                        <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 text-xs sm:text-sm text-slate-600">
                             @if($company->industry)
-                                <span class="inline-flex items-center gap-1.5 font-medium text-slate-700 bg-slate-100 px-3 py-1 rounded-lg">
-                                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                                    {{ $company->industry }}
-                                </span>
+                                @php
+                                    $industries = array_filter(array_map('trim', preg_split('/[,|\/]+/', $company->industry)));
+                                @endphp
+                                @foreach($industries as $index => $ind)
+                                    <span class="inline-flex items-center gap-1.5 font-medium text-slate-700 bg-slate-100 px-3 py-1 rounded-lg">
+                                        @if($index === 0)
+                                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                        @endif
+                                        {{ $ind }}
+                                    </span>
+                                @endforeach
                             @endif
-                            <span class="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg">
-                                <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                {{ $jobs->total() }} {{ $jobs->total() === 1 ? 'Open Position' : 'Open Positions' }}
-                            </span>
                         </div>
-
-                        @if($company->description)
-                            <p class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-4xl break-words">
-                                {{ $company->description }}
-                            </p>
-                        @endif
                     </div>
                 </div>
 
                 {{-- Action / Links --}}
-                <div class="flex flex-wrap sm:flex-nowrap md:flex-col items-stretch gap-2.5 flex-shrink-0">
+                <div class="flex items-center flex-wrap sm:flex-nowrap gap-2.5 flex-shrink-0">
                     @if($company->website)
                         <a href="{{ $company->website }}" target="_blank" rel="noopener noreferrer" 
                            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50/50 shadow-xs transition-all">
@@ -69,6 +62,17 @@
                             <span>Website</span>
                         </a>
                     @endif
+
+                    {{-- Info (i) Icon Button beside Website --}}
+                    <button type="button" onclick="openAboutModal()" 
+                            class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50 shadow-xs transition-all cursor-pointer flex-shrink-0"
+                            title="About {{ $company->name }}">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" stroke-width="2"></circle>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"></path>
+                        </svg>
+                    </button>
+
                     @if($company->linkedin_url)
                         <a href="{{ $company->linkedin_url }}" target="_blank" rel="noopener noreferrer" 
                            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm hover:border-[#0077b5]/30 hover:text-[#0077b5] hover:bg-blue-50/50 shadow-xs transition-all">
@@ -76,6 +80,92 @@
                             <span>LinkedIn</span>
                         </a>
                     @endif
+                </div>
+
+            </div>
+        </div>
+
+        <!-- About Company Modal -->
+        <div id="about-modal" 
+             class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity"
+             role="dialog" 
+             aria-modal="true" 
+             aria-labelledby="modal-company-title"
+             onclick="handleBackdropClick(event)">
+            
+            <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[85vh] transition-transform">
+                
+                <!-- Modal Header -->
+                <div class="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/60">
+                    <div class="flex items-center gap-3.5 min-w-0">
+                        <div class="w-11 h-11 rounded-2xl border border-slate-200 bg-white flex items-center justify-center overflow-hidden shadow-xs flex-shrink-0">
+                            @if($company->logo_url)
+                                <img src="{{ $company->logo_url }}" alt="{{ $company->name }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" loading="eager">
+                                <div class="w-full h-full bg-slate-100 flex items-center justify-center font-bold text-slate-700 text-lg uppercase" style="display:none;">
+                                    {{ $firstAlphabet }}
+                                </div>
+                            @else
+                                <div class="w-full h-full bg-slate-100 flex items-center justify-center font-bold text-slate-700 text-lg uppercase">
+                                    {{ $firstAlphabet }}
+                                </div>
+                            @endif
+                        </div>
+                        <div class="min-w-0">
+                            <h3 id="modal-company-title" class="text-base sm:text-lg font-bold text-slate-900 truncate">About {{ $company->name }}</h3>
+                            <p class="text-xs text-slate-500 font-medium">Company Overview & Details</p>
+                        </div>
+                    </div>
+                    <button type="button" 
+                            onclick="closeAboutModal()" 
+                            class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors flex-shrink-0 cursor-pointer"
+                            aria-label="Close modal">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-6 sm:p-8 overflow-y-auto space-y-4 text-sm sm:text-base text-slate-600 leading-relaxed">
+                    @if(!empty($company->description))
+                        <div class="text-slate-600 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                            {!! nl2br(e(html_entity_decode($company->description))) !!}
+                        </div>
+                    @else
+                        <p class="text-slate-500 text-sm italic">
+                            No detailed description available for {{ $company->name }} yet.
+                        </p>
+                    @endif
+
+                    @if($company->founded_year || $company->address)
+                    <div class="pt-4 border-t border-slate-100 flex flex-wrap gap-2 text-xs">
+                        @if($company->founded_year)
+                            <span class="bg-slate-100 text-slate-700 font-medium px-3 py-1 rounded-full">Founded: {{ $company->founded_year }}</span>
+                        @endif
+                        @if($company->address)
+                            <span class="bg-slate-100 text-slate-700 font-medium px-3 py-1 rounded-full">HQ: {{ $company->address }}</span>
+                        @endif
+                    </div>
+                    @endif
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="p-4 sm:p-5 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        @if($company->website)
+                            <a href="{{ $company->website }}" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1">
+                                Visit Website ↗
+                            </a>
+                        @endif
+                        @if($company->linkedin_url)
+                            <a href="{{ $company->linkedin_url }}" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-[#0077b5] hover:underline flex items-center gap-1">
+                                LinkedIn Profile ↗
+                            </a>
+                        @endif
+                    </div>
+                    <button type="button" onclick="closeAboutModal()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-xs cursor-pointer">
+                        Close
+                    </button>
                 </div>
 
             </div>
@@ -163,5 +253,33 @@
         panel.classList.toggle('hidden');
         arrow.classList.toggle('rotate-180');
     }
+
+    function openAboutModal() {
+        const modal = document.getElementById('about-modal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeAboutModal() {
+        const modal = document.getElementById('about-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+    }
+
+    function handleBackdropClick(event) {
+        if (event.target.id === 'about-modal') {
+            closeAboutModal();
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeAboutModal();
+        }
+    });
 </script>
 @endsection

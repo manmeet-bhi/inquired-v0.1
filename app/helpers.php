@@ -37,7 +37,11 @@ if (!function_exists('media_url')) {
         }
 
         // Always resolve through the /media route dynamically adapting to current APP_URL
-        return url('media/' . $cleanPath);
+        try {
+            return route('media.show', ['path' => $cleanPath]);
+        } catch (\Throwable $e) {
+            return url('media/' . $cleanPath);
+        }
     }
 }
 
