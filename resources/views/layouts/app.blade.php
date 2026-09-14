@@ -63,16 +63,17 @@
 
         $schemaJson = !empty($pageSeo?->schema_json) ? $pageSeo->schema_json : null;
         if (empty($schemaJson)) {
+            $jsonFlags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
             if (request()->routeIs('jobs.show') && isset($job) && $job instanceof \App\Models\Job) {
-                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateJobSchema($job), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateJobSchema($job), $jsonFlags);
             } elseif (request()->routeIs('company.show') && isset($company) && $company instanceof \App\Models\Company) {
-                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateCompanySchema($company), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateCompanySchema($company), $jsonFlags);
             } elseif (request()->routeIs('category.show') && isset($category) && $category instanceof \App\Models\JobCategory) {
-                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateCategorySchema($category), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateCategorySchema($category), $jsonFlags);
             } elseif (!empty($seoSettings['schema_json'])) {
                 $schemaJson = $seoSettings['schema_json'];
             } else {
-                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateOrganizationSchema(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateOrganizationSchema(), $jsonFlags);
             }
         }
 

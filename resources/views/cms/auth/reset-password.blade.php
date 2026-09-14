@@ -127,9 +127,15 @@
                 </button>
 
                 <div class="text-center mt-6">
-                    <a href="{{ route('cms.login') }}" class="text-sm font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
-                        Back to Login
-                    </a>
+                    @if(Auth::guard('admin')->check())
+                        <a href="{{ route('cms.profile') }}" class="text-sm font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
+                            Back to Profile Settings
+                        </a>
+                    @else
+                        <a href="{{ route('cms.login') }}" class="text-sm font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
+                            Back to Login
+                        </a>
+                    @endif
                 </div>
             </form>
         </div>

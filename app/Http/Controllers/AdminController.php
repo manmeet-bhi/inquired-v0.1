@@ -1339,12 +1339,20 @@ class AdminController extends Controller
                 'Time Ago'
             ]);
 
+            // Defense against CSV Formula Injection (CWE-1236)
+            $sanitizeCell = function ($val) {
+                if (is_string($val) && strlen($val) > 0 && in_array($val[0], ['=', '+', '-', '@', "\t", "\r"])) {
+                    return "'" . $val;
+                }
+                return $val;
+            };
+
             // Stream chunks of activity logs
             \App\Models\ActivityLog::with('adminUser')
                 ->latest()
-                ->chunk(250, function ($logs) use ($file) {
+                ->chunk(250, function ($logs) use ($file, $sanitizeCell) {
                     foreach ($logs as $log) {
-                        fputcsv($file, [
+                        $row = [
                             $log->id,
                             $log->adminUser->name ?? 'System',
                             $log->adminUser->email ?? 'N/A',
@@ -1356,7 +1364,8 @@ class AdminController extends Controller
                             $log->ip_address ?? 'N/A',
                             $log->created_at ? $log->created_at->format('Y-m-d H:i:s') : 'N/A',
                             $log->created_at ? $log->created_at->diffForHumans() : 'N/A',
-                        ]);
+                        ];
+                        fputcsv($file, array_map($sanitizeCell, $row));
                     }
                 });
 

@@ -56,12 +56,13 @@
 
         $schemaJson = !empty($pageSeo?->schema_json) ? $pageSeo->schema_json : null;
         if (empty($schemaJson)) {
+            $jsonFlags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
             if (request()->routeIs('blog.show') && isset($post) && $post instanceof \App\Models\Post) {
-                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateBlogPostingSchema($post), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateBlogPostingSchema($post), $jsonFlags);
             } elseif (!empty($seoSettings['schema_json'])) {
                 $schemaJson = $seoSettings['schema_json'];
             } else {
-                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateOrganizationSchema(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateOrganizationSchema(), $jsonFlags);
             }
         }
 

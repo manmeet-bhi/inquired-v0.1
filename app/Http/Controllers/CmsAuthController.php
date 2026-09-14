@@ -14,6 +14,10 @@ class CmsAuthController extends Controller
 {
     public function showLogin()
     {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('cms.dashboard');
+        }
+
         \Log::debug('CMS Login page visited');
         return view('cms.auth.login');
     }
@@ -99,7 +103,8 @@ class CmsAuthController extends Controller
         // Check if admin user exists
         $admin = AdminUser::where('email', $request->email)->first();
         if (!$admin) {
-            return back()->withErrors(['email' => 'We can\'t find a user with that email address.']);
+            // Mitigate user enumeration (OWASP) by returning standard confirmation
+            return back()->with('status', 'If an account exists with that email address, a password reset link has been sent.');
         }
 
         // Generate token and store in database
@@ -120,10 +125,10 @@ class CmsAuthController extends Controller
                 $message->subject('Reset Your CMS Password - Inaquired');
             });
 
-            return back()->with('status', 'We have emailed your password reset link!');
+            return back()->with('status', 'If an account exists with that email address, a password reset link has been sent.');
         } catch (\Exception $e) {
             \Log::error('Failed to send CMS password reset email: ' . $e->getMessage());
-            return back()->withErrors(['email' => 'Failed to send password reset email: ' . $e->getMessage()]);
+            return back()->withErrors(['email' => 'Failed to send password reset email. Please try again later.']);
         }
     }
 

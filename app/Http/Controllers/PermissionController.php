@@ -9,11 +9,19 @@ use Illuminate\Support\Facades\Auth;
 
 class PermissionController extends Controller
 {
+    private function ensurePermissionsExist()
+    {
+        if (Permission::count() === 0) {
+            (new \Database\Seeders\PermissionSeeder())->run();
+        }
+    }
+
     public function index()
     {
         $this->checkPermission('users.permissions');
+        $this->ensurePermissionsExist();
         
-        $adminUsers = AdminUser::with('permissions')->where('role', '!=', 'superadmin')->get();
+        $adminUsers = AdminUser::with('permissions')->get();
         $permissions = Permission::all()->groupBy('category');
         
         return view('cms.permissions.index', compact('adminUsers', 'permissions'));
@@ -22,10 +30,7 @@ class PermissionController extends Controller
     public function edit(AdminUser $adminUser)
     {
         $this->checkPermission('users.permissions');
-        
-        if ($adminUser->isSuperAdmin()) {
-            return redirect()->back()->with('error', 'Cannot edit super admin permissions');
-        }
+        $this->ensurePermissionsExist();
         
         $permissions = Permission::all()->groupBy('category');
         $userPermissions = $adminUser->permissions()->pluck('name')->toArray();
@@ -36,15 +41,17 @@ class PermissionController extends Controller
     public function update(Request $request, AdminUser $adminUser)
     {
         $this->checkPermission('users.permissions');
+        $this->ensurePermissionsExist();
         
         if ($adminUser->isSuperAdmin()) {
-            return redirect()->back()->with('error', 'Cannot edit super admin permissions');
+            return redirect()->route('cms.permissions.index')
+                ->with('info', 'Super Admins have full access to all system permissions by default.');
         }
         
         $permissions = $request->input('permissions', []);
         $adminUser->syncPermissions($permissions);
         
         return redirect()->route('cms.permissions.index')
-            ->with('success', 'Permissions updated successfully');
+            ->with('success', 'Permissions updated successfully for ' . $adminUser->name);
     }
 }

@@ -7,7 +7,6 @@
     <div class="flex justify-between items-center mb-8">
         <div>
             <h1 class="text-3xl font-bold text-slate-900">Manage Admin Permissions</h1>
-            <p class="text-slate-500 mt-2">Grant or revoke specific access rights to CMS managers.</p>
         </div>
         <a href="{{ route('cms.users') }}" class="inline-flex items-center justify-center px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 hover:text-indigo-600 transition-colors shadow-sm font-semibold text-sm">
             <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> Back to Users
@@ -52,7 +51,12 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4">
-                                @if($user->permissions && $user->permissions->count() > 0)
+                                @if($user->isSuperAdmin())
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                        <i data-lucide="shield-check" class="w-3.5 h-3.5 mr-1.5 text-amber-600"></i>
+                                        Full Access (Super Admin)
+                                    </span>
+                                @elseif($user->permissions && $user->permissions->count() > 0)
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-200">
                                         <span class="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
                                         {{ $user->permissions->count() }} Permitted

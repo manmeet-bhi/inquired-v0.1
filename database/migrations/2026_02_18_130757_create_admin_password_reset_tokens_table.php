@@ -13,8 +13,9 @@ return new class extends Migration
     {
         if (!Schema::hasTable('admin_password_reset_tokens')) {
             Schema::create('admin_password_reset_tokens', function (Blueprint $table) {
-                $table->id();
-                $table->timestamps();
+                $table->string('email')->primary();
+                $table->string('token');
+                $table->timestamp('created_at')->nullable();
             });
         }
     }
