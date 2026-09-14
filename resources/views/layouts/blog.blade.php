@@ -56,34 +56,12 @@
 
         $schemaJson = !empty($pageSeo?->schema_json) ? $pageSeo->schema_json : null;
         if (empty($schemaJson)) {
-            if (isset($post) && is_object($post) && $post instanceof \App\Models\Post) {
-                $schemaJson = json_encode([
-                    '@context' => 'https://schema.org',
-                    '@type' => 'BlogPosting',
-                    'headline' => $post->title,
-                    'description' => $post->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($post->content ?? ''), 160),
-                    'image' => $post->featured_image_url ?: (!empty($seoSettings['og_default_image']) ? media_url($seoSettings['og_default_image']) : null),
-                    'datePublished' => $post->published_at ? $post->published_at->format('Y-m-d\TH:i:sP') : ($post->created_at ? $post->created_at->format('Y-m-d\TH:i:sP') : date('c')),
-                    'dateModified' => $post->updated_at ? $post->updated_at->format('Y-m-d\TH:i:sP') : date('c'),
-                    'author' => [
-                        '@type' => 'Person',
-                        'name' => $post->author?->name ?? 'Inaquired Editorial Team'
-                    ],
-                    'publisher' => [
-                        '@type' => 'Organization',
-                        'name' => $seoSettings['site_title'] ?? 'Inaquired',
-                        'logo' => [
-                            '@type' => 'ImageObject',
-                            'url' => asset('assets/logos/logo.png')
-                        ]
-                    ],
-                    'mainEntityOfPage' => [
-                        '@type' => 'WebPage',
-                        '@id' => url()->current()
-                    ]
-                ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+            if (request()->routeIs('blog.show') && isset($post) && $post instanceof \App\Models\Post) {
+                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateBlogPostingSchema($post), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
             } elseif (!empty($seoSettings['schema_json'])) {
                 $schemaJson = $seoSettings['schema_json'];
+            } else {
+                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateOrganizationSchema(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
             }
         }
 

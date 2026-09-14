@@ -358,7 +358,7 @@ Route::prefix('cms')->name('cms.')->middleware(['cms.admin'])->group(function ()
 
     Route::post('/seo/sitemap/generate', [App\Http\Controllers\SeoController::class, 'generateSitemap'])->name('seo.sitemap.generate');
     Route::get('/seo/job-schema', [App\Http\Controllers\SeoController::class, 'getJobPostingSchema'])->name('seo.job-schema');
-
+    Route::get('/seo/generate-entity-schema', [App\Http\Controllers\SeoController::class, 'generateEntitySchema'])->name('seo.generate-entity-schema');
 
 });
 

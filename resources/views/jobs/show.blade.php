@@ -458,10 +458,5 @@
             closeApplicationModal();
         });
     </script>
-
-    <!-- Job Posting Schema -->
-    <script type="application/ld+json">
-        {!! app('App\Http\Controllers\SeoController')->generateJobPostingSchema($job->id) !!}
-    </script>
 </div>
 @endsection

@@ -576,7 +576,7 @@
   "&#64;context": "https://schema.org",
   "&#64;type": "Organization",
   "name": "Inaquired",
-  "url": "https://inaquired.com"
+  "url": "Website URL"
 }'>{{ old('schema_json', $globalSettings['schema_json'] ?? '') }}</textarea>
                 </div>
 

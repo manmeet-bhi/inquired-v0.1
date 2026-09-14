@@ -183,17 +183,20 @@
 
                 <!-- Structured Data Section -->
                 <div class="mb-10 border-b border-slate-100 pb-10">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center">
-                        <i data-lucide="code" class="w-5 h-5 mr-2 text-green-600"></i> Structured Data
-                    </h3>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800 flex items-center">
+                                <i data-lucide="code-2" class="w-5 h-5 mr-2 text-indigo-600"></i> Structured Data (Schema JSON-LD)
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">Leave empty to use automatic schema generation, or insert custom JSON-LD (without &lt;script&gt; tags).</p>
+                        </div>
+                        <button type="button" onclick="autoGenerateSchemaJson()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold border border-indigo-200/60 transition-colors shadow-2xs shrink-0">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500"></i>
+                            <span>Auto-Generate from Record</span>
+                        </button>
+                    </div>
                     <div>
-                        <label for="schema_json" class="block text-sm font-semibold text-slate-700 mb-2">Schema JSON (Page Specific)</label>
-                        <p class="text-xs text-slate-500 mb-2">Insert specific structural valid JSON-LD without the script tags. This overrides the global schema.</p>
-                        <textarea id="schema_json" name="schema_json" style="font-family: monospace" rows="6" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" placeholder='{
-  "@@context": "https://schema.org",
-  "@@type": "Article",
-  "headline": "Example Title"
-}'>{{ old('schema_json', $pageSeo->schema_json) }}</textarea>
+                        <textarea id="schema_json" name="schema_json" style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;" rows="6" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-xs leading-relaxed bg-slate-50 text-slate-900 font-mono" placeholder="Leave empty for automatic Google-compliant schema, or click 'Auto-Generate' above">{{ old('schema_json', $pageSeo->schema_json) }}</textarea>
                     </div>
                 </div>
 
@@ -278,6 +281,28 @@ document.addEventListener('DOMContentLoaded', function() {
             if (previewUrl) previewUrl.textContent = baseUrl + '/' + this.value;
         });
     }
+
+    window.autoGenerateSchemaJson = function () {
+        const type = "{{ $pageSeo->page_type }}";
+        const id = "{{ $pageSeo->page_id }}";
+        const schemaTextarea = document.getElementById('schema_json');
+        if (!schemaTextarea) return;
+
+        const endpoint = `{{ route('cms.seo.generate-entity-schema') }}?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id || '')}`;
+        fetch(endpoint)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.schema) {
+                    schemaTextarea.value = data.schema;
+                } else {
+                    alert(data.error || 'Could not auto-generate schema for this record.');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Network error while generating schema.');
+            });
+    };
 });
 </script>
 @endsection

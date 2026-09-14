@@ -449,26 +449,29 @@ class SeoController extends Controller
         return redirect()->route('cms.seo.index')->with('success', 'Sitemap generated and search engines notified!');
     }
 
-    public function generateJobPostingSchema($jobId)
+    public function generateEntitySchema(Request $request)
     {
-        $job = Job::with(['company', 'category'])->findOrFail($jobId);
+        $this->checkPermission('seo.manage');
 
-        return json_encode(SeoHelper::generateJobSchema($job), JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
-    }
+        $type = $request->input('type');
+        $id = $request->input('id');
 
-    public function getJobPostingSchema(Request $request)
-    {
-        $jobId = $request->input('job_id');
-        
-        if (!$jobId) {
-            return response()->json(['error' => 'Job ID is required'], 400);
+        if (!$type) {
+            return response()->json(['error' => 'Type is required.'], 400);
         }
 
         try {
-            $schema = $this->generateJobPostingSchema($jobId);
-            return response()->json(['schema' => $schema]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Job not found'], 404);
+            $schema = SeoHelper::generateEntitySchema($type, $id);
+            if (!$schema) {
+                return response()->json(['error' => 'Unable to generate schema for selected record.'], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'schema' => json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'Schema generation error: ' . $e->getMessage()], 500);
         }
     }
 
