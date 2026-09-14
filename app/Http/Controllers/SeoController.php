@@ -24,7 +24,7 @@ class SeoController extends Controller
     {
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $this->checkPermission('seo.manage');
         $globalSettings = SeoSetting::getGlobalSettings();
@@ -44,7 +44,23 @@ class SeoController extends Controller
         
         $seoScore = $score;
 
-        return view('cms.seo.index', compact('globalSettings', 'seoScore'));
+        // Fetch pages for Tab 5 (Page SEO)
+        $pagesQuery = PageSeo::with(['job', 'category', 'company', 'post']);
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $pagesQuery->where(function($q) use ($search) {
+                $q->where('slug', 'like', "%{$search}%")
+                  ->orWhere('meta_title', 'like', "%{$search}%")
+                  ->orWhere('meta_description', 'like', "%{$search}%");
+            });
+        }
+        $pages = $pagesQuery->latest()->paginate(15)->withQueryString();
+
+        // Fetch verification files for Tab 6 (Search Engine Indexing)
+        $files = File::glob(public_path('*.html'));
+        $verificationFiles = array_map('basename', $files);
+
+        return view('cms.seo.index', compact('globalSettings', 'seoScore', 'pages', 'verificationFiles'));
     }
 
     public function indexing()
@@ -222,7 +238,8 @@ class SeoController extends Controller
         // Clear the cached global settings
         Cache::forget('global_seo_settings');
 
-        return redirect()->route('cms.seo.index')->with('success', 'Global SEO settings updated successfully!');
+        $tab = $request->input('current_tab', 'basic');
+        return redirect()->to(route('cms.seo.index') . '#' . $tab)->with('success', 'Global SEO settings updated successfully!');
     }
 
 

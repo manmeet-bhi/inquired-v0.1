@@ -246,6 +246,7 @@ Route::prefix('cms')->name('cms.')->middleware(['cms.admin'])->group(function ()
     Route::post('/logout', [App\Http\Controllers\CmsAuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/activity', [App\Http\Controllers\AdminController::class, 'activity'])->name('activity');
+    Route::get('/activity/export', [App\Http\Controllers\AdminController::class, 'exportActivityCsv'])->name('activity.export');
     Route::delete('/activity/clear', [App\Http\Controllers\AdminController::class, 'clearActivity'])->name('activity.clear');
     
     Route::get('/api/jobs/search', [App\Http\Controllers\AdminController::class, 'searchJobs'])->name('api.jobs.search');

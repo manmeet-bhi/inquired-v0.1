@@ -1276,12 +1276,72 @@ class AdminController extends Controller
     public function clearActivity()
     {
         $currentUser = Auth::guard('admin')->user();
-        if (!$currentUser || $currentUser->role !== 'superadmin') {
+        if (!$currentUser || !$currentUser->isSuperAdmin()) {
             return back()->with('error', 'Only superadmins are authorized to clear activity logs.');
         }
 
         \App\Models\ActivityLog::query()->delete();
 
         return redirect()->route('cms.activity')->with('success', 'All activity logs have been cleared successfully.');
+    }
+
+    public function exportActivityCsv(Request $request)
+    {
+        $fileName = 'activity_logs_' . date('Y-m-d_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$fileName}\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0'
+        ];
+
+        $callback = function () {
+            $file = fopen('php://output', 'w');
+            
+            // UTF-8 BOM for Excel compatibility
+            fputs($file, "\xEF\xBB\xBF");
+
+            // CSV Header Row
+            fputcsv($file, [
+                'Log ID',
+                'Admin User',
+                'Admin Email',
+                'Admin Role',
+                'Action Taken',
+                'Target Record',
+                'Target Type',
+                'Target ID',
+                'IP Address',
+                'Date & Time (UTC/Server)',
+                'Time Ago'
+            ]);
+
+            // Stream chunks of activity logs
+            \App\Models\ActivityLog::with('adminUser')
+                ->latest()
+                ->chunk(250, function ($logs) use ($file) {
+                    foreach ($logs as $log) {
+                        fputcsv($file, [
+                            $log->id,
+                            $log->adminUser->name ?? 'System',
+                            $log->adminUser->email ?? 'N/A',
+                            $log->adminUser->role ?? 'N/A',
+                            $log->action,
+                            $log->target_name ?? 'N/A',
+                            $log->target_type ? str_replace('App\\Models\\', '', $log->target_type) : 'N/A',
+                            $log->target_id ?? 'N/A',
+                            $log->ip_address ?? 'N/A',
+                            $log->created_at ? $log->created_at->format('Y-m-d H:i:s') : 'N/A',
+                            $log->created_at ? $log->created_at->diffForHumans() : 'N/A',
+                        ]);
+                    }
+                });
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }
