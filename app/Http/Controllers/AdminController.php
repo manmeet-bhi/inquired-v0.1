@@ -525,14 +525,12 @@ class AdminController extends Controller
             'name' => 'required|string|max:255|unique:job_categories',
             'slug' => 'required|string|max:255|unique:job_categories',
             'description' => 'nullable|string',
-            'color' => 'nullable|string|max:7',
             'is_active' => 'boolean'
         ]);
 
-        $data = $request->only(['name', 'slug', 'description', 'color', 'is_active']);
+        $data = $request->only(['name', 'slug', 'description', 'is_active']);
         $data['description'] = sanitize_html($request->description);
         $data['is_active'] = $request->has('is_active');
-        $data['color'] = $request->color ?? '#3B82F6';
 
         $category = JobCategory::create($data);
         
@@ -560,14 +558,12 @@ class AdminController extends Controller
             'name' => 'required|string|max:255|unique:job_categories,name,' . $category->id,
             'slug' => 'required|string|max:255|unique:job_categories,slug,' . $category->id,
             'description' => 'nullable|string',
-            'color' => 'nullable|string|max:7',
             'is_active' => 'boolean'
         ]);
 
-        $data = $request->only(['name', 'slug', 'description', 'color', 'is_active']);
+        $data = $request->only(['name', 'slug', 'description', 'is_active']);
         $data['description'] = sanitize_html($request->description);
         $data['is_active'] = $request->has('is_active');
-        $data['color'] = $request->color ?? '#3B82F6';
 
         $category->update($data);
         return redirect()->route('cms.categories')->with('success', 'Category updated successfully');

@@ -13,7 +13,6 @@ class JobCategory extends Model
         'name',
         'description',
         'slug',
-        'color',
         'is_active'
     ];
 

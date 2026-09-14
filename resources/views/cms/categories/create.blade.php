@@ -35,14 +35,6 @@
                     @enderror
                 </div>
 
-                <!-- Color -->
-                <div>
-                    <label for="color" class="cms-label">Color</label>
-                    <input type="color" id="color" name="color" value="{{ old('color', '#3B82F6') }}" class="w-full h-10 px-2 py-1 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('color') border-red-500 @enderror">
-                    @error('color')
-                        <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p>
-                    @enderror
-                </div>
 
                 <!-- Description -->
                 <div class="md:col-span-2">
