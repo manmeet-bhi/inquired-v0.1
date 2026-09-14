@@ -345,13 +345,23 @@ class JobController extends Controller
         });
 
         $page = $request->get('page', 1);
-        $cacheKey = "categories_index_p{$page}";
+        $search = trim($request->get('search', ''));
+        $cacheKey = "categories_index_p{$page}_" . md5($search);
 
-        $categories = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() {
-            return JobCategory::where('is_active', true)
-                ->withCount('jobs')
+        $categories = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() use ($search) {
+            $query = JobCategory::where('is_active', true)
+                ->withCount('jobs');
+
+            if (!empty($search)) {
+                $query->where(function($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('description', 'like', "%{$search}%");
+                });
+            }
+
+            return $query->orderBy('sort_order')
                 ->orderBy('name')
-                ->paginate(21);
+                ->paginate(24);
         });
             
         return view('jobs.categories', compact('categories', 'pageSeo'));
