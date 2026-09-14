@@ -5,9 +5,9 @@
 
 @push('styles')
 <style>
-.line-clamp-1 {
+.line-clamp-2 {
     display: -webkit-box;
-    -webkit-line-clamp: 1;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -42,18 +42,23 @@
             </div>
 
             @if($categories->count() > 0)
-            <!-- Design 5: Compact Dense 4-Column Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Design 3: Minimal List Cards with Left Accent -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($categories as $category)
-                    <a href="{{ route('category.show', $category->slug) }}" class="block bg-white rounded-xl border border-gray-200 p-4 hover:border-blue-400 hover:shadow-xs transition-all group">
-                        <div class="flex items-center justify-between gap-2 mb-1.5">
-                            <h3 class="text-xs font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors">{{ $category->name }}</h3>
-                            <span class="text-[11px] font-semibold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded whitespace-nowrap">{{ $category->jobs_count }}</span>
+                    <a href="{{ route('category.show', $category->slug) }}" class="block bg-white rounded-xl border border-gray-200 p-5 hover:border-gray-400 hover:shadow-sm transition-all relative overflow-hidden group">
+                        <!-- Left Accent Bar -->
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-600"></div>
+                        
+                        <div class="pl-2">
+                            <div class="flex items-center justify-between gap-2">
+                                <h3 class="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors truncate">{{ $category->name }}</h3>
+                                <span class="text-xs font-bold text-gray-500 whitespace-nowrap">{{ $category->jobs_count }} {{ Str::plural('Job', $category->jobs_count) }}</span>
+                            </div>
+                            
+                            @if($category->description)
+                            <p class="text-xs text-gray-500 line-clamp-2 mt-1.5 leading-relaxed">{{ $category->description }}</p>
+                            @endif
                         </div>
-
-                        @if($category->description)
-                        <p class="text-[11px] text-gray-500 line-clamp-1 mt-1">{{ $category->description }}</p>
-                        @endif
                     </a>
                 @endforeach
             </div>
