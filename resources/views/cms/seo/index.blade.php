@@ -13,7 +13,6 @@
                     Health Score: {{ $seoScore ?? 0 }}%
                 </span>
             </div>
-            <p class="text-sm text-slate-500 mt-1">Configure meta tags, open graph, technical directives, schemas, page metadata, and search engine indexing.</p>
         </div>
 
         <div class="flex items-center gap-3">
@@ -133,7 +132,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Main Form Column -->
-                <div class="lg:col-span-2 space-y-6">
+                <div class="lg:col-span-2 space-y-6 min-w-0">
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
                         <div class="border-b border-slate-100 pb-4">
                             <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -184,12 +183,12 @@
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Search Directives</label>
                                 <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-3">
-                                    <label class="flex items-center text-xs font-medium text-slate-700 cursor-pointer select-none">
-                                        <input type="checkbox" name="global_noindex" value="1" {{ old('global_noindex', !empty($globalSettings['global_noindex']) ? '1' : '') ? 'checked' : '' }} class="mr-2.5 h-4 w-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                                    <label class="flex items-center gap-3 text-xs font-medium text-slate-700 cursor-pointer select-none">
+                                        <input type="checkbox" name="global_noindex" value="1" {{ old('global_noindex', !empty($globalSettings['global_noindex']) ? '1' : '') ? 'checked' : '' }} class="h-4 w-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 shrink-0">
                                         <span>NoIndex (Prevent search indexing)</span>
                                     </label>
-                                    <label class="flex items-center text-xs font-medium text-slate-700 cursor-pointer select-none">
-                                        <input type="checkbox" name="global_nofollow" value="1" {{ old('global_nofollow', !empty($globalSettings['global_nofollow']) ? '1' : '') ? 'checked' : '' }} class="mr-2.5 h-4 w-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                                    <label class="flex items-center gap-3 text-xs font-medium text-slate-700 cursor-pointer select-none">
+                                        <input type="checkbox" name="global_nofollow" value="1" {{ old('global_nofollow', !empty($globalSettings['global_nofollow']) ? '1' : '') ? 'checked' : '' }} class="h-4 w-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 shrink-0">
                                         <span>NoFollow (Do not follow outbound links)</span>
                                     </label>
                                 </div>
@@ -206,8 +205,8 @@
                                                 <img src="{{ media_url($globalSettings['favicon']) }}" class="w-5 h-5 rounded shadow-2xs">
                                                 <span class="text-slate-600">Current Favicon</span>
                                             </div>
-                                            <label class="text-rose-600 hover:text-rose-700 cursor-pointer font-medium flex items-center gap-1">
-                                                <input type="checkbox" name="remove_favicon" value="1" class="rounded text-rose-600">
+                                            <label class="text-rose-600 hover:text-rose-700 cursor-pointer font-medium flex items-center gap-2 select-none">
+                                                <input type="checkbox" name="remove_favicon" value="1" class="rounded text-rose-600 h-4 w-4 border-slate-300 focus:ring-rose-500 shrink-0">
                                                 <span>Remove</span>
                                             </label>
                                         </div>
@@ -228,34 +227,34 @@
                 </div>
 
                 <!-- Google Live Preview Column -->
-                <div class="space-y-6">
-                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <div class="space-y-6 min-w-0 w-full">
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 min-w-0 overflow-hidden">
                         <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
                             <i data-lucide="eye" class="w-3.5 h-3.5 text-indigo-500"></i>
                             Google Search Result Preview
                         </h4>
 
                         <!-- Google SERP Card -->
-                        <div class="border border-slate-200 rounded-xl p-4 bg-white shadow-xs space-y-1.5 font-sans">
-                            <div class="flex items-center gap-2">
-                                <div class="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center text-[10px] text-slate-500 font-bold">
+                        <div class="border border-slate-200 rounded-xl p-4 bg-white shadow-xs space-y-2 font-sans min-w-0 max-w-full overflow-hidden">
+                            <div class="flex items-center gap-2.5 min-w-0 w-full overflow-hidden">
+                                <div class="w-6 h-6 rounded-full bg-slate-100 border border-slate-200/80 flex items-center justify-center text-[10px] text-slate-500 font-bold shrink-0 overflow-hidden">
                                     @if(!empty($globalSettings['favicon']))
-                                        <img src="{{ media_url($globalSettings['favicon']) }}" class="w-3.5 h-3.5 rounded-full">
+                                        <img src="{{ media_url($globalSettings['favicon']) }}" class="w-4 h-4 rounded-full object-contain">
                                     @else
-                                        <i data-lucide="globe" class="w-3 h-3 text-slate-400"></i>
+                                        <i data-lucide="globe" class="w-3.5 h-3.5 text-slate-400"></i>
                                     @endif
                                 </div>
-                                <div class="flex flex-col">
-                                    <span class="text-[12px] text-slate-800 font-medium leading-none">{{ parse_url(url('/'), PHP_URL_HOST) }}</span>
-                                    <span id="preview_serp_url" class="text-[11px] text-slate-500 truncate">{{ $globalSettings['meta_canonical'] ?? url('/') }}</span>
+                                <div class="flex flex-col min-w-0 flex-1 overflow-hidden">
+                                    <span class="text-[12px] text-slate-800 font-medium leading-tight truncate">{{ parse_url(url('/'), PHP_URL_HOST) }}</span>
+                                    <span id="preview_serp_url" class="text-[11px] text-slate-500 truncate block font-normal" style="overflow-wrap: anywhere; word-break: break-all;">{{ $globalSettings['meta_canonical'] ?? url('/') }}</span>
                                 </div>
                             </div>
 
-                            <h5 id="preview_serp_title" class="text-base text-[#1a0dab] hover:underline cursor-pointer font-medium leading-snug line-clamp-1">
+                            <h5 id="preview_serp_title" class="text-base text-[#1a0dab] hover:underline cursor-pointer font-medium leading-snug line-clamp-2 block break-words" style="overflow-wrap: anywhere; word-break: break-word; max-width: 100%;">
                                 {{ $globalSettings['site_title'] ?? 'Inaquired - Discover Career Opportunities' }}
                             </h5>
 
-                            <p id="preview_serp_desc" class="text-xs text-[#4d5156] leading-relaxed line-clamp-2">
+                            <p id="preview_serp_desc" class="text-xs text-[#4d5156] leading-relaxed line-clamp-3 block break-words" style="overflow-wrap: anywhere; word-break: break-word; max-width: 100%;">
                                 {{ $globalSettings['meta_description'] ?? 'Explore top jobs, curated career openings, industry hiring trends, and company insights.' }}
                             </p>
                         </div>
@@ -353,8 +352,8 @@
                                         <img src="{{ media_url($globalSettings['og_default_image']) }}" class="h-8 w-12 object-cover rounded shadow-2xs">
                                         <span class="text-slate-600 font-medium truncate max-w-[160px]">Active OG Image</span>
                                     </div>
-                                    <label class="text-rose-600 hover:text-rose-700 cursor-pointer font-medium flex items-center gap-1">
-                                        <input type="checkbox" name="remove_og_image" value="1" class="rounded text-rose-600">
+                                    <label class="text-rose-600 hover:text-rose-700 cursor-pointer font-medium flex items-center gap-2 select-none">
+                                        <input type="checkbox" name="remove_og_image" value="1" class="rounded text-rose-600 h-4 w-4 border-slate-300 focus:ring-rose-500 shrink-0">
                                         <span>Remove</span>
                                     </label>
                                 </div>

@@ -16,31 +16,60 @@
         $yieldedOgDescription = trim($__env->yieldContent('og_description'));
         $yieldedOgImage = trim($__env->yieldContent('og_image'));
 
-        $title = $pageSeo?->meta_title ?? ($yieldedTitle ?: $siteTitle);
-        $description = $pageSeo?->meta_description ?? ($yieldedDescription ?: ($seoSettings['meta_description'] ?? 'Find your dream job with our comprehensive job portal'));
-        $keywords = $pageSeo?->meta_keywords ?? ($yieldedKeywords ?: ($seoSettings['meta_keywords'] ?? ''));
-        $isHomePage = request()->routeIs('home') || request()->path() === '/';
-        $canonical = $pageSeo?->canonical_url
-            ?? ($yieldedCanonical ?: ($isHomePage ? ($seoSettings['meta_canonical'] ?? url('/')) : url()->current()));
-        $ogTitle = $pageSeo?->og_title
-            ?? $pageSeo?->meta_title
-            ?? ($yieldedOgTitle ?: (!empty($seoSettings['og_title']) ? $seoSettings['og_title'] : $title));
-        $ogDescription = $pageSeo?->og_description
-            ?? $pageSeo?->meta_description
-            ?? ($yieldedOgDescription ?: (!empty($seoSettings['og_description']) ? $seoSettings['og_description'] : $description));
+        $title = !empty($pageSeo?->meta_title) ? $pageSeo->meta_title : ($yieldedTitle ?: $siteTitle);
+        $title = html_entity_decode($title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        $description = !empty($pageSeo?->meta_description) ? $pageSeo->meta_description : ($yieldedDescription ?: ($seoSettings['meta_description'] ?? 'Find your dream job with our comprehensive job portal'));
+        $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        $keywords = !empty($pageSeo?->meta_keywords) ? $pageSeo->meta_keywords : ($yieldedKeywords ?: ($seoSettings['meta_keywords'] ?? ''));
+
+        $isHomePage = request()->routeIs('home') || request()->path() === '/' || empty(trim(request()->path(), '/'));
+        $canonical = !empty($pageSeo?->canonical_url)
+            ? $pageSeo->canonical_url
+            : ($yieldedCanonical ?: ($isHomePage ? (!empty($seoSettings['meta_canonical']) ? $seoSettings['meta_canonical'] : url('/')) : url()->current()));
+
+        $ogTitle = !empty($pageSeo?->og_title)
+            ? $pageSeo->og_title
+            : (!empty($pageSeo?->meta_title)
+                ? $pageSeo->meta_title
+                : ($yieldedOgTitle ?: (!empty($seoSettings['og_title']) ? $seoSettings['og_title'] : $title)));
+        $ogTitle = html_entity_decode($ogTitle, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        $ogDescription = !empty($pageSeo?->og_description)
+            ? $pageSeo->og_description
+            : (!empty($pageSeo?->meta_description)
+                ? $pageSeo->meta_description
+                : ($yieldedOgDescription ?: (!empty($seoSettings['og_description']) ? $seoSettings['og_description'] : $description)));
+        $ogDescription = html_entity_decode($ogDescription, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
         $ogImage = !empty($pageSeo?->og_image)
             ? media_url($pageSeo->og_image)
             : ($yieldedOgImage ?: (!empty($seoSettings['og_default_image']) ? media_url($seoSettings['og_default_image']) : null));
-        $twitterTitle = $pageSeo?->twitter_title
-            ?? $ogTitle
-            ?? (!empty($seoSettings['twitter_title']) ? $seoSettings['twitter_title'] : $title);
-        $twitterDescription = $pageSeo?->twitter_description
-            ?? $ogDescription
-            ?? (!empty($seoSettings['twitter_description']) ? $seoSettings['twitter_description'] : $description);
+
+        $twitterTitle = !empty($pageSeo?->twitter_title)
+            ? $pageSeo->twitter_title
+            : ($ogTitle ?: (!empty($seoSettings['twitter_title']) ? $seoSettings['twitter_title'] : $title));
+        $twitterTitle = html_entity_decode($twitterTitle, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        $twitterDescription = !empty($pageSeo?->twitter_description)
+            ? $pageSeo->twitter_description
+            : ($ogDescription ?: (!empty($seoSettings['twitter_description']) ? $seoSettings['twitter_description'] : $description));
+        $twitterDescription = html_entity_decode($twitterDescription, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
         $twitterImage = !empty($pageSeo?->twitter_image)
             ? media_url($pageSeo->twitter_image)
             : ($ogImage ?: null);
-        $schemaJson = $pageSeo?->schema_json ?? ($seoSettings['schema_json'] ?? null);
+
+        $schemaJson = !empty($pageSeo?->schema_json) ? $pageSeo->schema_json : null;
+        if (empty($schemaJson)) {
+            if (isset($job) && is_object($job) && $job instanceof \App\Models\Job) {
+                $schemaJson = json_encode(\App\Helpers\SeoHelper::generateJobSchema($job), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+            } elseif (!empty($seoSettings['schema_json'])) {
+                $schemaJson = $seoSettings['schema_json'];
+            }
+        }
+
         $robotsNoindex = (bool) ($pageSeo?->noindex ?? false) || !empty($seoSettings['global_noindex']);
         $robotsNofollow = (bool) ($pageSeo?->nofollow ?? false) || !empty($seoSettings['global_nofollow']);
     @endphp

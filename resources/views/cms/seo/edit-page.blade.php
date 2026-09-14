@@ -225,10 +225,10 @@
                 <!-- SEO Preview -->
                 <div class="mb-10 border-b border-slate-100 pb-10">
                     <h3 class="text-xl font-bold text-slate-800 mb-6">SEO Preview</h3>
-                    <div class="bg-slate-50 rounded-lg p-4">
-                        <div class="text-blue-600 text-lg font-medium" id="previewTitle">{{ $pageSeo->meta_title }}</div>
-                        <div class="text-green-600 text-sm" id="previewUrl">{{ url('/') }}/{{ $pageSeo->slug }}</div>
-                        <div class="text-slate-600 text-sm mt-1" id="previewDescription">{{ $pageSeo->meta_description }}</div>
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 overflow-hidden break-words space-y-1" style="overflow-wrap: anywhere; word-break: break-word;">
+                        <div class="text-blue-600 text-lg font-medium break-words" id="previewTitle" style="overflow-wrap: anywhere; word-break: break-word;">{{ $pageSeo->meta_title }}</div>
+                        <div class="text-green-600 text-sm truncate" id="previewUrl">{{ url('/') }}/{{ $pageSeo->slug }}</div>
+                        <div class="text-slate-600 text-sm break-words" id="previewDescription" style="overflow-wrap: anywhere; word-break: break-word;">{{ $pageSeo->meta_description }}</div>
                     </div>
                 </div>
             </div>
