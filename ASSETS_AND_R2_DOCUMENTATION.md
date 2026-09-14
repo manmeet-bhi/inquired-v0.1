@@ -64,7 +64,6 @@ public/
 | :--- | :--- | :--- | :--- |
 | **Company Logos** | `company-logos/` | `AdminController@storeCompany`, `AdminController@updateCompany` | `$company->logo_url` (`media_url($company->logo)`) |
 | **Blog Post Images** | `blog/` | `AdminController@storePost`, `AdminController@updatePost` | `$post->featured_image_url` (`media_url($post->featured_image)`) |
-| **Category Icons** | `icons/` | `AdminController@storeCategory`, `AdminController@updateCategory` | `$category->icon_url` (`media_url($category->icon_file)`) |
 | **OG Images & Twitter Cards** | `og-images/` | `SeoController@updateGlobalSettings`, `SeoController@storePage`, `SeoController@updatePage` | `media_url($pageSeo->og_image ?? $globalSettings['og_default_image'])` |
 | **Custom SEO Favicons** | `seo/favicon/` | `SeoController@updateGlobalSettings` | `media_url($seoSetting->favicon)` |
 
@@ -77,7 +76,7 @@ public/
    - No external Cloudflare R2 requests are triggered for site navigation, headers, footers, or CMS UI components.
 
 2. **Cloudflare R2 for Dynamic CMS Media**:
-   - Cloudflare R2 is utilized exclusively for user-uploaded dynamic content (company logos, blog post headers, category icons, SEO images).
+   - Cloudflare R2 is utilized exclusively for user-uploaded dynamic content (company logos, blog post headers, SEO images).
    - Served securely via `/media/{path}` through `App\Http\Controllers\MediaController` with immutable edge-caching headers (`Cache-Control: public, max-age=31536000, immutable`).
 
 ---
@@ -98,11 +97,7 @@ All uploaded dynamic media is strictly synchronized with the Cloudflare R2 bucke
    - Associated SEO: Cleans up linked `PageSeo` records and their OG images.
    - Controller: `AdminController@updatePost` (supports `remove_featured_image`), `AdminController@destroyPost`, `AdminController@bulkDeletePosts`.
 
-3. **Category Icons**:
-   - Model Hook: `JobCategory::booted()` (`static::deleting`) deletes `$category->icon_file` from R2 (and local SVG copy if present).
-   - Controller: `AdminController@updateCategory`, `AdminController@destroyCategory`, `AdminController@bulkDeleteCategories`.
-
-4. **Page SEO & OpenGraph Images**:
+3. **Page SEO & OpenGraph Images**:
    - Model Hook: `PageSeo::booted()` (`static::deleting`) deletes both `$seo->og_image` and `$seo->twitter_image` from R2.
    - Controller: `SeoController@updatePage` (supports `remove_og_image` and `remove_twitter_image`), `SeoController@destroyPage`, `SeoController@updateGlobalSettings`.
 

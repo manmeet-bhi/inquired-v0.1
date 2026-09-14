@@ -49,29 +49,14 @@
                             <input type="checkbox" class="category-checkbox rounded border-slate-300 text-blue-600 focus:ring-blue-500" value="{{ $category->id }}">
                         </td>
                         <td class="px-4 py-3">
-                            <div class="flex items-start">
-                                @if($category->icon_file)
-                                <div class="w-10 h-10 mr-3 flex items-center justify-center shrink-0">
-                                    <img src="{{ $category->icon_url ?? asset('assets/icons/categories/' . $category->icon_file) }}" alt="{{ $category->name }}" class="w-8 h-8 object-contain">
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-2">
+                                    <div class="text-sm font-semibold text-slate-900 truncate max-w-[200px]" title="{{ $category->name }}">{{ $category->name }}</div>
+                                    <span class="text-xs text-slate-400 font-mono">{{ $category->slug }}</span>
                                 </div>
-                                @elseif($category->icon)
-                                <div class="w-10 h-10 mr-3 flex items-center justify-center text-xl shrink-0">
-                                    {!! $category->icon !!}
-                                </div>
-                                @else
-                                <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mr-3 shrink-0">
-                                    <i data-lucide="tag" class="w-5 h-5 text-slate-400"></i>
-                                </div>
+                                @if($category->description)
+                                    <div class="text-xs text-slate-500 truncate max-w-[300px]">{{ Str::limit($category->description, 60) }}</div>
                                 @endif
-                                <div class="min-w-0 flex-1">
-                                    <div class="flex items-center gap-2">
-                                        <div class="text-sm font-semibold text-slate-900 truncate max-w-[200px]" title="{{ $category->name }}">{{ $category->name }}</div>
-                                        <span class="text-xs text-slate-400 font-mono">{{ $category->slug }}</span>
-                                    </div>
-                                    @if($category->description)
-                                        <div class="text-xs text-slate-500 truncate max-w-[300px]">{{ Str::limit($category->description, 60) }}</div>
-                                    @endif
-                                </div>
                             </div>
                         </td>
                         <td class="px-4 py-3">

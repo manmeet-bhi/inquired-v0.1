@@ -47,24 +47,7 @@
                 @foreach($categories as $category)
                     <a href="{{ route('category.show', $category->slug) }}" class="block bg-white rounded-xl border border-gray-200 p-4 hover:border-blue-400 hover:shadow-xs transition-all group">
                         <div class="flex items-center justify-between gap-2 mb-1.5">
-                            <div class="flex items-center gap-2.5 min-w-0">
-                                @if($category->icon_file)
-                                    <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center p-1.5 border border-blue-100 flex-shrink-0">
-                                        <img src="{{ $category->icon_url ?? asset('assets/icons/categories/' . $category->icon_file) }}" alt="{{ $category->name }}" class="w-full h-full object-contain">
-                                    </div>
-                                @elseif($category->icon)
-                                    <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center p-1.5 border border-blue-100 flex-shrink-0 [&_svg]:w-4 [&_svg]:h-4">
-                                        {!! $category->icon !!}
-                                    </div>
-                                @else
-                                    <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center border border-blue-100 flex-shrink-0">
-                                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                        </svg>
-                                    </div>
-                                @endif
-                                <h3 class="text-xs font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors">{{ $category->name }}</h3>
-                            </div>
+                            <h3 class="text-xs font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors">{{ $category->name }}</h3>
                             <span class="text-[11px] font-semibold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded whitespace-nowrap">{{ $category->jobs_count }}</span>
                         </div>
 

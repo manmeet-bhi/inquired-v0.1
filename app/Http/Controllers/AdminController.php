@@ -525,29 +525,14 @@ class AdminController extends Controller
             'name' => 'required|string|max:255|unique:job_categories',
             'slug' => 'required|string|max:255|unique:job_categories',
             'description' => 'nullable|string',
-            'icon' => 'nullable|string',
-            'icon_file' => 'nullable|file|mimes:svg|max:1024',
             'color' => 'nullable|string|max:7',
             'is_active' => 'boolean'
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['name', 'slug', 'description', 'color', 'is_active']);
         $data['description'] = sanitize_html($request->description);
         $data['is_active'] = $request->has('is_active');
         $data['color'] = $request->color ?? '#3B82F6';
-
-        if ($request->hasFile('icon_file')) {
-            $file = $request->file('icon_file');
-            
-            // Security: Basic SVG script check
-            $svgContent = file_get_contents($file->getRealPath());
-            if (stripos($svgContent, '<script') !== false || stripos($svgContent, 'onload') !== false) {
-                return back()->with('error', 'The SVG file contains potentially malicious scripts.');
-            }
-
-            $storedPath = $file->store('icons', config('filesystems.default'));
-            $data['icon_file'] = $storedPath;
-        }
 
         $category = JobCategory::create($data);
         
@@ -575,36 +560,14 @@ class AdminController extends Controller
             'name' => 'required|string|max:255|unique:job_categories,name,' . $category->id,
             'slug' => 'required|string|max:255|unique:job_categories,slug,' . $category->id,
             'description' => 'nullable|string',
-            'icon' => 'nullable|string',
-            'icon_file' => 'nullable|file|mimes:svg|max:1024',
             'color' => 'nullable|string|max:7',
             'is_active' => 'boolean'
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['name', 'slug', 'description', 'color', 'is_active']);
         $data['description'] = sanitize_html($request->description);
         $data['is_active'] = $request->has('is_active');
         $data['color'] = $request->color ?? '#3B82F6';
-
-        if ($request->hasFile('icon_file')) {
-            // Security: Basic SVG script check
-            $file = $request->file('icon_file');
-            $svgContent = file_get_contents($file->getRealPath());
-            if (stripos($svgContent, '<script') !== false || stripos($svgContent, 'onload') !== false) {
-                return back()->with('error', 'The SVG file contains potentially malicious scripts.');
-            }
-
-            // Delete old file if exists
-            if ($category->icon_file) {
-                Storage::disk(config('filesystems.default'))->delete($category->icon_file);
-                if (file_exists(public_path('assets/icons/categories/' . $category->icon_file))) {
-                    @unlink(public_path('assets/icons/categories/' . $category->icon_file));
-                }
-            }
-            
-            $storedPath = $file->store('icons', config('filesystems.default'));
-            $data['icon_file'] = $storedPath;
-        }
 
         $category->update($data);
         return redirect()->route('cms.categories')->with('success', 'Category updated successfully');
@@ -617,13 +580,6 @@ class AdminController extends Controller
             return redirect()->route('cms.categories')->with('error', 'Cannot delete category with associated jobs');
         }
 
-        if ($category->icon_file) {
-            Storage::disk(config('filesystems.default'))->delete($category->icon_file);
-            if (file_exists(public_path('assets/icons/categories/' . $category->icon_file))) {
-                @unlink(public_path('assets/icons/categories/' . $category->icon_file));
-            }
-        }
-        
         $category->delete();
         return redirect()->route('cms.categories')->with('success', 'Category deleted successfully');
     }
@@ -644,13 +600,6 @@ class AdminController extends Controller
             if ($category->jobs()->count() > 0) {
                 $skippedCount++;
                 continue;
-            }
-
-            if ($category->icon_file) {
-                Storage::disk(config('filesystems.default'))->delete($category->icon_file);
-                if (file_exists(public_path('assets/icons/categories/' . $category->icon_file))) {
-                    @unlink(public_path('assets/icons/categories/' . $category->icon_file));
-                }
             }
 
             $category->delete();

@@ -35,30 +35,11 @@
                     @enderror
                 </div>
 
-                <!-- Icon -->
-                <div>
-                    <label for="icon" class="cms-label">Icon (Emoji or HTML)</label>
-                    <input type="text" id="icon" name="icon" value="{{ old('icon') }}" placeholder="💻 or <i class='icon'></i>" class="cms-input">
-                    @error('icon')
-                        <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p>
-                    @enderror
-                </div>
-
                 <!-- Color -->
                 <div>
                     <label for="color" class="cms-label">Color</label>
                     <input type="color" id="color" name="color" value="{{ old('color', '#3B82F6') }}" class="w-full h-10 px-2 py-1 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('color') border-red-500 @enderror">
                     @error('color')
-                        <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Icon File Upload -->
-                <div class="md:col-span-2">
-                    <label for="icon_file" class="cms-label">Icon File (SVG)</label>
-                    <input type="file" id="icon_file" name="icon_file" accept=".svg" class="cms-input @error('icon_file') border-red-500 @enderror">
-                    <p class="mt-1 text-sm text-slate-500">Upload an SVG file for the category icon (max 1MB)</p>
-                    @error('icon_file')
                         <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p>
                     @enderror
                 </div>

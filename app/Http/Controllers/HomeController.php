@@ -75,7 +75,7 @@ class HomeController extends Controller
                 ->withCount(['jobs' => function($query) {
                     $query->where('is_active', true);
                 }])
-                ->select('id', 'name', 'slug', 'description', 'icon', 'icon_file', 'color')
+                ->select('id', 'name', 'slug', 'description', 'color')
                 ->orderBy('sort_order')
                 ->get();
         });
