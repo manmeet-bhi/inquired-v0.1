@@ -55,7 +55,7 @@
         </div>
     @endif
 
-    @if($errors->any())
+    @if(isset($errors) && $errors->any())
         <div class="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-sm shadow-xs">
             <div class="flex items-center gap-2 mb-2 font-semibold text-rose-900">
                 <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-600"></i>
@@ -410,12 +410,12 @@
 
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Twitter Site (@handle)</label>
-                                <input type="text" name="twitter_site" value="{{ old('twitter_site', $globalSettings['twitter_site'] ?? '') }}" class="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm" placeholder="@inaquired">
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Twitter Site (&#64;handle)</label>
+                                <input type="text" name="twitter_site" value="{{ old('twitter_site', $globalSettings['twitter_site'] ?? '') }}" class="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm" placeholder="&#64;inaquired">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Twitter Creator (@handle)</label>
-                                <input type="text" name="twitter_creator" value="{{ old('twitter_creator', $globalSettings['twitter_creator'] ?? '') }}" class="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm" placeholder="@inaquired">
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Twitter Creator (&#64;handle)</label>
+                                <input type="text" name="twitter_creator" value="{{ old('twitter_creator', $globalSettings['twitter_creator'] ?? '') }}" class="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm" placeholder="&#64;inaquired">
                             </div>
                         </div>
 
@@ -579,8 +579,8 @@
                         <span id="json_validity_badge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-slate-100 text-slate-600">Checking syntax...</span>
                     </div>
                     <textarea id="schema_json" name="schema_json" rows="12" oninput="validateJsonSyntax()" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 bg-slate-900 text-sky-300 font-mono text-xs leading-relaxed shadow-inner" placeholder='{
-  "@context": "https://schema.org",
-  "@type": "Organization",
+  "&#64;context": "https://schema.org",
+  "&#64;type": "Organization",
   "name": "Inaquired",
   "url": "https://inaquired.com"
 }'>{{ old('schema_json', $globalSettings['schema_json'] ?? '') }}</textarea>
@@ -969,8 +969,8 @@
 
         if (type === 'org') {
             const orgTemplate = {
-                "@context": "https://schema.org",
-                "@type": "Organization",
+                "\u0040context": "https://schema.org",
+                "\u0040type": "Organization",
                 "name": "Inaquired",
                 "url": siteUrl,
                 "logo": siteUrl + "/images/logo.png",
@@ -982,12 +982,12 @@
             textarea.value = JSON.stringify(orgTemplate, null, 2);
         } else if (type === 'website') {
             const wsTemplate = {
-                "@context": "https://schema.org",
-                "@type": "WebSite",
+                "\u0040context": "https://schema.org",
+                "\u0040type": "WebSite",
                 "name": "Inaquired",
                 "url": siteUrl,
                 "potentialAction": {
-                    "@type": "SearchAction",
+                    "\u0040type": "SearchAction",
                     "target": siteUrl + "/jobs?search={search_term_string}",
                     "query-input": "required name=search_term_string"
                 }
