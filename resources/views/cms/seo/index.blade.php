@@ -488,7 +488,7 @@
 
                 <div>
                     <label for="robots_txt" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Robots.txt Editor</label>
-                    <textarea id="robots_txt" name="robots_txt" rows="10" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 bg-slate-900 text-emerald-400 font-mono text-xs leading-relaxed shadow-inner" required>{{ old('robots_txt', $globalSettings['robots_txt'] ?? "User-agent: *\nAllow: /\nDisallow: /cms/\n\nSitemap: " . url('/sitemap.xml')) }}</textarea>
+                    <textarea id="robots_txt" name="robots_txt" rows="10" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 font-mono text-sm leading-relaxed" style="background-color: #f8fafc !important; color: #0f172a !important; caret-color: #4f46e5 !important; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;" required>{{ old('robots_txt', $globalSettings['robots_txt'] ?? "User-agent: *\nAllow: /\nDisallow: /cms/\n\nSitemap: " . url('/sitemap.xml')) }}</textarea>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
@@ -578,7 +578,7 @@
                         <label for="schema_json" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">JSON-LD Structure</label>
                         <span id="json_validity_badge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-slate-100 text-slate-600">Checking syntax...</span>
                     </div>
-                    <textarea id="schema_json" name="schema_json" rows="12" oninput="validateJsonSyntax()" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 bg-slate-900 text-sky-300 font-mono text-xs leading-relaxed shadow-inner" placeholder='{
+                    <textarea id="schema_json" name="schema_json" rows="12" oninput="validateJsonSyntax()" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 font-mono text-sm leading-relaxed" style="background-color: #f8fafc !important; color: #0f172a !important; caret-color: #4f46e5 !important; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;" placeholder='{
   "&#64;context": "https://schema.org",
   "&#64;type": "Organization",
   "name": "Inaquired",
