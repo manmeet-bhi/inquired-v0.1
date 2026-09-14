@@ -367,8 +367,11 @@ Route::get('/health', function () {
 });
 
 // End of Web Routes
+
 Route::domain('cms.anywhereroles.in')->group(function () {
 Route::get('/', function () {
-return view('cms.index');
+return redirect()->route('cms.login');
 });
 });
+
+
