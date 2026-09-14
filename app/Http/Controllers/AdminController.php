@@ -1267,9 +1267,30 @@ class AdminController extends Controller
         return back()->with('success', 'Selected testimonials deleted successfully');
     }
 
-    public function activity()
+    public function activity(Request $request)
     {
-        $activities = \App\Models\ActivityLog::with('adminUser')->latest()->paginate(50);
+        $query = \App\Models\ActivityLog::with('adminUser');
+
+        if ($request->filled('action')) {
+            $query->where('action', 'like', '%' . $request->action . '%');
+        }
+
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+            $query->where(function($q) use ($search) {
+                $q->where('action', 'like', "%{$search}%")
+                  ->orWhere('target_name', 'like', "%{$search}%")
+                  ->orWhere('target_type', 'like', "%{$search}%")
+                  ->orWhere('ip_address', 'like', "%{$search}%")
+                  ->orWhereHas('adminUser', function($uq) use ($search) {
+                      $uq->where('name', 'like', "%{$search}%")
+                         ->orWhere('email', 'like', "%{$search}%")
+                         ->orWhere('role', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $activities = $query->latest()->paginate(50)->withQueryString();
         return view('cms.activity.index', compact('activities'));
     }
 
