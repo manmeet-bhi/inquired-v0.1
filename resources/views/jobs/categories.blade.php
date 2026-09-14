@@ -5,9 +5,9 @@
 
 @push('styles')
 <style>
-.line-clamp-2 {
+.line-clamp-1 {
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -21,7 +21,7 @@
 
         <div class="w-full">
             <!-- Header & Results Count -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-gray-100">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900">Job Categories</h1>
                     <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mt-1">
@@ -42,47 +42,35 @@
             </div>
 
             @if($categories->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Design 5: Compact Dense 4-Column Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach($categories as $category)
-                    <a href="{{ route('category.show', $category->slug) }}" class="block bg-white rounded-2xl border border-gray-200/80 p-6 hover:shadow-md hover:border-blue-300 transition-all group h-full">
-                        <div class="flex items-start space-x-4">
-                            @if($category->icon_file)
-                                <div class="flex-shrink-0">
-                                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center p-2 border border-blue-100">
+                    <a href="{{ route('category.show', $category->slug) }}" class="block bg-white rounded-xl border border-gray-200 p-4 hover:border-blue-400 hover:shadow-xs transition-all group">
+                        <div class="flex items-center justify-between gap-2 mb-1.5">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                @if($category->icon_file)
+                                    <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center p-1.5 border border-blue-100 flex-shrink-0">
                                         <img src="{{ $category->icon_url ?? asset('assets/icons/categories/' . $category->icon_file) }}" alt="{{ $category->name }}" class="w-full h-full object-contain">
                                     </div>
-                                </div>
-                            @elseif($category->icon)
-                                <div class="flex-shrink-0">
-                                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center p-2.5 border border-blue-100">
+                                @elseif($category->icon)
+                                    <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center p-1.5 border border-blue-100 flex-shrink-0 [&_svg]:w-4 [&_svg]:h-4">
                                         {!! $category->icon !!}
                                     </div>
-                                </div>
-                            @else
-                                <div class="flex-shrink-0">
-                                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-100">
-                                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                @else
+                                    <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center border border-blue-100 flex-shrink-0">
+                                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                                         </svg>
                                     </div>
-                                </div>
-                            @endif
-
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center justify-between gap-2">
-                                    <h3 class="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors truncate">{{ $category->name }}</h3>
-                                    <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md whitespace-nowrap">
-                                        {{ $category->jobs_count }} {{ Str::plural('Job', $category->jobs_count) }}
-                                    </span>
-                                </div>
-
-                                @if($category->description)
-                                <p class="text-xs text-gray-500 leading-relaxed line-clamp-2 mt-1.5">
-                                    {{ $category->description }}
-                                </p>
                                 @endif
+                                <h3 class="text-xs font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors">{{ $category->name }}</h3>
                             </div>
+                            <span class="text-[11px] font-semibold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded whitespace-nowrap">{{ $category->jobs_count }}</span>
                         </div>
+
+                        @if($category->description)
+                        <p class="text-[11px] text-gray-500 line-clamp-1 mt-1">{{ $category->description }}</p>
+                        @endif
                     </a>
                 @endforeach
             </div>
