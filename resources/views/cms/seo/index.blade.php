@@ -104,11 +104,6 @@
             <button type="button" onclick="switchSeoTab('indexing')" id="tab-btn-indexing" class="seo-tab-btn inline-flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 whitespace-nowrap transition-all text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-300 rounded-t-lg">
                 <i data-lucide="globe" class="w-4 h-4"></i>
                 <span>Search Engine Indexing</span>
-                @if(count($verificationFiles) > 0)
-                    <span class="px-2 py-0.5 text-[11px] rounded-full bg-blue-100 text-blue-700 font-medium">
-                        {{ count($verificationFiles) }}
-                    </span>
-                @endif
             </button>
 
         </nav>
@@ -743,112 +738,74 @@
 
     <!-- TAB 6: SEARCH ENGINE INDEXING -->
     <div id="tab-content-indexing" class="seo-tab-content space-y-6 hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
-            <!-- HTML Verification Upload Card -->
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
-                <div class="border-b border-slate-100 pb-3.5 flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs">
-                            <i data-lucide="upload-cloud" class="w-4 h-4"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-slate-900">Google & Bing Site Verification</h3>
-                            <p class="text-[11px] text-slate-500">Upload HTML verification files into the public root directory.</p>
-                        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+            <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm shadow-xs">
+                        <i data-lucide="map" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900">XML Sitemap & Search Engine Indexing</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Automated XML sitemap generation for search engine crawlers (Google, Bing, Yahoo).</p>
                     </div>
                 </div>
 
-                <form action="{{ route('cms.seo.indexing.upload') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                    @csrf
-                    <div>
-                        <label for="verification_file" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Verification File (.html)</label>
-                        <input type="file" name="verification_file" id="verification_file" accept=".html" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" required>
-                        <p class="text-[11px] text-slate-500 mt-1">Accepts Google (google[code].html), Bing (BingSiteAuth.html), and Loader.io verification files.</p>
-                    </div>
-
-                    <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-sm shadow-sm active:scale-95 transition-all">
-                        <i data-lucide="upload" class="w-4 h-4"></i>
-                        <span>Upload Verification File</span>
-                    </button>
-                </form>
-
-                @if(count($verificationFiles) > 0)
-                    <div class="pt-4 border-t border-slate-100">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">Active Verification Files in Public Root</h4>
-                        <ul class="space-y-2">
-                            @foreach($verificationFiles as $file)
-                                <li class="flex items-center justify-between text-xs bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-                                    <span class="font-mono text-slate-700 font-medium truncate flex-1 mr-3 flex items-center gap-2">
-                                        <i data-lucide="file-code" class="w-3.5 h-3.5 text-indigo-500"></i>
-                                        {{ $file }}
-                                    </span>
-                                    <div class="flex items-center gap-2">
-                                        <a href="{{ asset($file) }}" target="_blank" class="p-1 text-blue-600 hover:bg-blue-50 rounded" title="View Live">
-                                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                                        </a>
-                                        <form action="{{ route('cms.seo.indexing.delete') }}" method="POST" class="inline m-0 p-0" onsubmit="return confirm('Delete this verification file?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <input type="hidden" name="file_name" value="{{ $file }}">
-                                            <button type="submit" class="p-1 text-rose-600 hover:bg-rose-50 rounded" title="Delete">
-                                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                <a href="{{ url('/sitemap.xml') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors shrink-0">
+                    <span>Open Live Sitemap.xml</span>
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                </a>
             </div>
 
-            <!-- XML Sitemap Generation Card -->
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
-                <div class="border-b border-slate-100 pb-3.5 flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs">
-                            <i data-lucide="map" class="w-4 h-4"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-slate-900">XML Sitemap Management</h3>
-                            <p class="text-[11px] text-slate-500">Dynamic sitemap for jobs, companies, posts, categories, and landing pages.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+                <!-- Left: Sitemap URL & Regeneration -->
+                <div class="space-y-5 bg-slate-50 border border-slate-200/80 rounded-xl p-5">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Sitemap URL</label>
-                        <div class="flex">
-                            <input type="text" id="sitemap_url_input" value="{{ url('/sitemap.xml') }}" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-l-xl bg-slate-50 text-slate-700 text-xs font-mono select-all focus:outline-none" readonly>
-                            <button type="button" onclick="copySitemapUrl()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border-y border-r border-slate-200 rounded-r-xl text-xs font-semibold transition-colors flex items-center gap-1.5">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Primary XML Sitemap Index URL</label>
+                        <div class="flex shadow-xs">
+                            <input type="text" id="sitemap_url_input" value="{{ url('/sitemap.xml') }}" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-l-xl bg-white text-slate-800 text-xs font-mono select-all focus:outline-none" readonly>
+                            <button type="button" onclick="copySitemapUrl()" class="px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border-y border-r border-indigo-200 rounded-r-xl text-xs font-semibold transition-colors flex items-center gap-1.5 shrink-0">
                                 <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                                <span id="copy_btn_text">Copy</span>
+                                <span id="copy_btn_text">Copy URL</span>
                             </button>
                         </div>
+                        <p class="text-[11px] text-slate-500 mt-1.5">Submit this URL once in Google Search Console and Bing Webmaster Tools.</p>
                     </div>
 
                     <form action="{{ route('cms.seo.sitemap.generate') }}" method="POST">
                         @csrf
-                        <button type="submit" class="w-full flex justify-center items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold text-sm shadow-sm active:scale-95 transition-all">
+                        <button type="submit" class="w-full flex justify-center items-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold text-sm shadow-md hover:shadow-emerald-500/20 active:scale-95 transition-all">
                             <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                             <span>Regenerate XML Sitemap Now</span>
                         </button>
                     </form>
+                </div>
 
-                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1.5 text-slate-600">
-                        <span class="font-bold text-slate-800">Sitemap Sub-Routes Included:</span>
-                        <ul class="space-y-1 text-[11px] text-slate-500 list-disc list-inside">
-                            <li><code>/sitemap.xml</code> - Global Site Index</li>
-                            <li>Jobs & Internships database records</li>
-                            <li>Company Profiles & Hiring hubs</li>
-                            <li>Categories, Blog Posts & Static pages</li>
-                        </ul>
-                    </div>
+                <!-- Right: Sitemap Routes Summary & Search Engine Guidance -->
+                <div class="space-y-4 bg-slate-50 border border-slate-200/80 rounded-xl p-5 text-xs text-slate-600">
+                    <span class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                        <i data-lucide="layers" class="w-4 h-4 text-indigo-600"></i>
+                        <span>Included Dynamic Endpoints</span>
+                    </span>
+                    <ul class="space-y-2 text-slate-600">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+                            <span><strong>Jobs & Internships</strong> - Active postings automatically included</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+                            <span><strong>Company Profiles</strong> - Verified hiring organizations</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+                            <span><strong>Categories & Disciplines</strong> - Browse directory URLs</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+                            <span><strong>Published Blog Posts</strong> - Resource and guide articles</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
-
         </div>
     </div>
 

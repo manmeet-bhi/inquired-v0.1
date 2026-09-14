@@ -56,11 +56,7 @@ class SeoController extends Controller
         }
         $pages = $pagesQuery->latest()->paginate(15)->withQueryString();
 
-        // Fetch verification files for Tab 6 (Search Engine Indexing)
-        $files = File::glob(public_path('*.html'));
-        $verificationFiles = array_map('basename', $files);
-
-        return view('cms.seo.index', compact('globalSettings', 'seoScore', 'pages', 'verificationFiles'));
+        return view('cms.seo.index', compact('globalSettings', 'seoScore', 'pages'));
     }
 
     public function indexing()
