@@ -39,6 +39,7 @@ Route::get('/fresher-jobs', [App\Http\Controllers\JobController::class, 'fresher
 Route::get('/part-time-jobs', [App\Http\Controllers\JobController::class, 'partTime'])->name('part-time-jobs');
 Route::get('/jobs/{job}/{slug?}', [App\Http\Controllers\JobController::class, 'show'])->name('jobs.show')->where('job', '[0-9]+');
 Route::get('/companies', [App\Http\Controllers\JobController::class, 'companies'])->name('companies');
+Route::get('/companies/autocomplete', [App\Http\Controllers\JobController::class, 'companyAutocomplete'])->middleware('throttle:60,1')->name('companies.autocomplete');
 Route::get('/startup-companies', [App\Http\Controllers\JobController::class, 'startupCompanies'])->name('startup-companies');
 Route::get('/mnc-companies', [App\Http\Controllers\JobController::class, 'mncCompanies'])->name('mnc-companies');
 Route::get('/unicorn-companies', [App\Http\Controllers\JobController::class, 'unicornCompanies'])->name('unicorn-companies');

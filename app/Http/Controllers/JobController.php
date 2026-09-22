@@ -246,6 +246,18 @@ class JobController extends Controller
                 ->withCount('jobs')
                 ->select('id', 'name', 'slug', 'tagline', 'description', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active');
 
+            // Search by company name, industry, or tagline
+            if ($request->filled('search')) {
+                $searchTerm = trim(strip_tags((string) $request->search));
+                $searchTerm = mb_substr($searchTerm, 0, 50);
+                $escaped = addcslashes($searchTerm, '%_\\');
+                $query->where(function ($q) use ($escaped) {
+                    $q->where('name', 'LIKE', "%{$escaped}%")
+                      ->orWhere('industry', 'LIKE', "%{$escaped}%")
+                      ->orWhere('tagline', 'LIKE', "%{$escaped}%");
+                });
+            }
+
             // Filter by Company Type
             if ($request->has('company_type') && is_array($request->company_type)) {
                 $query->whereIn('type', $request->company_type);
@@ -270,6 +282,48 @@ class JobController extends Controller
         });
             
         return view('jobs.companies', compact('companies', 'categories', 'pageSeo'));
+    }
+
+    public function companyAutocomplete(Request $request)
+    {
+        $query = trim(strip_tags((string) $request->get('q', '')));
+        
+        if (mb_strlen($query) < 3) {
+            return response()->json([]);
+        }
+
+        // Limit query length to prevent abuse / heavy DB load
+        $query = mb_substr($query, 0, 50);
+        $escaped = addcslashes($query, '%_\\');
+
+        $companies = Company::where('is_active', true)
+            ->where(function($q) use ($escaped) {
+                $q->where('name', 'LIKE', "%{$escaped}%")
+                  ->orWhere('industry', 'LIKE', "%{$escaped}%")
+                  ->orWhere('tagline', 'LIKE', "%{$escaped}%");
+            })
+            ->withCount(['jobs' => function($q) {
+                $q->where('is_active', true);
+            }])
+            ->select('id', 'name', 'slug', 'type', 'industry', 'tagline')
+            ->orderByRaw("CASE WHEN name LIKE ? THEN 1 WHEN name LIKE ? THEN 2 ELSE 3 END", ["{$escaped}%", "%{$escaped}%"])
+            ->orderBy('name')
+            ->limit(6)
+            ->get()
+            ->map(function($company) {
+                return [
+                    'id' => $company->id,
+                    'name' => $company->name,
+                    'slug' => $company->slug,
+                    'url' => route('company.show', $company->slug ?? $company->id),
+                    'type' => $company->type ? ucfirst($company->type) : null,
+                    'industry' => \Illuminate\Support\Str::limit($company->industry ?? '', 30),
+                    'tagline' => \Illuminate\Support\Str::limit($company->tagline ?? '', 55),
+                    'jobs_count' => $company->jobs_count ?? 0,
+                ];
+            });
+
+        return response()->json($companies);
     }
 
     public function startupCompanies(Request $request)
