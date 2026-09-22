@@ -30,8 +30,8 @@ class HomeController extends Controller
             ];
         });
 
-        // Get latest jobs with pagination (21 per page) based on selected tab
-        $cacheKey = "home_latest_jobs_tab_{$tab}_p{$page}";
+        // Get latest jobs (top 21 jobs) based on selected tab
+        $cacheKey = "home_latest_jobs_tab_{$tab}";
         $latestJobs = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() use ($tab) {
             $query = Job::with(['company', 'category'])
                 ->where('is_active', true);
@@ -44,7 +44,7 @@ class HomeController extends Controller
                 $query->where('work_type', 'hybrid');
             }
             
-            return $query->latest()->paginate(21)->withQueryString();
+            return $query->latest()->limit(21)->get();
         });
         
         // Empty collections for backward compatibility

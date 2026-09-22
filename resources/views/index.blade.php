@@ -129,12 +129,6 @@
                 <x-job-card :job="$job" layout="row" />
             @endforeach
         </div>
-
-        @if($latestJobs->hasPages())
-            <div class="mt-12 flex justify-center">
-                {{ $latestJobs->fragment('jobs-section')->appends(request()->query())->links() }}
-            </div>
-        @endif
     @else
         <div class="text-center py-16 text-slate-400 bg-slate-50/50 rounded-2xl border border-slate-100 mt-4">
             <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
