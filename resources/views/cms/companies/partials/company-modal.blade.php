@@ -22,6 +22,13 @@
                     <p class="mt-1 text-sm text-red-600 hidden error-name font-semibold"></p>
                 </div>
 
+                <!-- Short Subtitle / Snippet -->
+                <div class="cms-form-group md:col-span-2">
+                    <label for="company_modal_tagline" class="cms-label">Short Subtitle / Snippet</label>
+                    <input type="text" id="company_modal_tagline" name="tagline" class="cms-input" placeholder="e.g. Pioneering next-generation AI solutions">
+                    <p class="mt-1 text-sm text-red-600 hidden error-tagline font-semibold"></p>
+                </div>
+
                 <!-- Industry -->
                 <div class="cms-form-group">
                     <label for="company_modal_industry" class="cms-label">Industry</label>

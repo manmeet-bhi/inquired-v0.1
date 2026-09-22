@@ -244,7 +244,7 @@ class JobController extends Controller
         $companies = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() use ($request) {
             $query = Company::where('is_active', true)
                 ->withCount('jobs')
-                ->select('id', 'name', 'slug', 'description', 'logo', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active');
+                ->select('id', 'name', 'slug', 'tagline', 'description', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active');
 
             // Filter by Company Type
             if ($request->has('company_type') && is_array($request->company_type)) {
@@ -285,7 +285,7 @@ class JobController extends Controller
             return Company::where('is_active', true)
                 ->where('type', 'startup')
                 ->withCount('jobs')
-                ->select('id', 'name', 'slug', 'description', 'logo', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active')
+                ->select('id', 'name', 'slug', 'tagline', 'description', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active')
                 ->orderBy('name')
                 ->paginate(12);
         });
@@ -307,7 +307,7 @@ class JobController extends Controller
             return Company::where('is_active', true)
                 ->where('type', 'mnc')
                 ->withCount('jobs')
-                ->select('id', 'name', 'slug', 'description', 'logo', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active')
+                ->select('id', 'name', 'slug', 'tagline', 'description', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active')
                 ->orderBy('name')
                 ->paginate(12);
         });
@@ -329,7 +329,7 @@ class JobController extends Controller
             return Company::where('is_active', true)
                 ->where('type', 'unicorn')
                 ->withCount('jobs')
-                ->select('id', 'name', 'slug', 'description', 'logo', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active')
+                ->select('id', 'name', 'slug', 'tagline', 'description', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active')
                 ->orderBy('name')
                 ->paginate(12);
         });

@@ -26,6 +26,16 @@
                     @enderror
                 </div>
 
+                <!-- Short Subtitle / Description Snippet -->
+                <div class="md:col-span-2 cms-form-group">
+                    <label for="tagline" class="cms-label">Short Subtitle / Description Snippet</label>
+                    <input type="text" id="tagline" name="tagline" value="{{ old('tagline') }}" class="cms-input @error('tagline') border-red-500 @enderror" placeholder="e.g. Pioneering next-generation AI solutions for global enterprises">
+                    <p class="mt-1 text-xs text-slate-500">A concise highlight or summary displayed prominently on company cards.</p>
+                    @error('tagline')
+                        <p class="mt-1 text-sm text-red-600 font-semibold">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Industry -->
                 <div>
                     <label for="industry" class="cms-label">Industry</label>

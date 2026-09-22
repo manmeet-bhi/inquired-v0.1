@@ -13,9 +13,13 @@
                 <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 flex-1 min-w-0">
                     {{-- Company Information --}}
                     <div class="flex-1 min-w-0">
-                        <div class="flex flex-wrap items-center gap-2.5 mb-2.5">
+                        <div class="flex flex-wrap items-center gap-2.5 mb-2">
                             <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight break-words">{{ $company->name }}</h1>
                         </div>
+
+                        @if(!empty($company->tagline))
+                            <p class="text-sm sm:text-base text-slate-600 font-normal mb-3 max-w-2xl leading-relaxed">{{ $company->tagline }}</p>
+                        @endif
 
                         {{-- Separate Industry Tags (1 Open Position badge removed) --}}
                         <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 text-xs sm:text-sm text-slate-600">

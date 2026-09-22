@@ -406,6 +406,7 @@ class AdminController extends Controller
         $this->checkPermission('companies.create');
         $request->validate([
             'name' => 'required|string|max:255',
+            'tagline' => 'nullable|string|max:500',
             'description' => 'nullable|string',
             'website' => 'nullable|url',
             'linkedin_url' => 'nullable|url',
@@ -441,6 +442,7 @@ class AdminController extends Controller
         $this->checkPermission('companies.edit');
         $request->validate([
             'name' => 'required|string|max:255',
+            'tagline' => 'nullable|string|max:500',
             'description' => 'nullable|string',
             'website' => 'nullable|url',
             'linkedin_url' => 'nullable|url',

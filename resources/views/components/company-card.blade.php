@@ -64,10 +64,10 @@
             </div>
         </div>
 
-        {{-- Company Description --}}
+        {{-- Company Description / Tagline Snippet --}}
         <div class="mt-2.5">
             <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 break-words">
-                {{ $company->description ?? "Shaping the future of its industry through innovative solutions and excellence." }}
+                {{ !empty($company->tagline) ? $company->tagline : ($company->description ?? "Shaping the future of its industry through innovative solutions and excellence.") }}
             </p>
         </div>
     </div>
