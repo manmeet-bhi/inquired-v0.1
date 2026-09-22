@@ -66,20 +66,61 @@
 </main>
 
 <!-- Latest Jobs Section -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+<section id="jobs-section" class="max-w-7xl mx-auto px-4 sm:px-6 py-16 scroll-mt-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
         <div>
             <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-unbounded leading-tight">
                 Latest <span class="text-indigo-600">Jobs</span>
             </h2>
             <p class="text-slate-500 font-medium mt-2">Fresh opportunities added daily — apply before they're gone.</p>
         </div>
-        <a href="{{ route('jobs.index') }}" class="inline-flex items-center gap-2 text-indigo-600 font-bold hover:text-indigo-700 transition-colors group whitespace-nowrap">
+        <a href="{{ route('jobs.index') }}" class="inline-flex items-center gap-2 text-indigo-600 font-bold hover:text-indigo-700 transition-colors group whitespace-nowrap self-start md:self-end">
             <span>View all jobs</span>
             <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
         </a>
+    </div>
+
+    {{-- Rectangular tabs with rounded corners (All, Office, Remote, Hybrid) --}}
+    <div class="flex items-center gap-2.5 overflow-x-auto pb-4 mb-6 scrollbar-none border-b border-slate-100">
+        @php
+            $currentTab = $tab ?? 'all';
+            $tabs = [
+                'all' => [
+                    'label' => 'All',
+                    'count' => $jobCounts['all'] ?? 0,
+                    'icon' => '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>'
+                ],
+                'office' => [
+                    'label' => 'Office',
+                    'count' => $jobCounts['office'] ?? 0,
+                    'icon' => '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>'
+                ],
+                'remote' => [
+                    'label' => 'Remote',
+                    'count' => $jobCounts['remote'] ?? 0,
+                    'icon' => '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+                ],
+                'hybrid' => [
+                    'label' => 'Hybrid',
+                    'count' => $jobCounts['hybrid'] ?? 0,
+                    'icon' => '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>'
+                ],
+            ];
+        @endphp
+
+        @foreach($tabs as $key => $tabItem)
+            @php $isActive = ($currentTab === $key); @endphp
+            <a href="{{ route('home', ['tab' => $key]) }}#jobs-section" 
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm tracking-wide transition-all duration-200 cursor-pointer whitespace-nowrap {{ $isActive ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20 border border-indigo-600' : 'bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200/90 shadow-2xs hover:border-slate-300' }}">
+                {!! $tabItem['icon'] !!}
+                <span>{{ $tabItem['label'] }}</span>
+                <span class="inline-flex items-center justify-center text-xs px-2 py-0.5 rounded-md font-semibold {{ $isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500' }}">
+                    {{ $tabItem['count'] }}
+                </span>
+            </a>
+        @endforeach
     </div>
 
     @if(isset($latestJobs) && $latestJobs->count() > 0)
@@ -89,10 +130,23 @@
             @endforeach
         </div>
 
-
+        @if($latestJobs->hasPages())
+            <div class="mt-12 flex justify-center">
+                {{ $latestJobs->fragment('jobs-section')->appends(request()->query())->links() }}
+            </div>
+        @endif
     @else
-        <div class="text-center py-16 text-slate-400">
-            <p class="text-lg font-medium">No jobs available right now. Check back soon!</p>
+        <div class="text-center py-16 text-slate-400 bg-slate-50/50 rounded-2xl border border-slate-100 mt-4">
+            <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+            </div>
+            <p class="text-base font-semibold text-slate-700">No {{ $currentTab !== 'all' ? ucfirst($currentTab) : '' }} jobs available right now.</p>
+            <p class="text-sm text-slate-500 mt-1">Check back soon or explore other categories!</p>
+            @if($currentTab !== 'all')
+                <a href="{{ route('home', ['tab' => 'all']) }}#jobs-section" class="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-white border border-slate-200 text-indigo-600 rounded-xl text-sm font-bold hover:bg-indigo-50 hover:border-indigo-200 transition-all">
+                    <span>View All Jobs</span>
+                </a>
+            @endif
         </div>
     @endif
 </section>

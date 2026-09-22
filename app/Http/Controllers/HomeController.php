@@ -12,51 +12,50 @@ use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get latest jobs for homepage
-        $jobs = \Illuminate\Support\Facades\Cache::remember('home_latest_jobs', 3600, function() {
-            return Job::with('company', 'category')
-                ->where('is_active', true)
-                ->orderBy('is_featured', 'desc')
-                ->latest()
-                ->limit(10)
-                ->get();
+        $tab = $request->get('tab', 'all');
+        if (!in_array($tab, ['all', 'office', 'remote', 'hybrid'])) {
+            $tab = 'all';
+        }
+        $page = $request->get('page', 1);
+
+        // Tab counts for badges
+        $jobCounts = \Illuminate\Support\Facades\Cache::remember('home_jobs_tab_counts', 3600, function() {
+            return [
+                'all' => Job::where('is_active', true)->count(),
+                'office' => Job::where('is_active', true)->where('work_type', 'onsite')->count(),
+                'remote' => Job::where('is_active', true)->where('work_type', 'remote')->count(),
+                'hybrid' => Job::where('is_active', true)->where('work_type', 'hybrid')->count(),
+            ];
+        });
+
+        // Get latest jobs with pagination (21 per page) based on selected tab
+        $cacheKey = "home_latest_jobs_tab_{$tab}_p{$page}";
+        $latestJobs = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() use ($tab) {
+            $query = Job::with(['company', 'category'])
+                ->where('is_active', true);
+            
+            if ($tab === 'office') {
+                $query->where('work_type', 'onsite');
+            } elseif ($tab === 'remote') {
+                $query->where('work_type', 'remote');
+            } elseif ($tab === 'hybrid') {
+                $query->where('work_type', 'hybrid');
+            }
+            
+            return $query->latest()->paginate(21)->withQueryString();
         });
         
-        // Get featured items (empty collection since Featured is removed)
+        // Empty collections for backward compatibility
         $featuredItems = collect();
-        
-        // Get onsite jobs
-        $onsiteJobs = \Illuminate\Support\Facades\Cache::remember('home_onsite_jobs', 3600, function() {
-            return Job::with('company')
-                ->where('is_active', true)
-                ->where('work_type', 'onsite')
-                ->latest()
-                ->limit(6)
-                ->get();
-        });
-        
-        // Get remote jobs
-        $remoteJobs = \Illuminate\Support\Facades\Cache::remember('home_remote_jobs', 3600, function() {
-            return Job::with('company')
-                ->where('is_active', true)
-                ->where('work_type', 'remote')
-                ->latest()
-                ->limit(6)
-                ->get();
-        });
-        
-        // Get internships
-        $internships = \Illuminate\Support\Facades\Cache::remember('home_internship_jobs', 3600, function() {
-            return Job::with('company')
-                ->where('is_active', true)
-                ->where('type', 'internship')
-                ->orderBy('is_featured', 'desc')
-                ->latest()
-                ->limit(6)
-                ->get();
-        });
+        $trendingSearches = collect();
+        $categoryCards = collect();
+        $locationCards = collect();
+        $jobs = collect();
+        $onsiteJobs = collect();
+        $remoteJobs = collect();
+        $internships = collect();
         
         // Get latest blog posts
         $posts = \Illuminate\Support\Facades\Cache::remember('home_latest_posts', 3600, function() {
@@ -65,9 +64,6 @@ class HomeController extends Controller
                 ->take(6)
                 ->get();
         });
-        
-        // Get trending searches (empty collection since TrendingSearch is removed)
-        $trendingSearches = collect();
         
         // Get job categories with job counts and descriptions
         $categories = \Illuminate\Support\Facades\Cache::remember('home_categories', 3600, function() {
@@ -79,19 +75,6 @@ class HomeController extends Controller
                 ->orderBy('sort_order')
                 ->get();
         });
-        
-        // Get quick cards (empty collections since QuickCard is removed)
-        $categoryCards = collect();
-        $locationCards = collect();
-        
-        // Get latest jobs for homepage grid (40 cards)
-        $latestJobs = \Illuminate\Support\Facades\Cache::remember('home_latest_jobs_grid', 3600, function() {
-            return Job::with('company', 'category')
-                ->where('is_active', true)
-                ->latest()
-                ->limit(40)
-                ->get();
-        });
 
         // Get SEO for homepage
         $pageSeo = \Illuminate\Support\Facades\Cache::remember('home_page_seo', 3600, function() {
@@ -100,6 +83,21 @@ class HomeController extends Controller
                 ->first();
         });
         
-        return view('index', compact('jobs', 'onsiteJobs', 'remoteJobs', 'internships', 'posts', 'featuredItems', 'trendingSearches', 'categories', 'categoryCards', 'locationCards', 'latestJobs', 'pageSeo'));
+        return view('index', compact(
+            'latestJobs',
+            'tab',
+            'jobCounts',
+            'categories',
+            'posts',
+            'pageSeo',
+            'jobs',
+            'onsiteJobs',
+            'remoteJobs',
+            'internships',
+            'featuredItems',
+            'trendingSearches',
+            'categoryCards',
+            'locationCards'
+        ));
     }
 }
