@@ -22,7 +22,7 @@
 @endphp
 
 <aside {{ $attributes->merge(['class' => 'w-full lg:w-80 flex-shrink-0']) }}>
-    <div id="filters-panel" class="bg-white p-6 rounded-2xl border border-gray-100 space-y-6 lg:block sticky top-28 shadow-xs">
+    <div id="filters-panel" class="bg-white p-6 rounded-2xl border border-gray-100 space-y-6 lg:block sticky top-28 z-30 shadow-xs">
         
         {{-- Search Company Section with Live Autocomplete Suggestions (>= 3 chars) --}}
         <div>
@@ -33,13 +33,19 @@
                 @endif
             </h2>
             
-            <div class="relative" id="company-search-container">
+            <div class="relative z-40" id="company-search-container">
                 <form action="{{ $searchAction }}" method="GET" class="relative" id="company-search-form">
                     @if(request()->filled('type') && !request()->routeIs('unicorn-companies', 'startup-companies', 'mnc-companies'))
                         <input type="hidden" name="type" value="{{ request('type') }}">
                     @endif
 
-                    <div class="relative flex items-center">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+
                         <input type="text" 
                                name="search" 
                                id="company-search-input"
@@ -47,22 +53,18 @@
                                placeholder="Type company name..." 
                                autocomplete="off"
                                maxlength="50"
-                               class="w-full pl-10 pr-9 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                               class="block w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
                         
-                        <div class="absolute left-3.5 text-slate-400 pointer-events-none">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
+                        {{-- Clear Button vertically centered --}}
+                        <div class="absolute inset-y-0 right-0 pr-2.5 flex items-center">
+                            <button type="button" 
+                                    id="company-search-clear-btn" 
+                                    onclick="clearCompanySearch()" 
+                                    class="{{ request()->filled('search') ? 'flex' : 'hidden' }} items-center justify-center w-6 h-6 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 transition-colors" 
+                                    title="Clear search">
+                                <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
                         </div>
-
-                        {{-- Clear Button if search query exists --}}
-                        <button type="button" 
-                                id="company-search-clear-btn" 
-                                onclick="clearCompanySearch()" 
-                                class="{{ request()->filled('search') ? '' : 'hidden' }} absolute right-3 text-slate-400 hover:text-slate-600 transition-colors p-1" 
-                                title="Clear search">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                        </button>
                     </div>
                 </form>
 
@@ -151,7 +153,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.clearCompanySearch = function () {
         searchInput.value = '';
-        if (clearBtn) clearBtn.classList.add('hidden');
+        if (clearBtn) {
+            clearBtn.classList.add('hidden');
+            clearBtn.classList.remove('flex');
+        }
         hideDropdown();
         if (window.location.search.includes('search=')) {
             window.location.href = "{{ $clearUrl }}";
@@ -164,8 +169,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (clearBtn) {
             if (query.length > 0) {
                 clearBtn.classList.remove('hidden');
+                clearBtn.classList.add('flex');
             } else {
                 clearBtn.classList.add('hidden');
+                clearBtn.classList.remove('flex');
             }
         }
 
@@ -186,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Display loading state
             listContainer.innerHTML = `
                 <div class="px-4 py-3 text-xs text-slate-400 flex items-center justify-center gap-2">
-                    <svg class="animate-spin w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24">
+                    <svg class="animate-spin w-4 h-4 text-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
@@ -226,22 +233,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 data.forEach(item => {
                     const highlightedName = highlightMatch(item.name, query);
                     const typeBadge = item.type 
-                        ? `<span class="text-[9px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">${escapeHtml(item.type)}</span>` 
+                        ? `<span class="text-[9px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded flex-shrink-0 whitespace-nowrap">${escapeHtml(item.type)}</span>` 
                         : '';
                     const jobsBadge = item.jobs_count > 0 
-                        ? `<span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded ml-auto flex-shrink-0">${item.jobs_count} ${item.jobs_count === 1 ? 'Job' : 'Jobs'}</span>` 
+                        ? `<span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded flex-shrink-0 whitespace-nowrap ml-2">${item.jobs_count} ${item.jobs_count === 1 ? 'Job' : 'Jobs'}</span>` 
                         : '';
-                    const industryText = item.industry ? `<p class="text-[11px] text-slate-400 truncate mt-0.5">${escapeHtml(item.industry)}</p>` : '';
+                    const industryText = item.industry ? `<p class="text-[11px] text-slate-400 truncate mt-0.5 leading-snug">${escapeHtml(item.industry)}</p>` : '';
 
                     html += `
                         <a href="${escapeHtml(item.url)}" 
-                           class="block px-4 py-2.5 hover:bg-blue-50/60 transition-colors group/item">
-                            <div class="flex items-center justify-between gap-2">
+                           class="block px-3.5 py-2.5 hover:bg-blue-50/60 transition-colors group/item">
+                            <div class="flex items-center justify-between gap-2 min-w-0">
                                 <div class="min-w-0 flex-1">
-                                    <div class="flex items-center gap-2">
-                                        <h4 class="text-xs font-bold text-slate-800 group-hover/item:text-blue-600 transition-colors truncate">
+                                    <div class="flex items-center gap-1.5 min-w-0">
+                                        <span class="text-xs font-bold text-slate-800 group-hover/item:text-blue-600 transition-colors truncate block flex-shrink min-w-0">
                                             ${highlightedName}
-                                        </h4>
+                                        </span>
                                         ${typeBadge}
                                     </div>
                                     ${industryText}

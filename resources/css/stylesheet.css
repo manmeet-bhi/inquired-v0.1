@@ -94,14 +94,6 @@ button svg {
     pointer-events: none;
 }
 
-/* Prevent icon overlap in navigation */
-.flex.items-center {
-    align-items: center;
-}
-
-.flex.items-center>* {
-    flex-shrink: 0;
-}
 
 /* --- END OF YOUR NAV BAR CSS --- */
 

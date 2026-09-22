@@ -111,14 +111,13 @@
         <div class="p-4 sm:p-6">
             <div class="flex items-start justify-between mb-4">
                 <div class="flex-1 min-w-0">
-                        <h3 class="font-bold text-slate-900 text-base sm:text-lg mb-1 group-hover:text-blue-600 transition-colors break-words">{{ $job->title }}</h3>
-                        <div class="flex items-center gap-1.5 mb-1">
-                            <i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-400"></i>
-                            <p class="text-slate-600 text-sm font-medium truncate">{{ $job->company->name ?? 'Company' }}</p>
-                        </div>
+                    <h3 class="font-bold text-slate-900 text-base sm:text-lg mb-1 group-hover:text-blue-600 transition-colors break-words">{{ $job->title }}</h3>
+                    <div class="flex items-center gap-1.5 mb-1">
+                        <i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-400"></i>
+                        <p class="text-slate-600 text-sm font-medium truncate">{{ $job->company->name ?? 'Company' }}</p>
                     </div>
                 </div>
-                <div class="flex flex-col items-end gap-2 ml-2">
+                <div class="flex flex-col items-end gap-2 ml-2 flex-shrink-0">
                     @if($job->is_featured ?? false)
                         <span class="bg-amber-50 text-amber-700 border border-amber-200 text-xs px-2.5 py-0.5 rounded-full font-semibold inline-flex items-center">
                             Featured
