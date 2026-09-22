@@ -18,17 +18,6 @@ class HomeController extends Controller
         if (!in_array($tab, ['all', 'office', 'remote', 'hybrid'])) {
             $tab = 'all';
         }
-        $page = $request->get('page', 1);
-
-        // Tab counts for badges
-        $jobCounts = \Illuminate\Support\Facades\Cache::remember('home_jobs_tab_counts', 3600, function() {
-            return [
-                'all' => Job::where('is_active', true)->count(),
-                'office' => Job::where('is_active', true)->where('work_type', 'onsite')->count(),
-                'remote' => Job::where('is_active', true)->where('work_type', 'remote')->count(),
-                'hybrid' => Job::where('is_active', true)->where('work_type', 'hybrid')->count(),
-            ];
-        });
 
         // Get latest jobs (top 21 jobs) based on selected tab
         $cacheKey = "home_latest_jobs_tab_{$tab}";
@@ -86,7 +75,6 @@ class HomeController extends Controller
         return view('index', compact(
             'latestJobs',
             'tab',
-            'jobCounts',
             'categories',
             'posts',
             'pageSeo',
