@@ -407,7 +407,6 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
             'website' => 'nullable|url',
             'linkedin_url' => 'nullable|url',
             'industry' => 'nullable|string|max:255',
@@ -417,10 +416,6 @@ class AdminController extends Controller
         $data = $request->all();
         $data['description'] = sanitize_html($request->description);
         $data['slug'] = Str::slug($request->name);
-        
-        if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('company-logos', config('filesystems.default'));
-        }
 
         $company = Company::create($data);
         
@@ -447,7 +442,6 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
             'website' => 'nullable|url',
             'linkedin_url' => 'nullable|url',
             'industry' => 'nullable|string|max:255',
@@ -457,18 +451,6 @@ class AdminController extends Controller
         $data = $request->all();
         $data['description'] = sanitize_html($request->description);
         $data['slug'] = Str::slug($request->name);
-        
-        if ($request->has('remove_logo') && $request->remove_logo == '1') {
-            if ($company->logo) {
-                Storage::disk(config('filesystems.default'))->delete($company->logo);
-            }
-            $data['logo'] = null;
-        } elseif ($request->hasFile('logo')) {
-            if ($company->logo) {
-                Storage::disk(config('filesystems.default'))->delete($company->logo);
-            }
-            $data['logo'] = $request->file('logo')->store('company-logos', config('filesystems.default'));
-        }
 
         $company->update($data);
         return redirect()->route('cms.companies')->with('success', 'Company updated successfully');

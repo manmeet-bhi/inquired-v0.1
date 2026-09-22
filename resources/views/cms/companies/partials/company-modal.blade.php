@@ -37,7 +37,7 @@
                 </div>
 
                 <!-- Company Type -->
-                <div class="cms-form-group">
+                <div class="cms-form-group md:col-span-2">
                     <label for="company_modal_type" class="cms-label">Type</label>
                     <select id="company_modal_type" name="type" class="cms-select">
                         <option value="">Select Type</option>
@@ -48,12 +48,6 @@
                         <option value="enterprise">Enterprise</option>
                         <option value="unicorn">Unicorn</option>
                     </select>
-                </div>
-
-                <!-- Logo (Simple file input) -->
-                <div class="cms-form-group">
-                    <label for="company_modal_logo" class="cms-label">Company Logo</label>
-                    <input type="file" id="company_modal_logo" name="logo" accept="image/*" class="cms-input text-xs">
                 </div>
             </div>
 

@@ -143,18 +143,7 @@
                     @forelse($stats['recent_jobs'] as $job)
                         <div class="p-5 sm:p-6 hover:bg-slate-50 transition-colors flex flex-col sm:flex-row sm:items-center gap-4 relative group">
                             <div class="flex items-center flex-1 min-w-0">
-                                @if($job->company && $job->company->logo_url)
-                                    <img src="{{ $job->company->logo_url }}" alt="{{ $job->company->name }}" class="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                    <div class="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 font-bold text-slate-700 uppercase text-sm" style="display:none;">
-                                        {{ strtoupper(substr($job->company->name ?? 'C', 0, 1)) }}
-                                    </div>
-                                @else
-                                    <div class="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 font-bold text-slate-700 uppercase text-sm">
-                                        {{ strtoupper(substr($job->company->name ?? 'C', 0, 1)) }}
-                                    </div>
-                                @endif
-                                
-                                <div class="ml-4 min-w-0">
+                                <div class="min-w-0">
                                     <div class="flex items-center gap-2 flex-wrap">
                                         <h4 class="text-sm font-semibold text-slate-900 truncate">{{ $job->title }}</h4>
                                         <span class="w-1.5 h-1.5 rounded-full shrink-0 {{ $job->is_active ? 'bg-green-500' : 'bg-red-500' }}" title="{{ $job->is_active ? 'Active' : 'Inactive' }}"></span>
@@ -209,18 +198,7 @@
                     @forelse($stats['recent_internships'] as $internship)
                         <div class="p-5 sm:p-6 hover:bg-slate-50 transition-colors flex flex-col sm:flex-row sm:items-center gap-4 relative group">
                             <div class="flex items-center flex-1 min-w-0">
-                                @if($internship->company && $internship->company->logo_url)
-                                    <img src="{{ $internship->company->logo_url }}" alt="{{ $internship->company->name }}" class="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                    <div class="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 font-bold text-slate-700 uppercase text-sm" style="display:none;">
-                                        {{ strtoupper(substr($internship->company->name ?? 'C', 0, 1)) }}
-                                    </div>
-                                @else
-                                    <div class="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 font-bold text-slate-700 uppercase text-sm">
-                                        {{ strtoupper(substr($internship->company->name ?? 'C', 0, 1)) }}
-                                    </div>
-                                @endif
-                                
-                                <div class="ml-4 min-w-0">
+                                <div class="min-w-0">
                                     <div class="flex items-center gap-2 flex-wrap">
                                         <h4 class="text-sm font-semibold text-slate-900 truncate">{{ $internship->title }}</h4>
                                         @if($internship->is_featured)

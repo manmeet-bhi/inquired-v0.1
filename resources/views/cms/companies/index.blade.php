@@ -70,22 +70,9 @@
                             <input type="checkbox" class="company-checkbox rounded border-slate-300 text-blue-600 focus:ring-blue-500" value="{{ $company->id }}">
                         </td>
                         <td class="px-4 py-3">
-                            <div class="flex items-start">
-                                @if($company->logo_url)
-                                <img src="{{ $company->logo_url }}" alt="{{ $company->name }}" class="w-10 h-10 rounded-lg object-cover mr-3 border border-slate-200 shrink-0" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mr-3 border border-slate-200 shrink-0 font-bold text-slate-700 uppercase text-sm" style="display:none;">
-                                    {{ strtoupper(substr($company->name ?? 'C', 0, 1)) }}
-                                </div>
-                                @else
-                                <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mr-3 border border-slate-200 shrink-0 font-bold text-slate-700 uppercase text-sm">
-                                    {{ strtoupper(substr($company->name ?? 'C', 0, 1)) }}
-                                </div>
-                                @endif
-                                <div class="min-w-0 flex-1">
-                                    <div class="text-sm font-semibold text-slate-900 truncate max-w-[200px]" title="{{ $company->name }}">{{ $company->name }}</div>
-
-                                    <div class="text-xs text-slate-400 mt-0.5">{{ $company->jobs_count }} Jobs Posted</div>
-                                </div>
+                            <div class="min-w-0">
+                                <div class="text-sm font-semibold text-slate-900 truncate max-w-[200px]" title="{{ $company->name }}">{{ $company->name }}</div>
+                                <div class="text-xs text-slate-400 mt-0.5">{{ $company->jobs_count }} Jobs Posted</div>
                             </div>
                         </td>
                         <td class="px-4 py-3">

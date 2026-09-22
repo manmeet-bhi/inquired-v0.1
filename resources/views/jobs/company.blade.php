@@ -11,27 +11,10 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 
                 <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 flex-1 min-w-0">
-                    {{-- Logo --}}
-                    @php
-                        $firstAlphabet = strtoupper(substr($company->name ?? 'C', 0, 1));
-                    @endphp
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border border-slate-200 bg-white flex items-center justify-center overflow-hidden shadow-xs flex-shrink-0">
-                        @if($company->logo_url)
-                            <img src="{{ $company->logo_url }}" alt="{{ $company->name }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" loading="eager">
-                            <div class="w-full h-full bg-slate-100 flex items-center justify-center font-bold text-slate-700 text-2xl uppercase" style="display:none;">
-                                {{ $firstAlphabet }}
-                            </div>
-                        @else
-                            <div class="w-full h-full bg-slate-100 flex items-center justify-center font-bold text-slate-700 text-2xl uppercase">
-                                {{ $firstAlphabet }}
-                            </div>
-                        @endif
-                    </div>
-
                     {{-- Company Information --}}
                     <div class="flex-1 min-w-0">
                         <div class="flex flex-wrap items-center gap-2.5 mb-2.5">
-                            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight break-words">{{ $company->name }}</h1>
+                            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight break-words">{{ $company->name }}</h1>
                         </div>
 
                         {{-- Separate Industry Tags (1 Open Position badge removed) --}}
@@ -104,23 +87,9 @@
                 
                 <!-- Modal Header -->
                 <div class="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/60">
-                    <div class="flex items-center gap-3.5 min-w-0">
-                        <div class="w-11 h-11 rounded-2xl border border-slate-200 bg-white flex items-center justify-center overflow-hidden shadow-xs flex-shrink-0">
-                            @if($company->logo_url)
-                                <img src="{{ $company->logo_url }}" alt="{{ $company->name }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" loading="eager">
-                                <div class="w-full h-full bg-slate-100 flex items-center justify-center font-bold text-slate-700 text-lg uppercase" style="display:none;">
-                                    {{ $firstAlphabet }}
-                                </div>
-                            @else
-                                <div class="w-full h-full bg-slate-100 flex items-center justify-center font-bold text-slate-700 text-lg uppercase">
-                                    {{ $firstAlphabet }}
-                                </div>
-                            @endif
-                        </div>
-                        <div class="min-w-0">
-                            <h3 id="modal-company-title" class="text-base sm:text-lg font-bold text-slate-900 truncate">About {{ $company->name }}</h3>
-                            <p class="text-xs text-slate-500 font-medium">Company Overview & Details</p>
-                        </div>
+                    <div class="min-w-0">
+                        <h3 id="modal-company-title" class="text-base sm:text-lg font-bold text-slate-900 truncate">About {{ $company->name }}</h3>
+                        <p class="text-xs text-slate-500 font-medium">Company Overview & Details</p>
                     </div>
                     <button type="button" 
                             onclick="closeAboutModal()" 

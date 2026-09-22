@@ -81,36 +81,24 @@
                             <input type="checkbox" class="internship-checkbox rounded border-slate-300 text-blue-600 focus:ring-blue-500" value="{{ $internship->id }}">
                         </td>
                         <td class="px-4 py-3">
-                            <div class="flex items-start">
-                                @if($internship->company && $internship->company->logo_url)
-                                <img src="{{ $internship->company->logo_url }}" alt="{{ $internship->company->name }}" class="w-10 h-10 rounded-lg object-cover mr-3 border border-slate-200 shrink-0" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mr-3 border border-slate-200 shrink-0 font-bold text-slate-700 uppercase text-sm" style="display:none;">
-                                    {{ strtoupper(substr($internship->company->name ?? 'C', 0, 1)) }}
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5 flex-wrap">
+                                    <div class="text-sm font-semibold text-slate-900 truncate max-w-[200px] sm:max-w-xs" title="{{ $internship->title }}">{{ $internship->title }}</div>
+                                    @if($internship->is_featured)
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                                            Featured
+                                        </span>
+                                    @endif
+                                    @if($internship->job_id)
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                            {{ $internship->job_id }}
+                                        </span>
+                                    @endif
                                 </div>
-                                @else
-                                <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mr-3 border border-slate-200 shrink-0 font-bold text-slate-700 uppercase text-sm">
-                                    {{ strtoupper(substr($internship->company->name ?? 'C', 0, 1)) }}
-                                </div>
-                                @endif
-                                <div class="min-w-0 flex-1">
-                                    <div class="flex items-center gap-2 mb-0.5 flex-wrap">
-                                        <div class="text-sm font-semibold text-slate-900 truncate max-w-[200px] sm:max-w-xs" title="{{ $internship->title }}">{{ $internship->title }}</div>
-                                        @if($internship->is_featured)
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                                                Featured
-                                            </span>
-                                        @endif
-                                        @if($internship->job_id)
-                                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-slate-100 text-slate-600 border border-slate-200">
-                                                {{ $internship->job_id }}
-                                            </span>
-                                        @endif
-                                    </div>
-                                    <div class="text-xs text-slate-500 flex items-center flex-wrap gap-1">
-                                        <span class="font-medium text-slate-700">{{ $internship->company->name }}</span>
-                                        <span class="text-slate-300">•</span>
-                                        <span>{{ $internship->created_at->format('M d') }}</span>
-                                    </div>
+                                <div class="text-xs text-slate-500 flex items-center flex-wrap gap-1">
+                                    <span class="font-medium text-slate-700">{{ $internship->company->name }}</span>
+                                    <span class="text-slate-300">•</span>
+                                    <span>{{ $internship->created_at->format('M d') }}</span>
                                 </div>
                             </div>
                         </td>
