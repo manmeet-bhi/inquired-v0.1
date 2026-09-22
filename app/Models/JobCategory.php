@@ -32,11 +32,11 @@ class JobCategory extends Model
         });
 
         static::saved(function ($category) {
-            \Illuminate\Support\Facades\Cache::forget('dynamic_sitemap_xml');
+            \Illuminate\Support\Facades\Cache::flush();
         });
 
         static::deleted(function ($category) {
-            \Illuminate\Support\Facades\Cache::forget('dynamic_sitemap_xml');
+            \Illuminate\Support\Facades\Cache::flush();
         });
     }
 

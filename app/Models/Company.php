@@ -43,11 +43,11 @@ class Company extends Model
         });
 
         static::saved(function ($company) {
-            \Illuminate\Support\Facades\Cache::forget('dynamic_sitemap_xml');
+            \Illuminate\Support\Facades\Cache::flush();
         });
 
         static::deleted(function ($company) {
-            \Illuminate\Support\Facades\Cache::forget('dynamic_sitemap_xml');
+            \Illuminate\Support\Facades\Cache::flush();
         });
     }
 
