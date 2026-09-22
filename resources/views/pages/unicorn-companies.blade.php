@@ -14,8 +14,18 @@
 
             <!-- Main Content Area -->
             <div class="flex-grow">
-                <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">{{ $companies->total() }} Premium Brands</h2>
+                <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+                    <div class="flex items-center gap-3">
+                        <h2 class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">
+                            {{ $companies->total() }} {{ $companies->total() === 1 ? 'Unicorn' : 'Unicorns' }}
+                        </h2>
+                        @if(request()->filled('search'))
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold border border-blue-100">
+                                <span>Results for "{{ request('search') }}"</span>
+                                <a href="{{ route('unicorn-companies') }}" class="hover:text-blue-900 ml-1 font-bold" title="Clear search">✕</a>
+                            </span>
+                        @endif
+                    </div>
                 </div>
 
                 @if($companies->count() > 0)
@@ -37,8 +47,21 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900">No unicorn companies yet</h3>
-                    <p class="text-gray-500 text-sm font-medium">Check back later for new high-growth brands joining our ecosystem.</p>
+                    <h3 class="text-xl font-bold text-gray-900">No unicorn companies found</h3>
+                    <p class="text-gray-500 text-sm font-medium mt-1">
+                        @if(request()->filled('search'))
+                            No unicorn companies matching "<strong class="text-gray-700">{{ request('search') }}</strong>".
+                        @else
+                            Check back later for new high-growth brands joining our ecosystem.
+                        @endif
+                    </p>
+                    @if(request()->filled('search'))
+                        <div class="mt-6">
+                            <a href="{{ route('unicorn-companies') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold shadow-md shadow-blue-600/20 transition-all">
+                                <span>Clear Search</span>
+                            </a>
+                        </div>
+                    @endif
                 </div>
                 @endif
             </div>

@@ -258,9 +258,19 @@ class JobController extends Controller
                 });
             }
 
-            // Filter by Company Type
-            if ($request->has('company_type') && is_array($request->company_type)) {
-                $query->whereIn('type', $request->company_type);
+            // Filter by Company Type (supports 'type' or 'company_type' as string or array)
+            if ($request->filled('type') && $request->type !== 'all') {
+                $types = is_array($request->type) ? $request->type : explode(',', $request->type);
+                if (in_array('mnc', $types) && !in_array('indian_mnc', $types)) {
+                    $types[] = 'indian_mnc';
+                }
+                $query->whereIn('type', $types);
+            } elseif ($request->filled('company_type')) {
+                $types = is_array($request->company_type) ? $request->company_type : explode(',', $request->company_type);
+                if (in_array('mnc', $types) && !in_array('indian_mnc', $types)) {
+                    $types[] = 'indian_mnc';
+                }
+                $query->whereIn('type', $types);
             }
 
             // Filter by Categories (companies that have jobs in selected categories)
@@ -296,12 +306,23 @@ class JobController extends Controller
         $query = mb_substr($query, 0, 50);
         $escaped = addcslashes($query, '%_\\');
 
-        $companies = Company::where('is_active', true)
+        $companyQuery = Company::where('is_active', true)
             ->where(function($q) use ($escaped) {
                 $q->where('name', 'LIKE', "%{$escaped}%")
                   ->orWhere('industry', 'LIKE', "%{$escaped}%")
                   ->orWhere('tagline', 'LIKE', "%{$escaped}%");
-            })
+            });
+
+        // Filter by type if provided (e.g. unicorn, startup, mnc)
+        if ($request->filled('type') && $request->type !== 'all') {
+            $types = is_array($request->type) ? $request->type : explode(',', $request->type);
+            if (in_array('mnc', $types) && !in_array('indian_mnc', $types)) {
+                $types[] = 'indian_mnc';
+            }
+            $companyQuery->whereIn('type', $types);
+        }
+
+        $companies = $companyQuery
             ->withCount(['jobs' => function($q) {
                 $q->where('is_active', true);
             }])
@@ -333,18 +354,29 @@ class JobController extends Controller
         });
 
         $page = $request->get('page', 1);
-        $cacheKey = "startup_companies_p{$page}";
+        $filters = serialize($request->all());
+        $cacheKey = "startup_companies_p{$page}_" . md5($filters);
 
-        $companies = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() {
-            return Company::where('is_active', true)
+        $companies = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() use ($request) {
+            $query = Company::where('is_active', true)
                 ->where('type', 'startup')
                 ->withCount('jobs')
-                ->select('id', 'name', 'slug', 'tagline', 'description', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active')
-                ->orderBy('name')
-                ->paginate(12);
+                ->select('id', 'name', 'slug', 'tagline', 'description', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active');
+
+            if ($request->filled('search')) {
+                $searchTerm = trim(strip_tags((string) $request->search));
+                $searchTerm = mb_substr($searchTerm, 0, 50);
+                $escaped = addcslashes($searchTerm, '%_\\');
+                $query->where(function ($q) use ($escaped) {
+                    $q->where('name', 'LIKE', "%{$escaped}%")
+                      ->orWhere('industry', 'LIKE', "%{$escaped}%")
+                      ->orWhere('tagline', 'LIKE', "%{$escaped}%");
+                });
+            }
+
+            return $query->orderBy('name')->paginate(12)->withQueryString();
         });
 
-            
         return view('pages.startup-companies', compact('companies', 'pageSeo'));
     }
 
@@ -355,18 +387,29 @@ class JobController extends Controller
         });
 
         $page = $request->get('page', 1);
-        $cacheKey = "mnc_companies_p{$page}";
+        $filters = serialize($request->all());
+        $cacheKey = "mnc_companies_p{$page}_" . md5($filters);
 
-        $companies = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() {
-            return Company::where('is_active', true)
-                ->where('type', 'mnc')
+        $companies = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() use ($request) {
+            $query = Company::where('is_active', true)
+                ->whereIn('type', ['mnc', 'indian_mnc'])
                 ->withCount('jobs')
-                ->select('id', 'name', 'slug', 'tagline', 'description', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active')
-                ->orderBy('name')
-                ->paginate(12);
+                ->select('id', 'name', 'slug', 'tagline', 'description', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active');
+
+            if ($request->filled('search')) {
+                $searchTerm = trim(strip_tags((string) $request->search));
+                $searchTerm = mb_substr($searchTerm, 0, 50);
+                $escaped = addcslashes($searchTerm, '%_\\');
+                $query->where(function ($q) use ($escaped) {
+                    $q->where('name', 'LIKE', "%{$escaped}%")
+                      ->orWhere('industry', 'LIKE', "%{$escaped}%")
+                      ->orWhere('tagline', 'LIKE', "%{$escaped}%");
+                });
+            }
+
+            return $query->orderBy('name')->paginate(12)->withQueryString();
         });
 
-            
         return view('pages.mnc-companies', compact('companies', 'pageSeo'));
     }
 
@@ -377,18 +420,29 @@ class JobController extends Controller
         });
 
         $page = $request->get('page', 1);
-        $cacheKey = "unicorn_companies_p{$page}";
+        $filters = serialize($request->all());
+        $cacheKey = "unicorn_companies_p{$page}_" . md5($filters);
 
-        $companies = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() {
-            return Company::where('is_active', true)
+        $companies = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() use ($request) {
+            $query = Company::where('is_active', true)
                 ->where('type', 'unicorn')
                 ->withCount('jobs')
-                ->select('id', 'name', 'slug', 'tagline', 'description', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active')
-                ->orderBy('name')
-                ->paginate(12);
+                ->select('id', 'name', 'slug', 'tagline', 'description', 'website', 'linkedin_url', 'industry', 'type', 'founded_year', 'address', 'is_active');
+
+            if ($request->filled('search')) {
+                $searchTerm = trim(strip_tags((string) $request->search));
+                $searchTerm = mb_substr($searchTerm, 0, 50);
+                $escaped = addcslashes($searchTerm, '%_\\');
+                $query->where(function ($q) use ($escaped) {
+                    $q->where('name', 'LIKE', "%{$escaped}%")
+                      ->orWhere('industry', 'LIKE', "%{$escaped}%")
+                      ->orWhere('tagline', 'LIKE', "%{$escaped}%");
+                });
+            }
+
+            return $query->orderBy('name')->paginate(12)->withQueryString();
         });
 
-            
         return view('pages.unicorn-companies', compact('companies', 'pageSeo'));
     }
 

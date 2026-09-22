@@ -3,6 +3,24 @@
     'active' => 'all'
 ])
 
+@php
+    $currentActive = $active;
+    if ($currentActive === 'all' && request()->filled('type')) {
+        $currentActive = request('type');
+    }
+
+    $searchAction = route('companies');
+    if ($currentActive === 'unicorn' || request()->routeIs('unicorn-companies')) {
+        $searchAction = route('unicorn-companies');
+    } elseif ($currentActive === 'startup' || request()->routeIs('startup-companies')) {
+        $searchAction = route('startup-companies');
+    } elseif ($currentActive === 'mnc' || request()->routeIs('mnc-companies')) {
+        $searchAction = route('mnc-companies');
+    }
+
+    $clearUrl = $searchAction;
+@endphp
+
 <aside {{ $attributes->merge(['class' => 'w-full lg:w-80 flex-shrink-0']) }}>
     <div id="filters-panel" class="bg-white p-6 rounded-2xl border border-gray-100 space-y-6 lg:block sticky top-28 shadow-xs">
         
@@ -11,12 +29,16 @@
             <h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-3 flex items-center justify-between">
                 <span>Search Companies</span>
                 @if(request()->filled('search'))
-                    <a href="{{ route('companies') }}" class="text-[10px] font-bold text-blue-600 hover:underline normal-case">Clear filter</a>
+                    <a href="{{ $clearUrl }}" class="text-[10px] font-bold text-blue-600 hover:underline normal-case">Clear filter</a>
                 @endif
             </h2>
             
             <div class="relative" id="company-search-container">
-                <form action="{{ route('companies') }}" method="GET" class="relative" id="company-search-form">
+                <form action="{{ $searchAction }}" method="GET" class="relative" id="company-search-form">
+                    @if(request()->filled('type') && !request()->routeIs('unicorn-companies', 'startup-companies', 'mnc-companies'))
+                        <input type="hidden" name="type" value="{{ request('type') }}">
+                    @endif
+
                     <div class="relative flex items-center">
                         <input type="text" 
                                name="search" 
@@ -55,25 +77,29 @@
             </p>
         </div>
 
-        {{-- Navigation Mode --}}
+        {{-- Navigation & Type Filter Mode --}}
         <div>
             <h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-3">Explore Companies</h2>
             <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-2.5 sm:gap-3">
-                <a href="{{ route('unicorn-companies') }}" class="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border {{ $active === 'unicorn' ? 'border-blue-200 bg-blue-50/80 text-blue-700 shadow-xs' : 'border-gray-100 bg-white hover:border-blue-100 hover:bg-blue-50/50 text-gray-700' }} transition-all group">
-                    <span class="text-xs font-bold uppercase tracking-wider group-hover:text-blue-600">Unicorns</span>
-                    <svg class="w-4 h-4 {{ $active === 'unicorn' ? 'text-blue-600' : 'text-gray-300' }} group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <a href="{{ route('unicorn-companies') }}" 
+                   class="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border {{ $currentActive === 'unicorn' ? 'border-blue-300 bg-blue-50 text-blue-700 font-bold shadow-xs' : 'border-gray-100 bg-white hover:border-blue-100 hover:bg-blue-50/50 text-gray-700' }} transition-all group">
+                    <span class="text-xs uppercase tracking-wider group-hover:text-blue-600 {{ $currentActive === 'unicorn' ? 'text-blue-700 font-bold' : 'font-semibold' }}">Unicorns</span>
+                    <svg class="w-4 h-4 {{ $currentActive === 'unicorn' ? 'text-blue-600' : 'text-gray-300' }} group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>
-                <a href="{{ route('startup-companies') }}" class="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border {{ $active === 'startup' ? 'border-blue-200 bg-blue-50/80 text-blue-700 shadow-xs' : 'border-gray-100 bg-white hover:border-blue-100 hover:bg-blue-50/50 text-gray-700' }} transition-all group">
-                    <span class="text-xs font-bold uppercase tracking-wider group-hover:text-blue-600">Startups</span>
-                    <svg class="w-4 h-4 {{ $active === 'startup' ? 'text-blue-600' : 'text-gray-300' }} group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <a href="{{ route('startup-companies') }}" 
+                   class="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border {{ $currentActive === 'startup' ? 'border-blue-300 bg-blue-50 text-blue-700 font-bold shadow-xs' : 'border-gray-100 bg-white hover:border-blue-100 hover:bg-blue-50/50 text-gray-700' }} transition-all group">
+                    <span class="text-xs uppercase tracking-wider group-hover:text-blue-600 {{ $currentActive === 'startup' ? 'text-blue-700 font-bold' : 'font-semibold' }}">Startups</span>
+                    <svg class="w-4 h-4 {{ $currentActive === 'startup' ? 'text-blue-600' : 'text-gray-300' }} group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>
-                <a href="{{ route('mnc-companies') }}" class="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border {{ $active === 'mnc' ? 'border-blue-200 bg-blue-50/80 text-blue-700 shadow-xs' : 'border-gray-100 bg-white hover:border-blue-100 hover:bg-blue-50/50 text-gray-700' }} transition-all group">
-                    <span class="text-xs font-bold uppercase tracking-wider group-hover:text-blue-600">MNCs</span>
-                    <svg class="w-4 h-4 {{ $active === 'mnc' ? 'text-blue-600' : 'text-gray-300' }} group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <a href="{{ route('mnc-companies') }}" 
+                   class="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border {{ $currentActive === 'mnc' ? 'border-blue-300 bg-blue-50 text-blue-700 font-bold shadow-xs' : 'border-gray-100 bg-white hover:border-blue-100 hover:bg-blue-50/50 text-gray-700' }} transition-all group">
+                    <span class="text-xs uppercase tracking-wider group-hover:text-blue-600 {{ $currentActive === 'mnc' ? 'text-blue-700 font-bold' : 'font-semibold' }}">MNCs</span>
+                    <svg class="w-4 h-4 {{ $currentActive === 'mnc' ? 'text-blue-600' : 'text-gray-300' }} group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>
-                <a href="{{ route('companies') }}" class="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border {{ $active === 'all' && !request()->filled('search') ? 'border-blue-200 bg-blue-50/80 text-blue-700 shadow-xs' : 'border-gray-100 bg-white hover:border-blue-100 hover:bg-blue-50/50 text-gray-700' }} transition-all group">
-                    <span class="text-xs font-bold uppercase tracking-wider group-hover:text-blue-600">All Directory</span>
-                    <svg class="w-4 h-4 {{ $active === 'all' && !request()->filled('search') ? 'text-blue-600' : 'text-gray-300' }} group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <a href="{{ route('companies') }}" 
+                   class="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border {{ $currentActive === 'all' && !request()->filled('search') ? 'border-blue-300 bg-blue-50 text-blue-700 font-bold shadow-xs' : 'border-gray-100 bg-white hover:border-blue-100 hover:bg-blue-50/50 text-gray-700' }} transition-all group">
+                    <span class="text-xs uppercase tracking-wider group-hover:text-blue-600 {{ $currentActive === 'all' && !request()->filled('search') ? 'text-blue-700 font-bold' : 'font-semibold' }}">All Directory</span>
+                    <svg class="w-4 h-4 {{ $currentActive === 'all' && !request()->filled('search') ? 'text-blue-600' : 'text-gray-300' }} group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>
             </div>
         </div>
@@ -91,6 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let debounceTimer = null;
     let abortController = null;
+    const currentActiveType = '{{ $currentActive !== "all" ? $currentActive : "" }}';
 
     // Helper: Escape HTML to prevent XSS
     function escapeHtml(str) {
@@ -127,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (clearBtn) clearBtn.classList.add('hidden');
         hideDropdown();
         if (window.location.search.includes('search=')) {
-            window.location.href = "{{ route('companies') }}";
+            window.location.href = "{{ $clearUrl }}";
         }
     };
 
@@ -168,7 +195,12 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
             showDropdown();
 
-            fetch(`{{ route('companies.autocomplete') }}?q=${encodeURIComponent(query)}`, {
+            let url = `{{ route('companies.autocomplete') }}?q=${encodeURIComponent(query)}`;
+            if (currentActiveType) {
+                url += `&type=${encodeURIComponent(currentActiveType)}`;
+            }
+
+            fetch(url, {
                 signal: abortController.signal,
                 headers: {
                     'Accept': 'application/json',
