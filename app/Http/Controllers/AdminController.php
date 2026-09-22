@@ -459,9 +459,6 @@ class AdminController extends Controller
     public function destroyCompany(Company $company)
     {
         $this->checkPermission('companies.delete');
-        if ($company->logo) {
-            Storage::disk(config('filesystems.default'))->delete($company->logo);
-        }
         $company->delete();
         return redirect()->route('cms.companies')->with('success', 'Company deleted successfully');
     }
@@ -474,14 +471,7 @@ class AdminController extends Controller
             'company_ids.*' => 'exists:companies,id'
         ]);
 
-        $companies = Company::whereIn('id', $request->company_ids)->get();
-        
-        foreach ($companies as $company) {
-            if ($company->logo) {
-                Storage::disk(config('filesystems.default'))->delete($company->logo);
-            }
-            $company->delete();
-        }
+        Company::whereIn('id', $request->company_ids)->delete();
         
         $count = count($request->company_ids);
         return redirect()->route('cms.companies')->with('success', "{$count} companies deleted successfully");
