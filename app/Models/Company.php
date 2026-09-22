@@ -71,6 +71,6 @@ class Company extends Model
 
     public function getLogoUrlAttribute()
     {
-        return media_url($this->logo);
+        return null;
     }
 }

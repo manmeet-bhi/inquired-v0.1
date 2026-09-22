@@ -22,7 +22,7 @@ class SeoHelper
 
         $companyName = $job->company ? $job->company->name : 'Inaquired';
         $companyWebsite = $job->company?->website ?: ($job->company?->slug ? route('company.show', $job->company->slug) : url('/'));
-        $companyLogo = $job->company?->logo_url ?: asset('assets/logos/logo.png');
+        $companyLogo = asset('assets/logos/logo.png');
 
         $jobType = strtolower($job->type ?? '');
         $jobLevel = strtolower($job->level ?? '');
@@ -173,7 +173,7 @@ class SeoHelper
         }
 
         $companyUrl = route('company.show', $company->slug ?: $company->id);
-        $logoUrl = $company->logo_url ?: asset('assets/logos/logo.png');
+        $logoUrl = asset('assets/logos/logo.png');
 
         $sameAs = array_filter([
             $company->website,

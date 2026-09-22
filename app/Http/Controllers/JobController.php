@@ -448,7 +448,6 @@ class JobController extends Controller
                 'employment_type' => $job->employment_type ?? 'full-time',
                 'salary' => $job->salary,
                 'is_featured' => $job->is_featured ?? false,
-                'company_logo' => $job->company_logo,
                 'created_at' => $job->created_at->diffForHumans(),
             ];
         }));
