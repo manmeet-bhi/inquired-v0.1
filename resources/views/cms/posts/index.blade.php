@@ -54,51 +54,51 @@
             </div>
         </div>
         
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-slate-200">
+        <div class="w-full overflow-x-hidden no-scrollbar">
+            <table class="w-full divide-y divide-slate-200">
                 <thead class="bg-slate-50">
                     <tr>
                         <th class="px-4 py-3 text-left w-10">
                             <input type="checkbox" id="select-all" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
                         </th>
                         <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Post Details</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status & Date</th>
-                        <th class="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-48">Status & Date</th>
+                        <th class="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider whitespace-nowrap w-24">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-slate-200">
                     @forelse($posts as $post)
                     <tr class="hover:bg-slate-50 group">
-                        <td class="px-4 py-3">
+                        <td class="px-4 py-3 w-10">
                             <input type="checkbox" class="post-checkbox rounded border-slate-300 text-blue-600 focus:ring-blue-500" value="{{ $post->id }}">
                         </td>
-                        <td class="px-4 py-3">
+                        <td class="px-4 py-3 min-w-0">
                             <div class="flex items-start">
                                 @if($post->featured_image_url)
-                                <img src="{{ $post->featured_image_url }}" alt="{{ $post->title }}" class="w-10 h-10 rounded-lg object-cover mr-3 border border-slate-200" loading="lazy">
+                                <img src="{{ $post->featured_image_url }}" alt="{{ $post->title }}" class="w-10 h-10 rounded-lg object-cover mr-3 border border-slate-200 shrink-0" loading="lazy">
                                 @else
-                                <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mr-3 border border-slate-200">
+                                <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mr-3 border border-slate-200 shrink-0">
                                     <i data-lucide="file-text" class="w-5 h-5 text-slate-400"></i>
                                 </div>
                                 @endif
                                 <div class="min-w-0 flex-1">
-                                    <div class="text-sm font-semibold text-slate-900 truncate max-w-[300px]" title="{{ $post->title }}">{{ $post->title }}</div>
-                                    <div class="text-xs text-slate-500 truncate max-w-[300px]">
-                                        {{ Str::limit($post->excerpt ?? strip_tags($post->content), 60) }}
+                                    <div class="text-sm font-semibold text-slate-900 truncate" title="{{ $post->title }}">{{ $post->title }}</div>
+                                    <div class="text-xs text-slate-500 truncate">
+                                        {{ Str::limit($post->excerpt ?? strip_tags($post->content), 80) }}
                                     </div>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-4 py-3">
+                        <td class="px-4 py-3 whitespace-nowrap w-48">
                             <div class="flex items-center text-sm text-slate-700">
-                                <span class="inline-flex items-center px-1.5 py-0.5 rounded textxs font-medium {{ $post->status === 'published' ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-yellow-50 text-yellow-700 border border-yellow-100' }}">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium {{ $post->status === 'published' ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-yellow-50 text-yellow-700 border border-yellow-100' }}">
                                     {{ ucfirst($post->status) }}
                                 </span>
                                 <span class="text-slate-300 mx-1.5">•</span>
                                 <span class="text-xs text-slate-500">{{ $post->published_at ? $post->published_at->format('M d, Y') : 'Draft' }}</span>
                             </div>
                         </td>
-                        <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
+                        <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium w-24">
                             <div class="flex items-center justify-end space-x-2 lg:opacity-0 group-hover:opacity-100 transition-opacity">
                                 <a href="{{ route('cms.posts.edit', $post) }}" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
                                     <i data-lucide="edit-3" class="w-4 h-4"></i>

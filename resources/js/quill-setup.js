@@ -5,7 +5,7 @@ import 'quill/dist/quill.snow.css';
 const toolbarOptions = [
   ['bold', 'italic', 'underline', 'strike'],
   ['blockquote', 'code-block'],
-  [{ 'header': 1 }, { 'header': 2 }],
+  [{ 'header': 1 }, { 'header': 2 }, { 'header': 3 }, { 'header': 4 }, { 'header': 5 }, { 'header': 6 }],
   [{ 'list': 'ordered'}, { 'list': 'bullet' }],
   [{ 'script': 'sub'}, { 'script': 'super' }],
   [{ 'indent': '-1'}, { 'indent': '+1' }],
