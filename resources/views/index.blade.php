@@ -65,12 +65,12 @@
     </div>
 </main>
 
-<!-- Latest Jobs Section -->
+<!-- Recently Added Section -->
 <section id="jobs-section" class="max-w-7xl mx-auto px-4 sm:px-6 py-16 scroll-mt-6">
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
         <div>
-            <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-unbounded leading-tight">
-                Latest <span class="text-indigo-600">Jobs</span>
+            <h2 class="text-3xl sm:text-4xl font-black text-slate-900 leading-tight">
+                Recently <span class="text-indigo-600">Added</span>
             </h2>
             <p class="text-slate-500 font-medium mt-2">Fresh opportunities added daily — apply before they're gone.</p>
         </div>
@@ -122,6 +122,12 @@
                 <x-job-card :job="$job" layout="row" />
             @endforeach
         </div>
+
+        @if($latestJobs->hasPages())
+            <div class="mt-8 flex justify-center">
+                {{ $latestJobs->links() }}
+            </div>
+        @endif
     @else
         <div class="text-center py-16 text-slate-400 bg-slate-50/50 rounded-2xl border border-slate-100 mt-4">
             <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">

@@ -1,6 +1,7 @@
 @props([
     'type' => 'filter',
-    'active' => 'all'
+    'active' => 'all',
+    'industryTags' => null
 ])
 
 @php
@@ -19,6 +20,27 @@
     }
 
     $clearUrl = $searchAction;
+
+    if (empty($industryTags) || count($industryTags) === 0) {
+        $industryTags = \Illuminate\Support\Facades\Cache::remember('companies_filter_industry_tags', 3600, function() {
+            $companies = \App\Models\Company::where('is_active', true)->select('id', 'industry')->get();
+            $tags = [];
+            foreach ($companies as $c) {
+                if (!$c->industry) continue;
+                $parts = preg_split('/[,|\/]+/', $c->industry);
+                foreach ($parts as $p) {
+                    $trimmed = trim($p);
+                    if ($trimmed) {
+                        $tags[$trimmed] = ($tags[$trimmed] ?? 0) + 1;
+                    }
+                }
+            }
+            arsort($tags);
+            return $tags;
+        });
+    }
+
+    $selectedTags = (array) request('tags', []);
 @endphp
 
 <aside {{ $attributes->merge(['class' => 'w-full lg:w-80 flex-shrink-0']) }}>
@@ -105,6 +127,76 @@
                 </a>
             </div>
         </div>
+
+        {{-- Industry Tags Filter (Search bar + checkboxes like category filter in remote-jobs) --}}
+        @if(!empty($industryTags) && count($industryTags) > 0)
+        <div class="pt-5 border-t border-gray-100">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Industry Tags</span>
+                @if(request()->filled('tags'))
+                    <a href="{{ $searchAction }}?{{ http_build_query(request()->except(['tags', 'page'])) }}" 
+                       class="text-[10px] font-bold text-blue-600 hover:underline normal-case">Clear tags</a>
+                @endif
+            </div>
+
+            {{-- Real-time Tag Search Bar --}}
+            <div class="relative mb-3">
+                <input type="text" 
+                       id="industry-tag-search" 
+                       placeholder="Search tags..." 
+                       autocomplete="off"
+                       class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            {{-- Checkboxes Form --}}
+            <form id="industry-tag-filter-form" action="{{ $searchAction }}" method="GET">
+                @if(request()->filled('search'))
+                    <input type="hidden" name="search" value="{{ request('search') }}">
+                @endif
+                @if(request()->filled('type') && !request()->routeIs('unicorn-companies', 'startup-companies', 'mnc-companies'))
+                    <input type="hidden" name="type" value="{{ request('type') }}">
+                @endif
+
+                <div class="space-y-2 max-h-60 overflow-y-auto pr-1 custom-scrollbar" id="industry-tags-list">
+                    @php $tIndex = 0; @endphp
+                    @foreach($industryTags as $tag => $count)
+                        @php
+                            $isChecked = in_array($tag, $selectedTags);
+                            $isInitiallyVisible = $tIndex < 8 || $isChecked;
+                        @endphp
+                        <label class="flex items-center justify-between gap-2 text-xs text-slate-700 hover:text-slate-900 cursor-pointer tag-filter-item py-0.5 {{ !$isInitiallyVisible ? 'hidden extra-tag-item' : '' }}" 
+                               data-tag-name="{{ strtolower($tag) }}">
+                            <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                                <input type="checkbox" 
+                                       name="tags[]" 
+                                       value="{{ $tag }}" 
+                                       {{ $isChecked ? 'checked' : '' }} 
+                                       onchange="this.form.submit()" 
+                                       class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500/30 flex-shrink-0 cursor-pointer">
+                                <span class="truncate {{ $isChecked ? 'text-blue-700 font-bold' : 'font-medium' }}">{{ $tag }}</span>
+                            </div>
+                            <span class="text-[10px] font-semibold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full flex-shrink-0">{{ $count }}</span>
+                        </label>
+                        @php $tIndex++; @endphp
+                    @endforeach
+                </div>
+            </form>
+
+            @if(count($industryTags) > 8)
+                <button type="button" 
+                        id="toggle-more-tags-btn" 
+                        onclick="toggleMoreTags()"
+                        class="text-xs font-bold text-blue-600 hover:text-blue-700 mt-2.5 flex items-center gap-1 cursor-pointer">
+                    <span id="more-tags-btn-text">+ {{ count($industryTags) - 8 }} More</span>
+                </button>
+            @endif
+        </div>
+        @endif
     </div>
 </aside>
 
@@ -294,5 +386,57 @@ document.addEventListener('DOMContentLoaded', function () {
             hideDropdown();
         }
     });
+
+    // Real-time Tag Search & Show More Logic
+    const tagSearchInput = document.getElementById('industry-tag-search');
+    const tagItems = document.querySelectorAll('.tag-filter-item');
+    const moreTagsBtn = document.getElementById('toggle-more-tags-btn');
+    const moreTagsText = document.getElementById('more-tags-btn-text');
+    let tagsExpanded = false;
+
+    if (tagSearchInput) {
+        tagSearchInput.addEventListener('input', function (e) {
+            const query = e.target.value.toLowerCase().trim();
+            tagItems.forEach(item => {
+                const tagName = item.getAttribute('data-tag-name') || '';
+                if (!query) {
+                    if (item.classList.contains('extra-tag-item') && !tagsExpanded) {
+                        item.classList.add('hidden');
+                    } else {
+                        item.classList.remove('hidden');
+                    }
+                } else {
+                    if (tagName.includes(query)) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                }
+            });
+
+            if (moreTagsBtn) {
+                if (query) {
+                    moreTagsBtn.classList.add('hidden');
+                } else {
+                    moreTagsBtn.classList.remove('hidden');
+                }
+            }
+        });
+    }
+
+    window.toggleMoreTags = function() {
+        tagsExpanded = !tagsExpanded;
+        const extraItems = document.querySelectorAll('.extra-tag-item');
+        extraItems.forEach(item => {
+            if (tagsExpanded) {
+                item.classList.remove('hidden');
+            } else {
+                item.classList.add('hidden');
+            }
+        });
+        if (moreTagsText) {
+            moreTagsText.textContent = tagsExpanded ? '- Show Less' : '+ {{ count($industryTags) - 8 }} More';
+        }
+    };
 });
 </script>

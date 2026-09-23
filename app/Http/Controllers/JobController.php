@@ -280,6 +280,19 @@ class JobController extends Controller
                 });
             }
 
+            // Filter by Industry Tags (e.g. Fintech, SaaS, E-Commerce, etc.)
+            if ($request->filled('tags')) {
+                $tags = is_array($request->tags) ? $request->tags : explode(',', $request->tags);
+                $query->where(function ($q) use ($tags) {
+                    foreach ($tags as $tag) {
+                        $escapedTag = addcslashes(trim($tag), '%_\\');
+                        if (!empty($escapedTag)) {
+                            $q->orWhere('industry', 'LIKE', "%{$escapedTag}%");
+                        }
+                    }
+                });
+            }
+
             return $query->orderBy('name')->paginate(12)->withQueryString();
         });
 
@@ -290,8 +303,26 @@ class JobController extends Controller
                 ->orderBy('name')
                 ->get();
         });
+
+        // Fetch all unique industry tags with company counts
+        $industryTags = \Illuminate\Support\Facades\Cache::remember('companies_filter_industry_tags', 3600, function() {
+            $companies = Company::where('is_active', true)->select('id', 'industry')->get();
+            $tags = [];
+            foreach ($companies as $c) {
+                if (!$c->industry) continue;
+                $parts = preg_split('/[,|\/]+/', $c->industry);
+                foreach ($parts as $p) {
+                    $trimmed = trim($p);
+                    if ($trimmed) {
+                        $tags[$trimmed] = ($tags[$trimmed] ?? 0) + 1;
+                    }
+                }
+            }
+            arsort($tags);
+            return $tags;
+        });
             
-        return view('jobs.companies', compact('companies', 'categories', 'pageSeo'));
+        return view('jobs.companies', compact('companies', 'categories', 'pageSeo', 'industryTags'));
     }
 
     public function companyAutocomplete(Request $request)
@@ -374,6 +405,18 @@ class JobController extends Controller
                 });
             }
 
+            if ($request->filled('tags')) {
+                $tags = is_array($request->tags) ? $request->tags : explode(',', $request->tags);
+                $query->where(function ($q) use ($tags) {
+                    foreach ($tags as $tag) {
+                        $escapedTag = addcslashes(trim($tag), '%_\\');
+                        if (!empty($escapedTag)) {
+                            $q->orWhere('industry', 'LIKE', "%{$escapedTag}%");
+                        }
+                    }
+                });
+            }
+
             return $query->orderBy('name')->paginate(12)->withQueryString();
         });
 
@@ -407,6 +450,18 @@ class JobController extends Controller
                 });
             }
 
+            if ($request->filled('tags')) {
+                $tags = is_array($request->tags) ? $request->tags : explode(',', $request->tags);
+                $query->where(function ($q) use ($tags) {
+                    foreach ($tags as $tag) {
+                        $escapedTag = addcslashes(trim($tag), '%_\\');
+                        if (!empty($escapedTag)) {
+                            $q->orWhere('industry', 'LIKE', "%{$escapedTag}%");
+                        }
+                    }
+                });
+            }
+
             return $query->orderBy('name')->paginate(12)->withQueryString();
         });
 
@@ -437,6 +492,18 @@ class JobController extends Controller
                     $q->where('name', 'LIKE', "%{$escaped}%")
                       ->orWhere('industry', 'LIKE', "%{$escaped}%")
                       ->orWhere('tagline', 'LIKE', "%{$escaped}%");
+                });
+            }
+
+            if ($request->filled('tags')) {
+                $tags = is_array($request->tags) ? $request->tags : explode(',', $request->tags);
+                $query->where(function ($q) use ($tags) {
+                    foreach ($tags as $tag) {
+                        $escapedTag = addcslashes(trim($tag), '%_\\');
+                        if (!empty($escapedTag)) {
+                            $q->orWhere('industry', 'LIKE', "%{$escapedTag}%");
+                        }
+                    }
                 });
             }
 
@@ -536,7 +603,43 @@ class JobController extends Controller
             return JobCategory::where('is_active', true)->orderBy('name')->get();
         });
 
-        return view('jobs.company', compact('jobs', 'company', 'categories', 'pageSeo'));
+        // Similar companies matching industry keywords or company type
+        $similarCompanies = \Illuminate\Support\Facades\Cache::remember("company_similar_{$company->id}", 3600, function() use ($company) {
+            $industryKeywords = array_filter(array_map('trim', preg_split('/[,|\/]+/', $company->industry ?? '')));
+            
+            $query = Company::where('is_active', true)
+                ->where('id', '!=', $company->id)
+                ->withCount('jobs');
+
+            $query->where(function($q) use ($company, $industryKeywords) {
+                if ($company->type) {
+                    $q->where('type', $company->type);
+                }
+                foreach ($industryKeywords as $kw) {
+                    if (mb_strlen($kw) >= 3) {
+                        $q->orWhere('industry', 'LIKE', '%' . addcslashes($kw, '%_\\') . '%');
+                    }
+                }
+            });
+
+            $results = $query->orderBy('name')->limit(5)->get();
+
+            // Fallback if fewer than 4 found
+            if ($results->count() < 4) {
+                $existingIds = $results->pluck('id')->push($company->id)->toArray();
+                $fallback = Company::where('is_active', true)
+                    ->whereNotIn('id', $existingIds)
+                    ->withCount('jobs')
+                    ->orderBy('name')
+                    ->limit(5 - $results->count())
+                    ->get();
+                $results = $results->merge($fallback);
+            }
+
+            return $results;
+        });
+
+        return view('jobs.company', compact('jobs', 'company', 'categories', 'pageSeo', 'similarCompanies'));
     }
 
     public function getJobsByType($type)

@@ -249,7 +249,6 @@
                         <button id="avatarDropdown" class="flex items-center gap-3 pl-2 hover:bg-slate-50 rounded-lg p-2 transition-all">
                             <div class="text-right hidden lg:block">
                                 <p class="text-sm font-bold leading-none">{{ Auth::guard('admin')->user()->name }}</p>
-                                <p class="text-[11px] text-slate-500 font-medium mt-1 uppercase tracking-wider">{{ Auth::guard('admin')->user()->role }}</p>
                             </div>
                             <div class="w-10 h-10 rounded-full bg-indigo-100 border-2 border-white shadow-sm flex items-center justify-center overflow-hidden">
                                 <div class="w-full h-full bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">

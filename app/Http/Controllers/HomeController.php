@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\JobCategory;
 use App\Models\Company;
 use App\Models\PageSeo;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class HomeController extends Controller
@@ -19,9 +20,9 @@ class HomeController extends Controller
             $tab = 'all';
         }
 
-        // Get latest jobs (top 21 jobs) based on selected tab
-        $cacheKey = "home_latest_jobs_tab_{$tab}";
-        $latestJobs = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() use ($tab) {
+        // Get latest jobs (top 22 jobs) based on selected tab with pagination (11 per page)
+        $cacheKey = "home_latest_jobs_tab_{$tab}_v2";
+        $allLatestJobs = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function() use ($tab) {
             $query = Job::with(['company', 'category'])
                 ->where('is_active', true);
             
@@ -33,8 +34,25 @@ class HomeController extends Controller
                 $query->where('work_type', 'hybrid');
             }
             
-            return $query->latest()->limit(21)->get();
+            return $query->latest()->limit(22)->get();
         });
+
+        $page = max(1, (int) $request->get('page', 1));
+        $perPage = 11;
+        $totalJobs = $allLatestJobs->count();
+        $slicedJobs = $allLatestJobs->slice(($page - 1) * $perPage, $perPage)->values();
+
+        $latestJobs = new LengthAwarePaginator(
+            $slicedJobs,
+            $totalJobs,
+            $perPage,
+            $page,
+            [
+                'path' => $request->url(),
+                'query' => $request->query(),
+            ]
+        );
+        $latestJobs->fragment('jobs-section');
         
         // Empty collections for backward compatibility
         $featuredItems = collect();

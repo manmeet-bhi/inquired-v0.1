@@ -10,22 +10,36 @@
 
 
         <div class="flex flex-col lg:flex-row gap-6 lg:gap-16">
-            <!-- Sidebar Navigation -->
-            <x-company-sidebar type="nav" active="all" />
-
+            <!-- Sidebar Navigation & Filters -->
+            <x-company-sidebar type="nav" active="all" :industryTags="$industryTags ?? null" />
 
             <!-- Main Content Area -->
             <div class="flex-grow">
                 <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2.5 flex-wrap">
                         <h2 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400">
                             {{ $companies->total() }} {{ $companies->total() === 1 ? 'Company' : 'Companies' }}
                         </h2>
                         @if(request()->filled('search'))
                             <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold border border-blue-100">
-                                <span>Results for "{{ request('search') }}"</span>
-                                <a href="{{ route('companies') }}" class="hover:text-blue-900 ml-1 font-bold" title="Clear search">✕</a>
+                                <span>"{{ request('search') }}"</span>
+                                <a href="{{ route('companies', request()->except(['search', 'page'])) }}" class="hover:text-blue-900 ml-1 font-bold" title="Clear search">✕</a>
                             </span>
+                        @endif
+                        @if(request()->filled('tags'))
+                            @foreach((array) request('tags') as $activeTag)
+                                @php
+                                    $remainingTags = array_filter((array) request('tags'), fn($t) => $t !== $activeTag);
+                                    $newQuery = request()->except(['tags', 'page']);
+                                    if (!empty($remainingTags)) {
+                                        $newQuery['tags'] = array_values($remainingTags);
+                                    }
+                                @endphp
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-semibold border border-indigo-100">
+                                    <span>Tag: {{ $activeTag }}</span>
+                                    <a href="{{ route('companies', $newQuery) }}" class="hover:text-indigo-900 ml-1 font-bold" title="Remove tag">✕</a>
+                                </span>
+                            @endforeach
                         @endif
                     </div>
                 </div>

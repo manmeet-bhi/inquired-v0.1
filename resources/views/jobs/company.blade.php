@@ -167,9 +167,74 @@
         </div>
 
         <div class="flex flex-col lg:flex-row gap-6 lg:gap-16">
-            <!-- Sidebar Filters -->
-            <aside id="filters-panel" class="hidden lg:block w-full lg:w-80 flex-shrink-0">
+            <!-- Sidebar Filters & Similar Companies -->
+            <aside id="filters-panel" class="hidden lg:block w-full lg:w-80 flex-shrink-0 space-y-6">
                 <x-job-filters :categories="$categories" :showWorkType="true" :showCategories="false" />
+
+                @if(isset($similarCompanies) && $similarCompanies->count() > 0)
+                <!-- Similar Companies Suggestion Widget -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-black uppercase tracking-[0.2em] text-slate-800">Similar Companies</h3>
+                                <p class="text-[11px] text-slate-400 font-medium">Matching industry &amp; type</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 divide-y divide-slate-50">
+                        @foreach($similarCompanies as $simCompany)
+                            <a href="{{ route('company.show', $simCompany->slug ?? $simCompany->id) }}" 
+                               class="pt-3 first:pt-0 block group transition-all">
+                                <div class="flex items-start justify-between gap-2">
+                                    <div class="min-w-0 flex-1">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <span class="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors truncate">
+                                                {{ $simCompany->name }}
+                                            </span>
+                                            @if($simCompany->type)
+                                                <span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
+                                                    {{ strtoupper(str_replace('_', ' ', $simCompany->type)) }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                        @if($simCompany->industry)
+                                            <p class="text-xs text-slate-500 truncate mt-0.5">
+                                                {{ Str::limit($simCompany->industry, 32) }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                    
+                                    <div class="flex items-center text-right flex-shrink-0">
+                                        @if($simCompany->jobs_count > 0)
+                                            <span class="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 whitespace-nowrap">
+                                                {{ $simCompany->jobs_count }} {{ $simCompany->jobs_count === 1 ? 'Job' : 'Jobs' }}
+                                            </span>
+                                        @else
+                                            <span class="text-slate-300 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-100 text-center">
+                        <a href="{{ route('companies') }}" class="text-xs font-bold text-indigo-600 hover:text-indigo-700 hover:underline inline-flex items-center gap-1 transition-colors">
+                            <span>Explore all companies</span>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
+                </div>
+                @endif
             </aside>
 
             <!-- Main Content -->
